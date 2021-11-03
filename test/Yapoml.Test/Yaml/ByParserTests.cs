@@ -7,7 +7,7 @@ using static Yapoml.Parsers.Yaml.Pocos.By;
 
 namespace Yapoml.Test.Yaml
 {
-    public class Parser
+    public class ByParserTests
     {
         private readonly YamlParser _parser = new();
 
@@ -15,6 +15,15 @@ namespace Yapoml.Test.Yaml
         public void Should_Parse_By_Mapping_Xpath()
         {
             var content = @"xpath: ./abc";
+            var by = _parser.Parse<By>(content);
+            by.Method.Should().Be(ByMethod.XPath);
+            by.Value.Should().Be("./abc");
+        }
+
+        [Test]
+        public void Should_Parse_By_Mapping_Xpath_CaseInsensitive()
+        {
+            var content = @"xpATh: ./abc";
             var by = _parser.Parse<By>(content);
             by.Method.Should().Be(ByMethod.XPath);
             by.Value.Should().Be("./abc");

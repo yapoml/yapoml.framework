@@ -3,7 +3,6 @@ using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
 using YamlDotNet.Serialization;
 using Yapoml.Parsers.Yaml.Pocos;
-using static Yapoml.Parsers.Yaml.Pocos.By;
 
 namespace Yapoml.Parsers.Yaml.Converters
 {
@@ -17,7 +16,7 @@ namespace Yapoml.Parsers.Yaml.Converters
         {
             if (parser.TryConsume<Scalar>(out var scalar))
             {
-                return new By { Method = ByMethod.XPath, Value = scalar.Value };
+                return new By { Method = By.ByMethod.XPath, Value = scalar.Value };
             }
             else
             {
@@ -33,15 +32,15 @@ namespace Yapoml.Parsers.Yaml.Converters
                     switch (propertyName.ToLowerInvariant())
                     {
                         case "xpath":
-                            by.Method = ByMethod.XPath;
+                            by.Method = By.ByMethod.XPath;
                             by.Value = propertyValue;
                             break;
                         case "css":
-                            by.Method = ByMethod.Css;
+                            by.Method = By.ByMethod.Css;
                             by.Value = propertyValue;
                             break;
                         default:
-                            throw new Exception($"Cannot map '{propertyName}' yaml scalar to property of {type.Name} type.");
+                            throw new Exception($"Cannot map '{propertyName}' yaml scalar to any property of {type.Name} type.");
                     }
                 }
 

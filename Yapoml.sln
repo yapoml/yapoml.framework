@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yapoml", "src\Yapoml\Yapoml.csproj", "{1DA729D9-F179-4EDE-8DDF-D127F3A6C77D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yapoml.Test", "test\Yapoml.Test\Yapoml.Test.csproj", "{A9F1F038-5CB2-493A-A69C-FB425191F8E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yapoml.Test", "test\Yapoml.Test\Yapoml.Test.csproj", "{A9F1F038-5CB2-493A-A69C-FB425191F8E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

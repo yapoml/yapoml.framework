@@ -1,0 +1,46 @@
+using FluentAssertions;
+using NUnit.Framework;
+using System;
+using Yapoml.Parsers.Yaml;
+using Yapoml.Parsers.Yaml.Pocos;
+
+namespace Yapoml.Test.Yaml
+{
+    public class Parser
+    {
+        private YamlParser _parser;
+
+        [SetUp]
+        public void Setup()
+        {
+            _parser = new YamlParser();
+        }
+
+        [Test]
+        public void Should_Parse_By_Mapping_Xpath()
+        {
+            var content = @"xpath: ./abc";
+            var by = _parser.Parse<By>(content);
+            by.Method.Should().Be(ByMethod.XPath);
+            by.Value.Should().Be("./abc");
+        }
+
+        [Test]
+        public void Should_Parse_By_Scalar_Xpath_AsDefault()
+        {
+            var content = @"./abc";
+            var by = _parser.Parse<By>(content);
+            by.Method.Should().Be(ByMethod.XPath);
+            by.Value.Should().Be("./abc");
+        }
+
+        [Test]
+        public void Should_Throw_By_Unknown_Mapping()
+        {
+            var content = @"unknown_by_type: ./abc";
+            Action action = () => _parser.Parse<By>(content);
+
+            action.Should().Throw<Exception>().WithInnerException<Exception>().WithMessage("Cannot map*");
+        }
+    }
+}

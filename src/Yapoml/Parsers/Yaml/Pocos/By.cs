@@ -5,11 +5,11 @@
         public ByMethod Method { get; set; }
 
         public string Value { get; set; }
-    }
 
-    public enum ByMethod
-    {
-        XPath,
-        Css
+        public enum ByMethod
+        {
+            XPath,
+            Css
+        }
     }
 }

@@ -3,6 +3,7 @@ using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
 using YamlDotNet.Serialization;
 using Yapoml.Parsers.Yaml.Pocos;
+using static Yapoml.Parsers.Yaml.Pocos.By;
 
 namespace Yapoml.Parsers.Yaml.Converters
 {

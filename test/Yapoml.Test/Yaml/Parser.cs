@@ -3,18 +3,13 @@ using NUnit.Framework;
 using System;
 using Yapoml.Parsers.Yaml;
 using Yapoml.Parsers.Yaml.Pocos;
+using static Yapoml.Parsers.Yaml.Pocos.By;
 
 namespace Yapoml.Test.Yaml
 {
     public class Parser
     {
-        private YamlParser _parser;
-
-        [SetUp]
-        public void Setup()
-        {
-            _parser = new YamlParser();
-        }
+        private readonly YamlParser _parser = new();
 
         [Test]
         public void Should_Parse_By_Mapping_Xpath()

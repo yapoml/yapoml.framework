@@ -6,7 +6,7 @@ using Yapoml.Parsers.Yaml.Pocos;
 
 namespace Yapoml.Parsers.Yaml.Converters
 {
-    public class ByConverter : IYamlTypeConverter
+    class ByConverter : IYamlTypeConverter
     {
         public bool Accepts(Type type)
         {

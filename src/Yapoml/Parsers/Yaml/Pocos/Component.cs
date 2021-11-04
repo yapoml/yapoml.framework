@@ -1,4 +1,5 @@
-﻿using YamlDotNet.Serialization;
+﻿using System.Collections.Generic;
+using YamlDotNet.Serialization;
 
 namespace Yapoml.Parsers.Yaml.Pocos
 {
@@ -8,5 +9,8 @@ namespace Yapoml.Parsers.Yaml.Pocos
 
         [YamlMember(Alias = "by")]
         public By By { get; set; }
+
+        [YamlMember(Alias = "ya")]
+        public Dictionary<string, Component> NestedComponents { get; set; }
     }
 }

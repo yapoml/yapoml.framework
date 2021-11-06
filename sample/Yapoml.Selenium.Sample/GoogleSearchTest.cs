@@ -32,21 +32,21 @@ namespace Test
         {
             _webDriver.Navigate().GoToUrl("https://www.google.com");
 
-            var input = _webDriver.FindElement(By.CssSelector(".gLFyf"));
-            input.SendKeys("page object pattern");
-            input.SendKeys(Keys.Enter);
+            var searchInput = _webDriver.FindElement(By.CssSelector(".gLFyf"));
+            searchInput.SendKeys("page object pattern");
+            searchInput.SendKeys(Keys.Enter);
 
-            var resultsPane = _webDriver.FindElement(By.Id("rso"));
+            var searchResultsPane = _webDriver.FindElement(By.Id("rso"));
 
-            var resultItems = resultsPane.FindElements(By.CssSelector(".g"));
+            var searchResultItems = searchResultsPane.FindElements(By.CssSelector(".g"));
 
-            Assert.That(resultItems.Count, Is.GreaterThan(0));
+            Assert.That(searchResultItems.Count, Is.GreaterThan(0));
 
-            foreach (var resultItem in resultItems)
+            foreach (var searchResultItem in searchResultItems)
             {
-                var resultLink = resultItem.FindElement(By.XPath(".//a/h3"));
+                var resultTitle = searchResultItem.FindElement(By.XPath(".//a/h3"));
 
-                Assert.That(resultLink.Text, Does.Contain("page").IgnoreCase);
+                Assert.That(resultTitle.Text, Does.Contain("page").IgnoreCase);
             }
         }
     }

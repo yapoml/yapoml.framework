@@ -7,11 +7,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Remove="PageObjects\Google\Search.po.yaml" />
-		<None Remove="PageObjects\Google\SearchResults.po.yaml" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
 		<PackageReference Include="NUnit" Version="3.13.2" />
 		<PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
@@ -24,13 +19,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<!--Specify OutputItemType and ReferenceOutputAssembly, not required when used via nuget package-->
 		<ProjectReference Include="..\..\src\Yapoml.Selenium\Yapoml.Selenium.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 	</ItemGroup>
 
+	<!--Import props explicitly, not required when used via nuget package-->
 	<Import Project="..\..\src\Yapoml.Selenium\Yapoml.Selenium.props" />
-
+	
 	<PropertyGroup>
 		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
-		<CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)Generated</CompilerGeneratedFilesOutputPath>
+		<CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\Generated</CompilerGeneratedFilesOutputPath>
 	</PropertyGroup>
 </Project>

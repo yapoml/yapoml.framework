@@ -1,0 +1,7 @@
+namespace BBB
+{
+    class Tests
+    {
+
+    }
+}

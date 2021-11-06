@@ -7,14 +7,19 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Remove="PageObjects\Google\Home.po.yaml" />
+		<None Remove="PageObjects\Google\Search.po.yaml" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
-		<PackageReference Include="NUnit" Version="3.13.1" />
-		<PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
-		<PackageReference Include="coverlet.collector" Version="3.0.2" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
+		<PackageReference Include="NUnit" Version="3.13.2" />
+		<PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
+		<PackageReference Include="coverlet.collector" Version="3.1.0">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Selenium.WebDriver" Version="4.0.1" />
+		<PackageReference Include="WebDriverManager" Version="2.12.2" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,7 +1,0 @@
-namespace BBB
-{
-    class Tests
-    {
-
-    }
-}

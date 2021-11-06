@@ -2,10 +2,10 @@
   ResultsPane:
     by: id rso
 
-  ya:
-    ResultsItem(s):
-      by: css .g
+    ya:
+      ResultsItems:
+        by: css .g
 
-      ya:
-        Title:
-          by: .//a/h3
+        ya:
+          Title:
+            by: .//a/h3

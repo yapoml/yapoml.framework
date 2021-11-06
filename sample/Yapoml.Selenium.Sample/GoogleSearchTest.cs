@@ -49,5 +49,28 @@ namespace Test
                 Assert.That(resultTitle.Text, Does.Contain("page").IgnoreCase);
             }
         }
+
+        [Test]
+        public void SearchForWithYestAnotherPageObject()
+        {
+            _webDriver.Navigate().GoToUrl("https://www.google.com");
+
+            var searchInput = _webDriver.FindElement(By.CssSelector(".gLFyf"));
+            searchInput.SendKeys("page object pattern");
+            searchInput.SendKeys(Keys.Enter);
+
+            var searchResultsPane = _webDriver.FindElement(By.Id("rso"));
+
+            var searchResultItems = searchResultsPane.FindElements(By.CssSelector(".g"));
+
+            Assert.That(searchResultItems.Count, Is.GreaterThan(0));
+
+            foreach (var searchResultItem in searchResultItems)
+            {
+                var resultTitle = searchResultItem.FindElement(By.XPath(".//a/h3"));
+
+                Assert.That(resultTitle.Text, Does.Contain("page").IgnoreCase);
+            }
+        }
     }
 }

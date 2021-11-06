@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using Microsoft.CodeAnalysis;
+using Yapoml.Generation;
+using Yapoml.Parsers.Yaml.Pocos;
 
 namespace Yapoml.Selenium
 {
@@ -9,14 +11,22 @@ namespace Yapoml.Selenium
     {
         public void Execute(GeneratorExecutionContext context)
         {
+            var yamlParser = new Parsers.Yaml.YamlParser();
+
             foreach (AdditionalText file in context.AdditionalFiles)
             {
                 if (file.Path.EndsWith(".po.yaml", StringComparison.OrdinalIgnoreCase))
                 {
+                    File.AppendAllText("C:\\Temp\\AddFiles.txt", file.Path);
+
+                    var component = yamlParser.Parse<Component>(File.ReadAllText(file.Path));
+
+                    var gContext = PageObjectGenerationContext.FromYamlComponent(file.Path, component);
+
                     context.AddSource("E_" + Path.GetFileNameWithoutExtension(file.Path), $@"
 namespace AAA
 {{
-  class {Path.GetFileNameWithoutExtension(file.Path).Replace(" ", "").Replace("-", "").Replace(".", "_")}
+  class {gContext.ClassName}
   {{
 
   }}

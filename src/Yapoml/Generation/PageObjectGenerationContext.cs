@@ -18,10 +18,10 @@ namespace Yapoml.Generation
             var fileName = Path.GetFileName(filePath).Replace(".po.yaml", string.Empty);
 
             // replace denied characters
-            var deniedCharacters = new char[] { ' ' };
+            var deniedCharacters = new string[] { " ", "-" };
             foreach (var deniedCharacter in deniedCharacters)
             {
-                fileName = fileName.Replace(deniedCharacter, '_');
+                fileName = fileName.Replace(deniedCharacter, string.Empty);
             }
 
             return fileName;

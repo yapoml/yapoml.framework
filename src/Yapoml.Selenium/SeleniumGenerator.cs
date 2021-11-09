@@ -20,9 +20,7 @@ namespace Yapoml.Selenium
             {
                 if (file.Path.EndsWith(".po.yaml", StringComparison.OrdinalIgnoreCase))
                 {
-                    File.AppendAllText("C:\\Temp\\AddFiles.txt", file.Path);
-
-                    var component = yamlParser.Parse<Component>(File.ReadAllText(file.Path));
+                    var component = yamlParser.Parse<Component>(file.GetText().ToString());
 
                     var gContext = PageObjectGenerationContext.FromYamlComponent(file.Path, component);
 

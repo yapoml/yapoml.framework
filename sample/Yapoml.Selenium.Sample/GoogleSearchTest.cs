@@ -55,21 +55,19 @@ namespace Yapoml.Selenium.Sample
         {
             _webDriver.Navigate().GoToUrl("https://www.google.com");
 
-            //_webDriver.Yapos().Search.;
-
             var searchInput = _webDriver.Yapos().Search.SearchInput;
             searchInput.SendKeys("page object pattern");
             searchInput.SendKeys(Keys.Enter);
 
             var searchResultsPane = _webDriver.Yapos().SearchResults.ResultsPane;
 
-            var searchResultItems = searchResultsPane.FindElements(By.CssSelector(".g"));
+            var searchResultItems = searchResultsPane.ResultsItems;
 
             Assert.That(searchResultItems.Count, Is.GreaterThan(0));
 
             foreach (var searchResultItem in searchResultItems)
             {
-                var resultTitle = searchResultItem.FindElement(By.XPath(".//a/h3"));
+                var resultTitle = searchResultItem.Title;
 
                 Assert.That(resultTitle.Text, Does.Contain("page").IgnoreCase);
             }

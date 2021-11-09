@@ -79,25 +79,62 @@ namespace {rootNamespace}
             }
             */
 
-            string findCode;
-            if (component.By.Method == By.ByMethod.XPath)
+            var isPlural = name.EndsWith("s");
+            if (!isPlural)
             {
-                findCode = $@"{searchContext}.FindElement(OpenQA.Selenium.By.XPath(""{component.By.Value}""))";
-            }
-            else if (component.By.Method == By.ByMethod.Css)
-            {
-                findCode = $@"{searchContext}.FindElement(OpenQA.Selenium.By.CssSelector(""{component.By.Value}""))";
-            }
-            else if (component.By.Method == By.ByMethod.Id)
-            {
-                findCode = $@"{searchContext}.FindElement(OpenQA.Selenium.By.Id(""{component.By.Value}""))";
+                string findCode;
+                if (component.By.Method == By.ByMethod.XPath)
+                {
+                    findCode = $@"{searchContext}.FindElement(OpenQA.Selenium.By.XPath(""{component.By.Value}""))";
+                }
+                else if (component.By.Method == By.ByMethod.Css)
+                {
+                    findCode = $@"{searchContext}.FindElement(OpenQA.Selenium.By.CssSelector(""{component.By.Value}""))";
+                }
+                else if (component.By.Method == By.ByMethod.Id)
+                {
+                    findCode = $@"{searchContext}.FindElement(OpenQA.Selenium.By.Id(""{component.By.Value}""))";
+                }
+                else
+                {
+                    throw new Exception("Unknown by method in po yaml");
+                }
+
+                builder.AppendLine($"public {name}Component {name} => new {name}Component(_driver, {findCode});");
             }
             else
             {
-                throw new Exception("Unknown by method in po yaml");
+                string findCode;
+                if (component.By.Method == By.ByMethod.XPath)
+                {
+                    findCode = $@"{searchContext}.FindElements(OpenQA.Selenium.By.XPath(""{component.By.Value}""))";
+                }
+                else if (component.By.Method == By.ByMethod.Css)
+                {
+                    findCode = $@"{searchContext}.FindElements(OpenQA.Selenium.By.CssSelector(""{component.By.Value}""))";
+                }
+                else if (component.By.Method == By.ByMethod.Id)
+                {
+                    findCode = $@"{searchContext}.FindElements(OpenQA.Selenium.By.Id(""{component.By.Value}""))";
+                }
+                else
+                {
+                    throw new Exception("Unknown by method in po yaml");
+                }
+
+                builder.AppendLine($"public System.Collections.Generic.IList<{name}Component> {name} {{ get {{");
+
+                builder.AppendLine($"var components = new System.Collections.Generic.List<{name}Component>();");
+                builder.AppendLine($"var elements = {findCode};");
+                builder.AppendLine($"foreach (var element in elements) {{");
+                builder.AppendLine($"components.Add(new {name}Component(_driver, element));");
+                builder.AppendLine("}");
+
+                builder.AppendLine("return components;");
+
+                builder.AppendLine("} }");
             }
 
-            builder.AppendLine($"public {name}Component {name} => new {name}Component(_driver, {findCode});");
 
             builder.AppendLine($"public class {name}Component : {baseComponentPath} {{");
             builder.AppendLine($"private OpenQA.Selenium.IWebDriver _driver;");

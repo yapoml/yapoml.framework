@@ -9,7 +9,8 @@
         public enum ByMethod
         {
             XPath,
-            Css
+            Css,
+            Id
         }
     }
 }

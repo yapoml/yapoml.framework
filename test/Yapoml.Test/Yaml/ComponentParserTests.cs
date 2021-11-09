@@ -19,6 +19,8 @@ by: ./abc
             var component = _parser.Parse<Component>(content);
             component.Name.Should().Be("C1");
             component.By.Should().NotBeNull();
+            component.By.Method.Should().Be(By.ByMethod.XPath);
+            component.By.Value.Should().Be("./abc");
         }
 
         [Test]
@@ -26,7 +28,7 @@ by: ./abc
         {
             var content = @"
 name: C1
-by: ./abc
+by: css .abc
 
 ya:
   Component2:

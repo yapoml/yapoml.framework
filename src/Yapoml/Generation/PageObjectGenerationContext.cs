@@ -8,9 +8,10 @@ namespace Yapoml.Generation
 {
     public class PageObjectGenerationContext
     {
-        public PageObjectGenerationContext(string filePath)
+        public PageObjectGenerationContext(string filePath, Component component)
         {
             ClassName = GetClassName(filePath);
+            Component = component;
         }
 
         private string GetClassName(string filePath)
@@ -29,9 +30,11 @@ namespace Yapoml.Generation
 
         public string ClassName { get; }
 
+        public Component Component { get; } 
+
         public static PageObjectGenerationContext FromYamlComponent(string filePath, Component component)
         {
-            return new PageObjectGenerationContext(filePath);
+            return new PageObjectGenerationContext(filePath, component);
         }
     }
 }

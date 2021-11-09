@@ -51,15 +51,17 @@ namespace Yapoml.Selenium.Sample
         }
 
         [Test]
-        public void SearchForWithYestAnotherPageObject()
+        public void SearchForWithYetAnotherPageObject()
         {
             _webDriver.Navigate().GoToUrl("https://www.google.com");
 
-            var searchInput = _webDriver.FindElement(By.CssSelector(".gLFyf"));
+            //_webDriver.Yapos().Search.;
+
+            var searchInput = _webDriver.Yapos().Search.SearchInput;
             searchInput.SendKeys("page object pattern");
             searchInput.SendKeys(Keys.Enter);
 
-            var searchResultsPane = _webDriver.FindElement(By.Id("rso"));
+            var searchResultsPane = _webDriver.Yapos().SearchResults.ResultsPane;
 
             var searchResultItems = searchResultsPane.FindElements(By.CssSelector(".g"));
 

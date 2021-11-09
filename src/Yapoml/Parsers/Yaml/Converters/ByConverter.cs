@@ -28,7 +28,7 @@ namespace Yapoml.Parsers.Yaml.Converters
                 }
                 else if (value.StartsWith("id "))
                 {
-                    return new By { Method = By.ByMethod.Css, Value = value.Substring(3, value.Length - 3) };
+                    return new By { Method = By.ByMethod.Id, Value = value.Substring(3, value.Length - 3) };
                 }
                 else
                 {

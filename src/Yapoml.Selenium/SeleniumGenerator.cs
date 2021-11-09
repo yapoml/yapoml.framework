@@ -11,6 +11,9 @@ namespace Yapoml.Selenium
     {
         public void Execute(GeneratorExecutionContext context)
         {
+            // get root namespace
+            context.AnalyzerConfigOptions.GlobalOptions.TryGetValue("build_property.RootNamespace", out var rootNamespace);
+
             var yamlParser = new Parsers.Yaml.YamlParser();
 
             foreach (AdditionalText file in context.AdditionalFiles)

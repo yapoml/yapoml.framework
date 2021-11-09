@@ -27,7 +27,7 @@ namespace Yapoml.Selenium
                     var gContext = PageObjectGenerationContext.FromYamlComponent(file.Path, component);
 
                     context.AddSource("E_" + Path.GetFileNameWithoutExtension(file.Path), $@"
-namespace AAA
+namespace {rootNamespace}
 {{
   class {gContext.ClassName}
   {{

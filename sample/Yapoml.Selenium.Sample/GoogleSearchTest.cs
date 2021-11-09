@@ -5,10 +5,10 @@ using System;
 using WebDriverManager;
 using WebDriverManager.DriverConfigs.Impl;
 
-namespace Test
+namespace Yapoml.Selenium.Sample
 {
     [TestFixture]
-    public class Tests
+    public class GoogleSearchTest
     {
         private IWebDriver _webDriver;
 

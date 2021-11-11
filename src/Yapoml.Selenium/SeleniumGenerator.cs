@@ -255,9 +255,9 @@ namespace {rootNamespace}
             builder.AppendLine("using OpenQA.Selenium;");
             builder.AppendLine("namespace Yapoml {");
 
-            builder.AppendLine("  public static class YaposExtensions {");
+            builder.AppendLine("  public static class YaExtensions {");
 
-            builder.AppendLine("    public static PageObjectRepository Yapos(this IWebDriver driver) {");
+            builder.AppendLine("    public static PageObjectRepository Ya(this IWebDriver driver) {");
             builder.AppendLine("      return new PageObjectRepository(driver);");
             builder.AppendLine("    }");
 

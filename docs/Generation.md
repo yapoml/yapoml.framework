@@ -12,14 +12,6 @@ SearchPage.cs
 ```csharp
 class SearchPage
 {
-    public SearchPageContext Ya() { return new ...}
-}
-```
-
-SearchPageContext.cs
-```csharp
-class SearchPageContext
-{
     public SearchInput SearchInput {get;}
 }
 ```
@@ -30,14 +22,12 @@ class SearchInput
 {
     // implements/wraps? IWebElement from Selenium
 
-    public SearchInputContext Ya() {return new ...}
+    // yet another elements
 }
 ```
 
-SearchInputContext.cs
+
+And then user will use it
 ```csharp
-class SearchInputContext
-{
-    // yet another elements
-}
+_driver.Ya().SearchPage.SearchInput.SendKeys("ya");
 ```

@@ -15,6 +15,7 @@ namespace Yapoml.Selenium
         {
             // get root namespace
             context.AnalyzerConfigOptions.GlobalOptions.TryGetValue("build_property.RootNamespace", out var rootNamespace);
+            context.AnalyzerConfigOptions.GlobalOptions.TryGetValue("build_property.ProjectDir", out var projectDir);
 
             var pageObjectsEntryFullClassNames = new List<(string fullClassName, string className)>();
 

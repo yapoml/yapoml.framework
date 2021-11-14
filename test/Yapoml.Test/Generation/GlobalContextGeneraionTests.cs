@@ -1,9 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Yapoml.Generation;
 
 namespace Yapoml.Test.Generation
@@ -11,15 +6,16 @@ namespace Yapoml.Test.Generation
     internal class GlobalContextGeneraionTests
     {
         [Test]
-        public void AddFile()
+        public void AddFiles()
         {
             var gc = new GlobalGenerationContext("/some/path", "A.B");
 
-            gc.AddFile("/some/path/any/other/file.po.yaml");
+            gc.AddFile("/some/path/any/other/file1.po.yaml");
+            gc.AddFile("/some/path/any/other/file2.po.yaml");
         }
 
         [Test]
-        public void AddFile2()
+        public void AddRootFile()
         {
             var gc = new GlobalGenerationContext("/some/path", "A.B");
 

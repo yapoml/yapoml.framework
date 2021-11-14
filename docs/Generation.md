@@ -1,4 +1,4 @@
-Given `SearchPage.po.yaml`
+Given `some/path/SearchPage.po.yaml`
 
 ```yaml
 ya:
@@ -10,9 +10,12 @@ It should generate
 
 SearchPage.cs
 ```csharp
-class SearchPage
+namespace some.path
 {
-    public SearchInput SearchInput {get;}
+    class SearchPage
+    {
+        public SearchInput SearchInput {get;}
+    }
 }
 ```
 

@@ -45,7 +45,7 @@ namespace Yapoml.Generation
 
             var path = directory.Substring(RootDirectoryPath.Length);
 
-            var parts = path.Split(new char[] { '\\' }, StringSplitOptions.RemoveEmptyEntries);
+            var parts = path.Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries);
 
             if (parts.Length != 0)
             {

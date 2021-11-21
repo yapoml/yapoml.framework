@@ -2,44 +2,50 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using Yapoml.Parsers.Yaml;
-using Yapoml.Parsers.Yaml.Pocos;
+using Yapoml.Parsers;
 
 namespace Yapoml.Generation
 {
     public class GlobalGenerationContext
     {
-        public GlobalGenerationContext(string rootDirectoryPath, string rootNamespace)
+        public GlobalGenerationContext(string rootDirectoryPath, string rootNamespace, IComponentParser componentParser)
         {
             RootDirectoryPath = rootDirectoryPath.Replace("/", "\\");
             RootNamespace = rootNamespace;
+            ComponentParser = componentParser;
         }
 
-        public string RootDirectoryPath { get; }
-        public string RootNamespace { get; }
+        private IComponentParser ComponentParser { get; }
 
+        public string RootDirectoryPath { get; }
+
+        public string RootNamespace { get; }
+        
         public IList<SpaceGenerationContext> Spaces { get; } = new List<SpaceGenerationContext>();
+
+        public IList<ComponentGenerationContext> Components { get; } = new List<ComponentGenerationContext>();
 
         public void AddFile(string filePath)
         {
-            CreateOrAddSpaces(filePath);
+            var space = CreateOrAddSpaces(filePath);
 
-            //if (space != null)
-            //{
-            // add file into space
-            //}
-            //else
-            //{
-            // add file in global context
-            //}
+            var component = ComponentParser.Parse(filePath);
 
-            //var component = new YamlParser().Parse<Component>(File.ReadAllText(filePath));
+            if (space == null)
+            {
+                var componentContext = new ComponentGenerationContext(this, null, component);
 
+                Components.Add(componentContext);
+            }
+            else
+            {
+                var componentContext = new ComponentGenerationContext(this, space, component);
 
+                space.Components.Add(componentContext);
+            }
         }
 
-        private void CreateOrAddSpaces(string filePath)
+        private SpaceGenerationContext CreateOrAddSpaces(string filePath)
         {
             var directory = Path.GetDirectoryName(filePath);
 
@@ -75,6 +81,12 @@ namespace Yapoml.Generation
                         nestedSpace = candidateNestedSpace;
                     }
                 }
+
+                return nestedSpace;
+            }
+            else
+            {
+                return null;
             }
         }
     }

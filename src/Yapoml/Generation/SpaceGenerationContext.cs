@@ -30,6 +30,6 @@ namespace Yapoml.Generation
 
         public IList<SpaceGenerationContext> Spaces { get; } = new List<SpaceGenerationContext>();
 
-        public IList<ComponentGenerationContext> Components { get; }
+        public IList<ComponentGenerationContext> Components { get; } = new List<ComponentGenerationContext>();
     }
 }

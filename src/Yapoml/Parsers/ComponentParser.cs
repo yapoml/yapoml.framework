@@ -1,4 +1,5 @@
-﻿using Yapoml.Parsers.Yaml;
+﻿using System.IO;
+using Yapoml.Parsers.Yaml;
 using Yapoml.Parsers.Yaml.Pocos;
 
 namespace Yapoml.Parsers
@@ -7,7 +8,9 @@ namespace Yapoml.Parsers
     {
         public Component Parse(string fileName)
         {
-            var component = new YamlParser().Parse<Component>(fileName);
+            var content = File.ReadAllText(fileName);
+
+            var component = new YamlParser().Parse<Component>(content);
 
             return component;
         }

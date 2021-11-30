@@ -27,7 +27,7 @@ namespace Yapoml.Selenium
                 {
                     var component = yamlParser.Parse<Component>(file.GetText().ToString());
 
-                    var gContext = PageObjectGenerationContext.FromYamlComponent(file.Path, component);
+                    var gContext = OldPageObjectGenerationContext.FromYamlComponent(file.Path, component);
 
                     var builder = new StringBuilder();
                     builder.Append($@"
@@ -41,9 +41,9 @@ namespace {rootNamespace}
 
 ");
 
-                    if (component.NestedComponents != null)
+                    if (component.Components != null)
                     {
-                        foreach (var item in component.NestedComponents)
+                        foreach (var item in component.Components)
                         {
                             GenerateComponent(builder, item.Value, item.Key, $"{rootNamespace}.BaseComponent", "_driver");
                         }
@@ -142,9 +142,9 @@ namespace {rootNamespace}
             builder.AppendLine($"private OpenQA.Selenium.IWebElement _element;");
             builder.AppendLine($"public {name}Component(OpenQA.Selenium.IWebDriver driver, OpenQA.Selenium.IWebElement element) : base(element) {{_driver = driver; _element = element;}}");
 
-            if (component.NestedComponents != null)
+            if (component.Components != null)
             {
-                foreach (var item in component.NestedComponents)
+                foreach (var item in component.Components)
                 {
                     GenerateComponent(builder, item.Value, item.Key, baseComponentPath);
                 }

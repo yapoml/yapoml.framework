@@ -6,7 +6,7 @@ using Yapoml.Parsers;
 
 namespace Yapoml.Test.Generation
 {
-    internal class GlobalContextGeneraionTests
+    internal class GlobalContextGenerationTests
     {
         Mock<IComponentParser> _componentParser;
 
@@ -14,10 +14,11 @@ namespace Yapoml.Test.Generation
         public void SetUp()
         {
             _componentParser = new Mock<IComponentParser>();
+            _componentParser.Setup((cp) => cp.Parse(It.IsAny<string>())).Returns(new Parsers.Yaml.Pocos.Component());
         }
 
         [Test]
-        public void AddFiles()
+        public void Add_Files()
         {
             var gc = new GlobalGenerationContext("/some/path", "A.B", _componentParser.Object);
 
@@ -39,7 +40,7 @@ namespace Yapoml.Test.Generation
         }
 
         [Test]
-        public void AddRootFile()
+        public void Add_Root_File()
         {
             var gc = new GlobalGenerationContext("/some/path", "A.B", _componentParser.Object);
 

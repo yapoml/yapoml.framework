@@ -6,9 +6,9 @@ using Yapoml.Parsers.Yaml.Pocos;
 
 namespace Yapoml.Generation
 {
-    public class PageObjectGenerationContext
+    public class OldPageObjectGenerationContext
     {
-        public PageObjectGenerationContext(string filePath, Component component)
+        public OldPageObjectGenerationContext(string filePath, Component component)
         {
             ClassName = GetClassName(filePath);
             Component = component;
@@ -32,9 +32,9 @@ namespace Yapoml.Generation
 
         public Component Component { get; } 
 
-        public static PageObjectGenerationContext FromYamlComponent(string filePath, Component component)
+        public static OldPageObjectGenerationContext FromYamlComponent(string filePath, Component component)
         {
-            return new PageObjectGenerationContext(filePath, component);
+            return new OldPageObjectGenerationContext(filePath, component);
         }
     }
 }

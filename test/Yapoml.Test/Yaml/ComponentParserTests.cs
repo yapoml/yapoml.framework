@@ -40,7 +40,7 @@ ya:
             component.Name.Should().Be("C1");
             component.By.Should().NotBeNull();
 
-            var nestedComponents = component.NestedComponents;
+            var nestedComponents = component.Components;
             nestedComponents.Should().HaveCount(2);
             var nested2 = nestedComponents["Component2"];
             nested2.Name.Should().Be("C2");

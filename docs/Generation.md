@@ -1,4 +1,4 @@
-Given `some/path/SearchPage.po.yaml`
+Given `some/path/SearchPage.po.yaml` file
 
 ```yaml
 ya:
@@ -6,29 +6,24 @@ ya:
     by: ./input
 ```
 
-It should generate
+It should generate `SearchPage.cs`
 
-SearchPage.cs
 ```csharp
 namespace some.path
 {
     class SearchPage
     {
         public SearchInput SearchInput {get;}
+
+        class SearchInput
+        {
+            // implements/wraps? IWebElement from Selenium
+
+            // yet another elements
+        }
     }
 }
 ```
-
-SearchInput.cs
-```csharp
-class SearchInput
-{
-    // implements/wraps? IWebElement from Selenium
-
-    // yet another elements
-}
-```
-
 
 And then user will use it
 ```csharp

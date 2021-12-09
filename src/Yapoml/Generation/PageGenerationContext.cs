@@ -21,6 +21,14 @@ namespace Yapoml.Generation
             }
 
             ParentContext = spaceContext;
+
+            if (pageModel.Components != null)
+            {
+                foreach (var component in pageModel.Components)
+                {
+                    Components.Add(new ComponentGenerationContext(globalContext, spaceContext, component.Value));
+                }
+            }
         }
 
         public string Name { get; }

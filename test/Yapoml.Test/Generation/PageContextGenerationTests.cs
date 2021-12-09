@@ -28,6 +28,8 @@ ya:
             gc.Spaces.Should().BeEmpty();
 
             gc.Pages.Should().HaveCount(1);
+
+            gc.Pages[0].Components.Should().HaveCount(1);
         }
     }
 }

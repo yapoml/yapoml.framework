@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Yapoml.Parsers;
+using Yapoml.Parsers.Yaml.Pocos;
 
 namespace Yapoml.Generation
 {
     public class GlobalGenerationContext
     {
-        public GlobalGenerationContext(string rootDirectoryPath, string rootNamespace, IComponentParser componentParser)
+        public GlobalGenerationContext(string rootDirectoryPath, string rootNamespace, IParser parser)
         {
             RootDirectoryPath = rootDirectoryPath.Replace("/", "\\");
             RootNamespace = rootNamespace;
-            ComponentParser = componentParser;
+            Parser = parser;
         }
 
-        private IComponentParser ComponentParser { get; }
+        private IParser Parser { get; }
 
         public string RootDirectoryPath { get; }
 
@@ -23,25 +24,47 @@ namespace Yapoml.Generation
         
         public IList<SpaceGenerationContext> Spaces { get; } = new List<SpaceGenerationContext>();
 
+        public IList<PageGenerationContext> Pages { get; } = new List<PageGenerationContext>();
+
         public IList<ComponentGenerationContext> Components { get; } = new List<ComponentGenerationContext>();
 
         public void AddFile(string filePath)
         {
             var space = CreateOrAddSpaces(filePath);
 
-            var component = ComponentParser.Parse(filePath);
-
-            if (space == null)
+            if (filePath.ToLowerInvariant().EndsWith(".po.yaml"))
             {
-                var componentContext = new ComponentGenerationContext(this, null, component);
+                var page = Parser.ParsePage(filePath);
 
-                Components.Add(componentContext);
+                if (space == null)
+                {
+                    var pageContext = new PageGenerationContext(Path.GetFileName(filePath), this, null, page);
+
+                    Pages.Add(pageContext);
+                }
+                else
+                {
+                    var pageContext = new PageGenerationContext(Path.GetFileName(filePath), this, space, page);
+
+                    space.Pages.Add(pageContext);
+                }
             }
-            else
+            else if (filePath.ToLowerInvariant().EndsWith(".pc.yaml"))
             {
-                var componentContext = new ComponentGenerationContext(this, space, component);
+                var component = Parser.ParseComponent(filePath);
 
-                space.Components.Add(componentContext);
+                if (space == null)
+                {
+                    var componentContext = new ComponentGenerationContext(this, null, component);
+
+                    Components.Add(componentContext);
+                }
+                else
+                {
+                    var componentContext = new ComponentGenerationContext(this, space, component);
+
+                    space.Components.Add(componentContext);
+                }
             }
         }
 

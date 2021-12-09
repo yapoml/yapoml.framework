@@ -8,22 +8,25 @@ namespace Yapoml.Test.Generation
 {
     internal class GlobalContextGenerationTests
     {
-        Mock<IComponentParser> _componentParser;
+        Mock<IParser> _parser;
 
         [SetUp]
         public void SetUp()
         {
-            _componentParser = new Mock<IComponentParser>();
-            _componentParser.Setup((cp) => cp.Parse(It.IsAny<string>())).Returns(new Parsers.Yaml.Pocos.Component());
+            _parser = new Mock<IParser>();
+            _parser.Setup((cp) => cp.ParsePage(It.IsAny<string>())).Returns(new Parsers.Yaml.Pocos.Page());
+            _parser.Setup((cp) => cp.ParseComponent(It.IsAny<string>())).Returns(new Parsers.Yaml.Pocos.Component());
         }
 
         [Test]
         public void Add_Files()
         {
-            var gc = new GlobalGenerationContext("/some/path", "A.B", _componentParser.Object);
+            var gc = new GlobalGenerationContext("/some/path", "A.B", _parser.Object);
 
             gc.AddFile("/some/path/any/other/file1.po.yaml");
             gc.AddFile("/some/path/any/other/file2.po.yaml");
+
+            gc.AddFile("/some/path/any/c1.pc.yaml");
 
             gc.Spaces.Should().HaveCount(1);
 
@@ -32,17 +35,19 @@ namespace Yapoml.Test.Generation
             anySpace.Namespace.Should().Be("A.B.any");
             anySpace.Spaces.Should().HaveCount(1);
 
+            anySpace.Components.Should().HaveCount(1);
+
             var otherSpace = anySpace.Spaces[0];
             otherSpace.Name.Should().Be("other");
             otherSpace.Namespace.Should().Be("A.B.any.other");
 
-            otherSpace.Components.Should().HaveCount(2);
+            otherSpace.Pages.Should().HaveCount(2);
         }
 
         [Test]
         public void Add_Root_File()
         {
-            var gc = new GlobalGenerationContext("/some/path", "A.B", _componentParser.Object);
+            var gc = new GlobalGenerationContext("/some/path", "A.B", _parser.Object);
 
             gc.AddFile("/some/path/file.po.yaml");
 
@@ -51,7 +56,7 @@ namespace Yapoml.Test.Generation
 
             gc.Spaces.Should().HaveCount(0);
 
-            gc.Components.Should().HaveCount(1);
+            gc.Pages.Should().HaveCount(1);
         }
     }
 }

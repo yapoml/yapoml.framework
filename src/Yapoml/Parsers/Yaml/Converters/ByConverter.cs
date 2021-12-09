@@ -12,7 +12,7 @@ namespace Yapoml.Parsers.Yaml.Converters
         {
             return typeof(By) == type;
         }
-        public object ReadYaml(IParser parser, Type type)
+        public object ReadYaml(YamlDotNet.Core.IParser parser, Type type)
         {
             if (parser.TryConsume<Scalar>(out var scalar))
             {

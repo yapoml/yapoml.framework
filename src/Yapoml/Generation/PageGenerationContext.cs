@@ -1,25 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Yapoml.Parsers.Yaml.Pocos;
 
 namespace Yapoml.Generation
 {
-    public class SpaceGenerationContext
+    public class PageGenerationContext
     {
-        public SpaceGenerationContext(string name, GlobalGenerationContext globalContext, SpaceGenerationContext parentContext)
+        public PageGenerationContext(string name, GlobalGenerationContext globalContext, SpaceGenerationContext spaceContext, Page pageModel)
         {
             Name = name;
 
-            if (parentContext != null)
+            if (spaceContext != null)
             {
-                Namespace = $"{parentContext.Namespace}.{Name}";
+                Namespace = $"{spaceContext.Namespace}.{Name}";
             }
             else
             {
                 Namespace = $"{globalContext.RootNamespace}.{Name}";
             }
 
-            ParentContext = parentContext;
+            ParentContext = spaceContext;
         }
 
         public string Name { get; }
@@ -27,10 +28,6 @@ namespace Yapoml.Generation
         public string Namespace { get; }
 
         public SpaceGenerationContext ParentContext { get; }
-
-        public IList<SpaceGenerationContext> Spaces { get; } = new List<SpaceGenerationContext>();
-
-        public IList<PageGenerationContext> Pages { get; } = new List<PageGenerationContext>();
 
         public IList<ComponentGenerationContext> Components { get; } = new List<ComponentGenerationContext>();
     }

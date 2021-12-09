@@ -13,24 +13,26 @@ namespace Yapoml.Selenium
     {
         public void Execute(GeneratorExecutionContext context)
         {
-            // get root namespace
-            context.AnalyzerConfigOptions.GlobalOptions.TryGetValue("build_property.RootNamespace", out var rootNamespace);
-            context.AnalyzerConfigOptions.GlobalOptions.TryGetValue("build_property.ProjectDir", out var projectDir);
-
-            var pageObjectsEntryFullClassNames = new List<(string fullClassName, string className)>();
-
-            var yamlParser = new Parsers.Yaml.YamlParser();
-
-            foreach (AdditionalText file in context.AdditionalFiles)
+            try
             {
-                if (file.Path.EndsWith(".po.yaml", StringComparison.OrdinalIgnoreCase))
+                // get root namespace
+                context.AnalyzerConfigOptions.GlobalOptions.TryGetValue("build_property.RootNamespace", out var rootNamespace);
+                context.AnalyzerConfigOptions.GlobalOptions.TryGetValue("build_property.ProjectDir", out var projectDir);
+
+                var pageObjectsEntryFullClassNames = new List<(string fullClassName, string className)>();
+
+                var yamlParser = new Parsers.Yaml.YamlParser();
+
+                foreach (AdditionalText file in context.AdditionalFiles)
                 {
-                    var component = yamlParser.Parse<Component>(file.GetText().ToString());
+                    if (file.Path.EndsWith(".po.yaml", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var component = yamlParser.Parse<Component>(file.GetText().ToString());
 
-                    var gContext = OldPageObjectGenerationContext.FromYamlComponent(file.Path, component);
+                        var gContext = OldPageObjectGenerationContext.FromYamlComponent(file.Path, component);
 
-                    var builder = new StringBuilder();
-                    builder.Append($@"
+                        var builder = new StringBuilder();
+                        builder.Append($@"
 namespace {rootNamespace}
 {{
   public class {gContext.ClassName}
@@ -41,28 +43,39 @@ namespace {rootNamespace}
 
 ");
 
-                    if (component.Components != null)
-                    {
-                        foreach (var item in component.Components)
+                        if (component.Components != null)
                         {
-                            GenerateComponent(builder, item.Value, item.Key, $"{rootNamespace}.BaseComponent", "_driver");
+                            foreach (var item in component.Components)
+                            {
+                                GenerateComponent(builder, item.Value, item.Key, $"{rootNamespace}.BaseComponent", "_driver");
+                            }
                         }
-                    }
 
-                    builder.Append($@"
+                        builder.Append($@"
   }}
 }}
 ");
 
-                    context.AddSource(Path.GetFileNameWithoutExtension(file.Path), builder.ToString());
+                        context.AddSource(Path.GetFileNameWithoutExtension(file.Path), builder.ToString());
 
-                    pageObjectsEntryFullClassNames.Add(($"{rootNamespace}.{gContext.ClassName}", gContext.ClassName));
+                        pageObjectsEntryFullClassNames.Add(($"{rootNamespace}.{gContext.ClassName}", gContext.ClassName));
+                    }
                 }
+
+                GenerateBaseComponent(context, rootNamespace);
+
+                GenerateYapomlEntry(context, pageObjectsEntryFullClassNames);
             }
-
-            GenerateBaseComponent(context, rootNamespace);
-
-            GenerateYapomlEntry(context, pageObjectsEntryFullClassNames);
+            catch(Exception exp)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor(
+                    "YA0001",
+                    exp.Message,
+                    exp.ToString(),
+                    "some category",
+                    DiagnosticSeverity.Error,
+                    true), null));
+            }
         }
 
         public void Initialize(GeneratorInitializationContext context)

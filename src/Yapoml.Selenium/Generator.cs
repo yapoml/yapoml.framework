@@ -49,7 +49,7 @@ namespace Yapoml.Selenium
 
                 foreach (var space in yaContext.Spaces)
                 {
-                    GenerateSpace(space);
+                    GenerateSpaces(space);
                 }
             }
             catch (Exception exp)
@@ -69,7 +69,7 @@ namespace Yapoml.Selenium
             // No initialization required for this one
         }
 
-        public void GenerateSpace(SpaceGenerationContext spaceGenerationContext)
+        public void GenerateSpaces(SpaceGenerationContext spaceGenerationContext)
         {
             Template engine = Template.Parse(_templateReader.Read("SpaceTemplate"));
 
@@ -79,7 +79,7 @@ namespace Yapoml.Selenium
 
             foreach (var space in spaceGenerationContext.Spaces)
             {
-                GenerateSpace(space);
+                GenerateSpaces(space);
             }
         }
 

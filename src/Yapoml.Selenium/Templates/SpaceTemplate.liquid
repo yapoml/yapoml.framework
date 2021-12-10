@@ -1,0 +1,9 @@
+﻿namespace {{namespace}}
+{
+	public class {{name}}Space
+	{
+{% for space in spaces %}
+		public {{space.namespace}}.{{space.name}}Space {{space.name}} => new {{space.namespace}}.{{space.name}}Space();
+{% endfor %}
+	}
+}

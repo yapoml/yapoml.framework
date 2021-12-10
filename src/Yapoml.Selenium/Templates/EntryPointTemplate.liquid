@@ -1,0 +1,19 @@
+﻿using OpenQA.Selenium;
+
+namespace Yapoml.Selenium
+{
+	public class RootSpace
+	{
+{% for space in spaces %}
+		public {{space.namespace}}.{{space.name}}Space {{space.name}} => new {{space.namespace}}.{{space.name}}Space();
+{% endfor %}
+	}
+
+	public static class YapomlExtensions
+	{
+		public static RootSpace Yaaa(this IWebDriver webDriver)
+		{
+			return new RootSpace();
+		}
+	}
+}

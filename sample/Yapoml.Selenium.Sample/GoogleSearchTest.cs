@@ -4,6 +4,7 @@ using OpenQA.Selenium.Firefox;
 using System;
 using WebDriverManager;
 using WebDriverManager.DriverConfigs.Impl;
+using Yapoml.Selenium;
 
 namespace Yapoml.Selenium.Sample
 {

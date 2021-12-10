@@ -10,7 +10,7 @@ using Yapoml.Parsers;
 namespace Yapoml.Selenium
 {
     [Generator]
-    public class SeleniumGeneratorGenerator : ISourceGenerator
+    public class Generator : ISourceGenerator
     {
         private GeneratorExecutionContext _context;
 

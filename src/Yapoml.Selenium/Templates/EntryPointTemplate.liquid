@@ -2,10 +2,16 @@
 
 namespace Yapoml.Selenium
 {
-	public class RootSpace
+	public partial class RootSpace
 	{
+		private IWebDriver _webDriver;
+
+		public RootSpace(IWebDriver webDriver)
+		{
+			_webDriver = webDriver;
+		}
 {% for space in spaces %}
-		public {{space.namespace}}.{{space.name}}Space {{space.name}} => new {{space.namespace}}.{{space.name}}Space();
+		public {{space.namespace}}.{{space.name}}Space {{space.name}} => new {{space.namespace}}.{{space.name}}Space(_webDriver);
 {% endfor %}
 	}
 
@@ -13,7 +19,7 @@ namespace Yapoml.Selenium
 	{
 		public static RootSpace Yaaa(this IWebDriver webDriver)
 		{
-			return new RootSpace();
+			return new RootSpace(webDriver);
 		}
 	}
 }

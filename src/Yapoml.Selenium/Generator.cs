@@ -44,7 +44,6 @@ namespace Yapoml.Selenium
                 }
 
                 // generate files
-
                 GenerateEntryPoint(yaContext);
 
                 foreach (var space in yaContext.Spaces)

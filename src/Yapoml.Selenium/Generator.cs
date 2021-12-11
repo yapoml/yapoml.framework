@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using DotLiquid;
 using Microsoft.CodeAnalysis;
 using Yapoml.Generation;
@@ -76,7 +73,7 @@ namespace Yapoml.Selenium
 
             var renderedSpace = engine.Render(Hash.FromAnonymousObject(spaceGenerationContext));
 
-            var generatedFileName = $"{spaceGenerationContext.Namespace.Substring(_rootNamespace.Length + 1).Replace(".", "_")}_{spaceGenerationContext.Name}Space.g.cs";
+            var generatedFileName = $"{spaceGenerationContext.Namespace.Substring(_rootNamespace.Length + 1).Replace('.', '_')}_{spaceGenerationContext.Name}Space.g.cs";
             _context.AddSource(generatedFileName, renderedSpace);
 
             foreach (var space in spaceGenerationContext.Spaces)

@@ -88,7 +88,7 @@ namespace Yapoml.Selenium
 
             var renderedEntryPoint = engine.Render(Hash.FromAnonymousObject(globalGenerationContext));
 
-            _context.AddSource("EntryPoint.ggg.cs", renderedEntryPoint);
+            _context.AddSource("_EntryPoint.ggg.cs", renderedEntryPoint);
         }
     }
 }

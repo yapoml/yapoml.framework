@@ -16,6 +16,8 @@ namespace Yapoml.Selenium
 
         private TemplateReader _templateReader;
 
+        private string _rootNamespace;
+
         public void Execute(GeneratorExecutionContext context)
         {
             _context = context;
@@ -30,13 +32,13 @@ namespace Yapoml.Selenium
                 });
 
                 // get root namespace
-                context.AnalyzerConfigOptions.GlobalOptions.TryGetValue("build_property.RootNamespace", out var rootNamespace);
+                context.AnalyzerConfigOptions.GlobalOptions.TryGetValue("build_property.RootNamespace", out _rootNamespace);
                 context.AnalyzerConfigOptions.GlobalOptions.TryGetValue("build_property.ProjectDir", out var projectDir);
 
                 var parser = new Parser();
 
                 // build yapoml generation context
-                var yaContext = new GlobalGenerationContext(projectDir, rootNamespace, parser);
+                var yaContext = new GlobalGenerationContext(projectDir, _rootNamespace, parser);
 
                 foreach (AdditionalText file in context.AdditionalFiles)
                 {
@@ -74,7 +76,8 @@ namespace Yapoml.Selenium
 
             var renderedSpace = engine.Render(Hash.FromAnonymousObject(spaceGenerationContext));
 
-            _context.AddSource($"{Path.GetFileNameWithoutExtension(spaceGenerationContext.Name)}.ggg.cs", renderedSpace);
+            var generatedFileName = $"{spaceGenerationContext.Namespace.Substring(_rootNamespace.Length + 1).Replace(".", "_")}_{spaceGenerationContext.Name}Space.g.cs";
+            _context.AddSource(generatedFileName, renderedSpace);
 
             foreach (var space in spaceGenerationContext.Spaces)
             {

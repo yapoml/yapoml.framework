@@ -55,13 +55,13 @@ namespace Yapoml.Generation
 
                 if (space == null)
                 {
-                    var componentContext = new ComponentGenerationContext(this, null, component);
+                    var componentContext = new ComponentGenerationContext(Path.GetFileNameWithoutExtension(filePath), this, null, component);
 
                     Components.Add(componentContext);
                 }
                 else
                 {
-                    var componentContext = new ComponentGenerationContext(this, space, component);
+                    var componentContext = new ComponentGenerationContext(Path.GetFileNameWithoutExtension(filePath), this, space, component);
 
                     space.Components.Add(componentContext);
                 }

@@ -26,7 +26,7 @@ namespace Yapoml.Generation
             {
                 foreach (var component in pageModel.Components)
                 {
-                    Components.Add(new ComponentGenerationContext(globalContext, spaceContext, component.Value));
+                    Components.Add(new ComponentGenerationContext(component.Key, globalContext, spaceContext, component.Value));
                 }
             }
         }

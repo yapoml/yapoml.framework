@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using DotLiquid;
 using Microsoft.CodeAnalysis;
 using Yapoml.Generation;
@@ -25,7 +26,14 @@ namespace Yapoml.Selenium
                 Template.RegisterSafeType(typeof(SpaceGenerationContext), new string[]
                 {
                     nameof(SpaceGenerationContext.Name),
-                    nameof(SpaceGenerationContext.Namespace)
+                    nameof(SpaceGenerationContext.Namespace),
+                    nameof(SpaceGenerationContext.Pages)
+                });
+
+                Template.RegisterSafeType(typeof(PageGenerationContext), new string[]
+                {
+                    nameof(PageGenerationContext.Name),
+                    nameof(PageGenerationContext.Namespace)
                 });
 
                 // get root namespace
@@ -49,6 +57,11 @@ namespace Yapoml.Selenium
                 {
                     GenerateSpaces(space);
                 }
+
+                foreach (var page in yaContext.Pages)
+                {
+                    GeneratePages(page);
+                }
             }
             catch (Exception exp)
             {
@@ -67,28 +80,68 @@ namespace Yapoml.Selenium
             // No initialization required for this one
         }
 
-        public void GenerateSpaces(SpaceGenerationContext spaceGenerationContext)
-        {
-            Template engine = Template.Parse(_templateReader.Read("SpaceTemplate"));
-
-            var renderedSpace = engine.Render(Hash.FromAnonymousObject(spaceGenerationContext));
-
-            var generatedFileName = $"{spaceGenerationContext.Namespace.Substring(_rootNamespace.Length + 1).Replace('.', '_')}_{spaceGenerationContext.Name}Space.g.cs";
-            _context.AddSource(generatedFileName, renderedSpace);
-
-            foreach (var space in spaceGenerationContext.Spaces)
-            {
-                GenerateSpaces(space);
-            }
-        }
-
         public void GenerateEntryPoint(GlobalGenerationContext globalGenerationContext)
         {
             Template engine = Template.Parse(_templateReader.Read("EntryPointTemplate"));
 
             var renderedEntryPoint = engine.Render(Hash.FromAnonymousObject(globalGenerationContext));
 
-            _context.AddSource("_EntryPoint.ggg.cs", renderedEntryPoint);
+            _context.AddSource("_EntryPoint.cs", renderedEntryPoint);
+        }
+
+        public void GenerateSpaces(SpaceGenerationContext spaceGenerationContext)
+        {
+            Template engine = Template.Parse(_templateReader.Read("SpaceTemplate"));
+
+            var renderedSpace = engine.Render(Hash.FromAnonymousObject(spaceGenerationContext));
+
+            var generatedFileName = $"{spaceGenerationContext.Namespace.Substring(_rootNamespace.Length + 1).Replace('.', '_')}_{spaceGenerationContext.Name}Space.cs";
+            _context.AddSource(generatedFileName, renderedSpace);
+
+            foreach (var space in spaceGenerationContext.Spaces)
+            {
+                GenerateSpaces(space);
+            }
+
+            foreach (var page in spaceGenerationContext.Pages)
+            {
+                GeneratePages(page);
+            }
+
+            foreach (var component in spaceGenerationContext.Components)
+            {
+                GenerateComponent(component);
+            }
+        }
+
+        public void GeneratePages(PageGenerationContext pageGenerationContext)
+        {
+            Template engine = Template.Parse(_templateReader.Read("PageTemplate"));
+
+            var renderedPage = engine.Render(Hash.FromAnonymousObject(pageGenerationContext));
+
+            var generatedFileName = $"{pageGenerationContext.Namespace.Substring(_rootNamespace.Length + 1).Replace('.', '_')}_{pageGenerationContext.Name}Page.g.cs";
+            _context.AddSource(generatedFileName, renderedPage);
+
+            foreach (var component in pageGenerationContext.Components)
+            {
+                GenerateComponent(component);
+            }
+        }
+
+        public void GenerateComponent(ComponentGenerationContext componentGenerationContext)
+        {
+            Template engine = Template.Parse(_templateReader.Read("ComponentTemplate"));
+
+            var renderedComponent = engine.Render(Hash.FromAnonymousObject(componentGenerationContext));
+
+            var generatedFileName = $"{componentGenerationContext.Namespace.Substring(_rootNamespace.Length + 1).Replace('.', '_')}_{componentGenerationContext.Name}Component.g.cs";
+            _context.AddSource(generatedFileName, renderedComponent);
+
+            foreach (var component in componentGenerationContext.ComponentGenerationContextes)
+            {
+                GenerateComponent(component);
+            }
         }
     }
 }

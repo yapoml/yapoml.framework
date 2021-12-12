@@ -37,11 +37,16 @@ namespace Yapoml.Test.Generation
 
             anySpace.Components.Should().HaveCount(1);
 
+            var c1Component = anySpace.Components[0];
+            c1Component.Name.Should().Be("c1");
+
             var otherSpace = anySpace.Spaces[0];
             otherSpace.Name.Should().Be("other");
             otherSpace.Namespace.Should().Be("A.B.any.other");
 
             otherSpace.Pages.Should().HaveCount(2);
+            otherSpace.Pages[0].Name.Should().Be("file1.po.yaml");
+            otherSpace.Pages[1].Name.Should().Be("file2.po.yaml");
         }
 
         [Test]

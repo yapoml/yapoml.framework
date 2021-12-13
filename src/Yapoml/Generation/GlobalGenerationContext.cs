@@ -21,7 +21,7 @@ namespace Yapoml.Generation
         public string RootDirectoryPath { get; }
 
         public string RootNamespace { get; }
-        
+
         public IList<SpaceGenerationContext> Spaces { get; } = new List<SpaceGenerationContext>();
 
         public IList<PageGenerationContext> Pages { get; } = new List<PageGenerationContext>();
@@ -53,15 +53,19 @@ namespace Yapoml.Generation
             {
                 var component = Parser.ParseComponent(filePath);
 
+                var fileName = Path.GetFileName(filePath);
+
+                var componentName = fileName.Substring(0, fileName.Length - 8);
+
                 if (space == null)
                 {
-                    var componentContext = new ComponentGenerationContext(Path.GetFileNameWithoutExtension(filePath), this, null, component);
+                    var componentContext = new ComponentGenerationContext(componentName, this, null, component);
 
                     Components.Add(componentContext);
                 }
                 else
                 {
-                    var componentContext = new ComponentGenerationContext(Path.GetFileNameWithoutExtension(filePath), this, space, component);
+                    var componentContext = new ComponentGenerationContext(componentName, this, space, component);
 
                     space.Components.Add(componentContext);
                 }

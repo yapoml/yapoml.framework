@@ -1,0 +1,20 @@
+﻿using OpenQA.Selenium;
+
+namespace {{namespace}}
+{
+	public class {{name}}
+	{
+		private IWebDriver _webDriver;
+
+		public {{name}}(IWebDriver webDriver)
+		{
+			_webDriver = webDriver;
+		}
+
+		{{ for component in components}}
+		public {{component.name}}Component {{component.name}} => new {{component.name}}Component();
+
+		{{ include 'NestedComponentTemplate' component }}
+		{{ end }}
+	}
+}

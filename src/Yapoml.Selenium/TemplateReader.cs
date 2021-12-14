@@ -13,7 +13,7 @@ namespace Yapoml.Selenium
 
         public string Read(string templateName)
         {
-            using (Stream stream = assembly.GetManifestResourceStream(assembly.GetName().Name + ".Templates." + templateName + ".liquid"))
+            using (Stream stream = assembly.GetManifestResourceStream(assembly.GetName().Name + ".Templates." + templateName + ".scriban"))
             using (StreamReader reader = new StreamReader(stream))
             {
                 return reader.ReadToEnd();

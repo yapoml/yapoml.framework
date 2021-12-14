@@ -35,16 +35,18 @@ namespace Yapoml.Generation
             if (filePath.ToLowerInvariant().EndsWith(".po.yaml"))
             {
                 var page = Parser.ParsePage(filePath);
+                var fileName = Path.GetFileName(filePath);
+                var pageName = fileName.Substring(0, fileName.Length - 8);
 
                 if (space == null)
                 {
-                    var pageContext = new PageGenerationContext(Path.GetFileName(filePath), this, null, page);
+                    var pageContext = new PageGenerationContext(pageName, this, null, page);
 
                     Pages.Add(pageContext);
                 }
                 else
                 {
-                    var pageContext = new PageGenerationContext(Path.GetFileName(filePath), this, space, page);
+                    var pageContext = new PageGenerationContext(pageName, this, space, page);
 
                     space.Pages.Add(pageContext);
                 }

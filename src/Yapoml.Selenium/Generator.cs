@@ -1,7 +1,8 @@
 ﻿using System;
 using System.IO;
-using DotLiquid;
 using Microsoft.CodeAnalysis;
+using Scriban;
+using Scriban.Runtime;
 using Yapoml.Generation;
 using Yapoml.Parsers;
 
@@ -12,30 +13,23 @@ namespace Yapoml.Selenium
     {
         private GeneratorExecutionContext _context;
 
-        private TemplateReader _templateReader;
+        private TemplateContext _templateContext;
 
         private string _rootNamespace;
+
+        public void Initialize(GeneratorInitializationContext context)
+        {
+            _templateContext = new TemplateContext();
+            _templateContext.TemplateLoader = new ResourceTemplateLoader();
+            _templateContext.IndentWithInclude = true;
+        }
 
         public void Execute(GeneratorExecutionContext context)
         {
             _context = context;
-            _templateReader = new TemplateReader();
 
             try
             {
-                Template.RegisterSafeType(typeof(SpaceGenerationContext), new string[]
-                {
-                    nameof(SpaceGenerationContext.Name),
-                    nameof(SpaceGenerationContext.Namespace),
-                    nameof(SpaceGenerationContext.Pages)
-                });
-
-                Template.RegisterSafeType(typeof(PageGenerationContext), new string[]
-                {
-                    nameof(PageGenerationContext.Name),
-                    nameof(PageGenerationContext.Namespace)
-                });
-
                 // get root namespace
                 context.AnalyzerConfigOptions.GlobalOptions.TryGetValue("build_property.RootNamespace", out _rootNamespace);
                 context.AnalyzerConfigOptions.GlobalOptions.TryGetValue("build_property.ProjectDir", out var projectDir);
@@ -72,28 +66,27 @@ namespace Yapoml.Selenium
                     "some category",
                     DiagnosticSeverity.Error,
                     true), null));
+
+                File.AppendAllText("C:\\Temp\\g.log", exp.ToString());
             }
         }
 
-        public void Initialize(GeneratorInitializationContext context)
+        private void GenerateEntryPoint(GlobalGenerationContext globalGenerationContext)
         {
-            // No initialization required for this one
-        }
+            var template = Template.Parse(new TemplateReader().Read("EntryPointTemplate"));
 
-        public void GenerateEntryPoint(GlobalGenerationContext globalGenerationContext)
-        {
-            Template engine = Template.Parse(_templateReader.Read("EntryPointTemplate"));
-
-            var renderedEntryPoint = engine.Render(Hash.FromAnonymousObject(globalGenerationContext));
+            _templateContext.PushGlobal(ScriptObject.From(globalGenerationContext));
+            var renderedEntryPoint = template.Render(_templateContext);
 
             _context.AddSource("_EntryPoint.cs", renderedEntryPoint);
         }
 
-        public void GenerateSpaces(SpaceGenerationContext spaceGenerationContext)
+        private void GenerateSpaces(SpaceGenerationContext spaceGenerationContext)
         {
-            Template engine = Template.Parse(_templateReader.Read("SpaceTemplate"));
+            var template = Template.Parse(new TemplateReader().Read("SpaceTemplate"));
 
-            var renderedSpace = engine.Render(Hash.FromAnonymousObject(spaceGenerationContext));
+            _templateContext.PushGlobal(ScriptObject.From(spaceGenerationContext));
+            var renderedSpace = template.Render(_templateContext);
 
             var generatedFileName = $"{spaceGenerationContext.Namespace.Substring(_rootNamespace.Length + 1).Replace('.', '_')}_{spaceGenerationContext.Name}Space.cs";
             _context.AddSource(generatedFileName, renderedSpace);
@@ -110,39 +103,40 @@ namespace Yapoml.Selenium
 
             foreach (var component in spaceGenerationContext.Components)
             {
-                GenerateComponent(component);
+                //GenerateComponent(component);
             }
         }
 
-        public void GeneratePages(PageGenerationContext pageGenerationContext)
+        private void GeneratePages(PageGenerationContext pageGenerationContext)
         {
-            Template engine = Template.Parse(_templateReader.Read("PageTemplate"));
+            var template = Template.Parse(new TemplateReader().Read("PageTemplate"));
 
-            var renderedPage = engine.Render(Hash.FromAnonymousObject(pageGenerationContext));
+            _templateContext.PushGlobal(ScriptObject.From(pageGenerationContext));
+            var renderedPage = template.Render(_templateContext);
 
             var generatedFileName = $"{pageGenerationContext.Namespace.Substring(_rootNamespace.Length + 1).Replace('.', '_')}_{pageGenerationContext.Name}Page.g.cs";
             _context.AddSource(generatedFileName, renderedPage);
 
             foreach (var component in pageGenerationContext.Components)
             {
-                GenerateComponent(component);
+                //GenerateComponent(component);
             }
         }
 
-        public void GenerateComponent(ComponentGenerationContext componentGenerationContext)
-        {
-            Template engine = Template.Parse(_templateReader.Read("ComponentTemplate"));
+        //private void GenerateComponent(ComponentGenerationContext componentGenerationContext)
+        //{
+        //    Template engine = Template.Parse(_templateReader.Read("ComponentTemplate"));
 
-            var renderedComponent = engine.Render(Hash.FromAnonymousObject(componentGenerationContext));
+        //    var renderedComponent = engine.Render(Hash.FromAnonymousObject(componentGenerationContext));
 
-            var generatedFileName = $"{componentGenerationContext.Namespace.Substring(_rootNamespace.Length + 1).Replace('.', '_')}_{componentGenerationContext.Name}Component.g.cs";
-            _context.AddSource(generatedFileName, renderedComponent);
+        //    var generatedFileName = $"{componentGenerationContext.Namespace.Substring(_rootNamespace.Length + 1).Replace('.', '_')}_{componentGenerationContext.Name}Component.g.cs";
+        //    _context.AddSource(generatedFileName, renderedComponent);
 
-            foreach (var component in componentGenerationContext.ComponentGenerationContextes)
-            {
-                GenerateComponent(component);
-            }
-        }
+        //    foreach (var component in componentGenerationContext.ComponentGenerationContextes)
+        //    {
+        //        GenerateComponent(component);
+        //    }
+        //}
     }
 }
 

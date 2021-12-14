@@ -10,9 +10,9 @@ namespace Yapoml.Selenium
 		{
 			_webDriver = webDriver;
 		}
-{% for space in spaces %}
+{{ for space in spaces }}
 		public {{space.namespace}}.{{space.name}}Space {{space.name}} => new {{space.namespace}}.{{space.name}}Space(_webDriver);
-{% endfor %}
+{{ end }}
 	}
 
 	public static class YapomlExtensions

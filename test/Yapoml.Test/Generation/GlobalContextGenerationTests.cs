@@ -45,8 +45,8 @@ namespace Yapoml.Test.Generation
             otherSpace.Namespace.Should().Be("A.B.any.other");
 
             otherSpace.Pages.Should().HaveCount(2);
-            otherSpace.Pages[0].Name.Should().Be("file1.po.yaml");
-            otherSpace.Pages[1].Name.Should().Be("file2.po.yaml");
+            otherSpace.Pages[0].Name.Should().Be("file1");
+            otherSpace.Pages[1].Name.Should().Be("file2");
         }
 
         [Test]

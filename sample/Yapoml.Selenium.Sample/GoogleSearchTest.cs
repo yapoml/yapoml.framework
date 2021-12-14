@@ -56,11 +56,11 @@ namespace Yapoml.Selenium.Sample
         {
             _webDriver.Navigate().GoToUrl("https://www.google.com");
 
-            var searchInput = _webDriver.Ya().Search.SearchInput;
+            var searchInput = _webDriver.Ya().Yapos.Google.Search.SearchInput;
             searchInput.SendKeys("page object pattern");
             searchInput.SendKeys(Keys.Enter);
 
-            var searchResultsPane = _webDriver.Ya().SearchResults.ResultsPane;
+            var searchResultsPane = _webDriver.Ya().Yapos.Google.SearchResults.ResultsPane;
 
             var searchResultItems = searchResultsPane.ResultsItems;
 

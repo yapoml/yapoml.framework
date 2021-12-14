@@ -30,6 +30,7 @@ ya:
             gc.Pages.Should().HaveCount(1);
             var page = gc.Pages[0];
             page.Name.Should().Be("my_page");
+            page.Namespace.Should().Be("A.B");
 
             gc.Pages[0].Components.Should().HaveCount(1);
         }

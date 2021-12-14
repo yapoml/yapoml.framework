@@ -17,7 +17,7 @@ namespace Yapoml.Selenium
 
 	public static class YapomlExtensions
 	{
-		public static RootSpace Yaaa(this IWebDriver webDriver)
+		public static RootSpace Ya(this IWebDriver webDriver)
 		{
 			return new RootSpace(webDriver);
 		}

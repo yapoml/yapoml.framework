@@ -13,11 +13,11 @@ namespace Yapoml.Generation
 
             if (spaceContext != null)
             {
-                Namespace = $"{spaceContext.Namespace}.{Name}";
+                Namespace = $"{spaceContext.Namespace}";
             }
             else
             {
-                Namespace = $"{globalContext.RootNamespace}.{Name}";
+                Namespace = $"{globalContext.RootNamespace}";
             }
 
             ParentContext = spaceContext;

@@ -2,11 +2,11 @@
 
 namespace {{namespace}}
 {
-  public class {{name}}
+  public class {{name}}Page
   {
     private IWebDriver _webDriver;
 
-    public {{name}}(IWebDriver webDriver)
+    public {{name}}Page(IWebDriver webDriver)
     {
       _webDriver = webDriver;
     }

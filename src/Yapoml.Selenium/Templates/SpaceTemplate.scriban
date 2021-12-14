@@ -2,17 +2,17 @@
 
 namespace {{namespace}}
 {
-	public partial class {{name}}Space
-	{
-		private IWebDriver _webDriver;
+  public partial class {{name}}Space
+  {
+    private IWebDriver _webDriver;
 
-		public {{name}}Space(IWebDriver webDriver)
-		{
-			_webDriver = webDriver;
-		}
+    public {{name}}Space(IWebDriver webDriver)
+    {
+      _webDriver = webDriver;
+    }
 
-		{{ for space in spaces -}}
-		public {{space.namespace}}.{{space.name}}Space {{space.name}} => new {{space.namespace}}.{{space.name}}Space(_webDriver);
-		{{ end }}
-	}
+    {{ for space in spaces -}}
+    public {{space.namespace}}.{{space.name}}Space {{space.name}} => new {{space.namespace}}.{{space.name}}Space(_webDriver);
+    {{ end }}
+  }
 }

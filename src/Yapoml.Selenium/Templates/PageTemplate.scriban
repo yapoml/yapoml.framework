@@ -2,19 +2,19 @@
 
 namespace {{namespace}}
 {
-	public class {{name}}
-	{
-		private IWebDriver _webDriver;
+  public class {{name}}
+  {
+    private IWebDriver _webDriver;
 
-		public {{name}}(IWebDriver webDriver)
-		{
-			_webDriver = webDriver;
-		}
+    public {{name}}(IWebDriver webDriver)
+    {
+      _webDriver = webDriver;
+    }
 
-		{{ for component in components}}
-		public {{component.name}}Component {{component.name}} => new {{component.name}}Component();
+    {{ for component in components}}
+    public {{component.name}}Component {{component.name}} => new {{component.name}}Component();
 
-		{{ include 'NestedComponentTemplate' component }}
-		{{ end }}
-	}
+    {{ include 'NestedComponentTemplate' component }}
+    {{ end }}
+  }
 }

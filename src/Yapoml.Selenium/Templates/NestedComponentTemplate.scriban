@@ -1,4 +1,8 @@
 ﻿public class {{$1.name}}Component
 {
-	
+	{{ for component in $1.component_generation_contextes}}
+		public {{component.name}}Component {{component.name}} => new {{component.name}}Component();
+
+		{{ include 'NestedComponentTemplate' component }}
+		{{ end }}
 }

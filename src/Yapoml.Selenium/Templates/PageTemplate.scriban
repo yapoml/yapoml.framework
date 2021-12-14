@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace {{namespace}}
 {
-  public class {{name}}Page
+  public partial class {{name}}Page
   {
     private IWebDriver _webDriver;
 

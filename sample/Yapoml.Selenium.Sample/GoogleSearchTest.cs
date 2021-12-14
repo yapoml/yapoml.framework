@@ -62,7 +62,7 @@ namespace Yapoml.Selenium.Sample
 
             var searchResultsPane = _webDriver.Ya().Yapos.Google.SearchResults.ResultsPane;
 
-            var searchResultItems = searchResultsPane.ResultsItems;
+            var searchResultItems = searchResultsPane.ResultItems;
 
             Assert.That(searchResultItems.Count, Is.GreaterThan(0));
 

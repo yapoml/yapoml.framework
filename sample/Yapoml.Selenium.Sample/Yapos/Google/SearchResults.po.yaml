@@ -3,7 +3,7 @@
     by: id rso
 
     ya:
-      ResultsItems:
+      ResultItems:
         by: css .g
 
         ya:

@@ -7,7 +7,31 @@
   }
 
   {{ for component in $1.component_generation_contextes -}}
-    public {{component.name}}Component {{component.name}} => new {{component.name}}Component(WebDriver, WebElement);
+    public {{ if component.is_plural }}System.Collections.Generic.IList<{{component.name}}Component>{{ else }}{{component.name}}Component{{ end }} {{component.name}}
+    {
+      get
+      {
+        {{ if component.by.method == 'XPath' }}
+        var by = OpenQA.Selenium.By.XPath("{{ component.by.value }}");
+        {{ end }}
+
+        {{ if component.by.method == 'Css' }}
+        var by = OpenQA.Selenium.By.CssSelector("{{ component.by.value }}");
+        {{ end }}
+
+        {{ if component.by.method == 'Id' }}
+        var by = OpenQA.Selenium.By.Id("{{ component.by.value }}");
+        {{ end }}
+        
+        {{ if component.is_plural }}
+        var webElements = WebElement.FindElements(by);
+        return webElements.Select(e => new {{component.name}}Component(WebDriver, e)).ToList();
+        {{ else }}
+        var webElement = WebElement.FindElement(by);
+        return new {{component.name}}Component(WebDriver, webElement);
+        {{ end }}
+      }
+    }
 
     {{ include 'NestedComponentTemplate' component }}
   {{ end }}

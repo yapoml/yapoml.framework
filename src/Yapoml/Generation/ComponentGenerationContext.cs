@@ -53,7 +53,14 @@ namespace Yapoml.Generation
         {
             get
             {
-                return false;
+                if (Name.EndsWith("s") || Name.EndsWith("(s)"))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
 

@@ -12,7 +12,7 @@ namespace {{namespace}}
     }
 
     {{ for component in components}}
-    public {{component.name}}Component {{component.name}} => new {{component.name}}Component();
+    public {{component.name}}Component {{component.name}} => new {{component.name}}Component(_webDriver, null);
 
     {{ include 'NestedComponentTemplate' component }}
     {{ end }}

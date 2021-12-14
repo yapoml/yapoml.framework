@@ -1,0 +1,93 @@
+﻿using OpenQA.Selenium;
+using System.Collections.ObjectModel;
+using System.Drawing;
+
+namespace Yapoml.Selenium
+{
+  public partial class BaseComponent : IWebElement
+  {
+    protected IWebDriver WebDriver;
+
+    protected IWebElement WebElement;
+
+    public BaseComponent(IWebDriver webDriver, IWebElement webElement)
+    {
+      WebDriver = webDriver;
+      WebElement = webElement;
+    }
+
+    public string TagName => WebElement.TagName;
+
+    public string Text => WebElement.Text;
+
+    public bool Enabled => WebElement.Enabled;
+
+    public bool Selected => WebElement.Selected;
+
+    public Point Location => WebElement.Location;
+
+    public Size Size => WebElement.Size;
+
+    public bool Displayed => WebElement.Displayed;
+
+    public void Clear()
+    {
+        WebElement.Clear();
+    }
+
+    public void Click()
+    {
+        WebElement.Click();
+    }
+
+    public IWebElement FindElement(By by)
+    {
+        return WebElement.FindElement(by);
+    }
+
+    public ReadOnlyCollection<IWebElement> FindElements(By by)
+    {
+        return WebElement.FindElements(by);
+    }
+
+    public string GetAttribute(string attributeName)
+    {
+        return WebElement.GetAttribute(attributeName);
+    }
+
+    public string GetCssValue(string propertyName)
+    {
+        return WebElement.GetCssValue(propertyName);
+    }
+
+    public string GetDomAttribute(string attributeName)
+    {
+        return WebElement.GetDomAttribute(attributeName);
+    }
+
+    public string GetDomProperty(string propertyName)
+    {
+        return WebElement.GetDomProperty(propertyName);
+    }
+
+    public string GetProperty(string propertyName)
+    {
+        return WebElement.GetProperty(propertyName);
+    }
+
+    public ISearchContext GetShadowRoot()
+    {
+        return WebElement.GetShadowRoot();
+    }
+
+    public void SendKeys(string text)
+    {
+        WebElement.SendKeys(text);
+    }
+
+    public void Submit()
+    {
+        WebElement.Submit();
+    }
+  }
+}

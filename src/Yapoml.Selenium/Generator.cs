@@ -46,6 +46,7 @@ namespace Yapoml.Selenium
 
                 // generate files
                 GenerateEntryPoint(yaContext);
+                GenerateBaseComponent(yaContext);
 
                 foreach (var space in yaContext.Spaces)
                 {
@@ -79,6 +80,16 @@ namespace Yapoml.Selenium
             var renderedEntryPoint = template.Render(_templateContext);
 
             _context.AddSource("_EntryPoint.cs", renderedEntryPoint);
+        }
+
+        private void GenerateBaseComponent(GlobalGenerationContext globalGenerationContext)
+        {
+            var template = Template.Parse(new TemplateReader().Read("BaseComponentTemplate"));
+
+            _templateContext.PushGlobal(ScriptObject.From(globalGenerationContext));
+            var renderedbaseComponent = template.Render(_templateContext);
+
+            _context.AddSource("_BaseComponent.cs", renderedbaseComponent);
         }
 
         private void GenerateSpaces(SpaceGenerationContext spaceGenerationContext)

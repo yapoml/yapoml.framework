@@ -1,7 +1,13 @@
-﻿public class {{$1.name}}Component
+﻿public class {{$1.name}}Component : Yapoml.Selenium.BaseComponent
 {
+  public {{$1.name}}Component(OpenQA.Selenium.IWebDriver webDriver, OpenQA.Selenium.IWebElement webElement)
+    : base(webDriver, webElement)
+  {
+
+  }
+
   {{ for component in $1.component_generation_contextes -}}
-    public {{component.name}}Component {{component.name}} => new {{component.name}}Component();
+    public {{component.name}}Component {{component.name}} => new {{component.name}}Component(WebDriver, WebElement);
 
     {{ include 'NestedComponentTemplate' component }}
   {{ end }}

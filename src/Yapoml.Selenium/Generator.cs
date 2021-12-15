@@ -99,7 +99,7 @@ namespace Yapoml.Selenium
             _templateContext.PushGlobal(ScriptObject.From(spaceGenerationContext));
             var renderedSpace = template.Render(_templateContext);
 
-            var generatedFileName = $"{spaceGenerationContext.Namespace.Replace('.', '_')}_{spaceGenerationContext.Name}Space.cs";
+            var generatedFileName = $"{spaceGenerationContext.Namespace}.{spaceGenerationContext.Name}Space.cs";
             _context.AddSource(generatedFileName, renderedSpace);
 
             foreach (var space in spaceGenerationContext.Spaces)
@@ -125,7 +125,7 @@ namespace Yapoml.Selenium
             _templateContext.PushGlobal(ScriptObject.From(pageGenerationContext));
             var renderedPage = template.Render(_templateContext);
 
-            var generatedFileName = $"{pageGenerationContext.Namespace.Replace('.', '_')}_{pageGenerationContext.Name}Page.cs";
+            var generatedFileName = $"{pageGenerationContext.Namespace}.{pageGenerationContext.Name}Page.cs";
             _context.AddSource(generatedFileName, renderedPage);
 
             foreach (var component in pageGenerationContext.Components)

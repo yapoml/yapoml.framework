@@ -125,7 +125,7 @@ namespace Yapoml.Selenium
             _templateContext.PushGlobal(ScriptObject.From(pageGenerationContext));
             var renderedPage = template.Render(_templateContext);
 
-            var generatedFileName = $"{pageGenerationContext.Namespace.Replace('.', '_')}_{pageGenerationContext.Name}Page.g.cs";
+            var generatedFileName = $"{pageGenerationContext.Namespace.Replace('.', '_')}_{pageGenerationContext.Name}Page.cs";
             _context.AddSource(generatedFileName, renderedPage);
 
             foreach (var component in pageGenerationContext.Components)

@@ -37,9 +37,7 @@ namespace Yapoml.Selenium.Sample
             searchInput.SendKeys("page object pattern");
             searchInput.SendKeys(Keys.Enter);
 
-            var searchResultsPane = _webDriver.FindElement(By.Id("rso"));
-
-            var searchResultItems = searchResultsPane.FindElements(By.CssSelector(".g"));
+            var searchResultItems = _webDriver.FindElement(By.Id("rso")).FindElements(By.CssSelector(".g"));
 
             Assert.That(searchResultItems.Count, Is.GreaterThan(0));
 
@@ -55,7 +53,7 @@ namespace Yapoml.Selenium.Sample
         public void SearchForWithYetAnotherPageObject()
         {
             _webDriver.Navigate().GoToUrl("https://www.google.com");
-
+            
             var searchInput = _webDriver.Ya().Pages.Google.Search.SearchInput;
             searchInput.SendKeys("page object pattern");
             searchInput.SendKeys(Keys.Enter);

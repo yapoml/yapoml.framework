@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Yapoml.Parsers;
-using Yapoml.Parsers.Yaml.Pocos;
 
 namespace Yapoml.Generation
 {
@@ -11,7 +10,7 @@ namespace Yapoml.Generation
     {
         public GlobalGenerationContext(string rootDirectoryPath, string rootNamespace, IParser parser)
         {
-            RootDirectoryPath = rootDirectoryPath.Replace("/", "\\");
+            RootDirectoryPath = rootDirectoryPath.Replace("/", "\\").TrimEnd('\\');
             RootNamespace = rootNamespace;
             Parser = parser;
         }

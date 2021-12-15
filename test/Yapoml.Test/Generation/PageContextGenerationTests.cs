@@ -23,7 +23,7 @@ ya:
 
             var gc = new GlobalGenerationContext(Environment.CurrentDirectory, "A.B", _parser);
 
-            gc.AddFile($"{Environment.CurrentDirectory}\\my_page.po.yaml");
+            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.po.yaml"));
 
             gc.Spaces.Should().BeEmpty();
 

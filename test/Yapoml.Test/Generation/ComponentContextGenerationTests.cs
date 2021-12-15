@@ -26,7 +26,7 @@ ya:
 
             var gc = new GlobalGenerationContext(Environment.CurrentDirectory, "A.B", _parser);
 
-            gc.AddFile($"{Environment.CurrentDirectory}\\my_component.pc.yaml");
+            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.pc.yaml"));
 
             gc.Spaces.Should().BeEmpty();
 
@@ -48,7 +48,7 @@ by: qwe
 
             var gc = new GlobalGenerationContext(Environment.CurrentDirectory, "A.B", _parser);
 
-            gc.AddFile($"{Environment.CurrentDirectory}\\my_component.pc.yaml");
+            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.pc.yaml"));
 
             gc.Spaces.Should().BeEmpty();
 

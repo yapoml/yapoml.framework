@@ -2,11 +2,11 @@
 
 namespace Yapoml.Selenium
 {
-	public partial class RootSpace
+	public partial class YaSpace
 	{
 		private IWebDriver _webDriver;
 
-		public RootSpace(IWebDriver webDriver)
+		public YaSpace(IWebDriver webDriver)
 		{
 			_webDriver = webDriver;
 		}
@@ -17,9 +17,9 @@ namespace Yapoml.Selenium
 
 	public static class YapomlExtensions
 	{
-		public static RootSpace Ya(this IWebDriver webDriver)
+		public static YaSpace Ya(this IWebDriver webDriver)
 		{
-			return new RootSpace(webDriver);
+			return new YaSpace(webDriver);
 		}
 	}
 }

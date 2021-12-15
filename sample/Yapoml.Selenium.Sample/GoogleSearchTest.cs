@@ -60,9 +60,7 @@ namespace Yapoml.Selenium.Sample
             searchInput.SendKeys("page object pattern");
             searchInput.SendKeys(Keys.Enter);
 
-            var searchResultsPane = _webDriver.Ya().Pages.Google.SearchResults.ResultsPane;
-
-            var searchResultItems = searchResultsPane.ResultItems;
+            var searchResultItems = _webDriver.Ya().Pages.Google.SearchResults.ResultsPane.ResultItems;
 
             Assert.That(searchResultItems.Count, Is.GreaterThan(0));
 

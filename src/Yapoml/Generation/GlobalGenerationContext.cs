@@ -35,7 +35,7 @@ namespace Yapoml.Generation
             {
                 var page = Parser.ParsePage(filePath);
                 var fileName = Path.GetFileName(filePath);
-                var pageName = fileName.Substring(0, fileName.Length - 8);
+                var pageName = fileName.Substring(0, fileName.Length - ".po.yaml".Length);
 
                 if (space == null)
                 {
@@ -56,7 +56,7 @@ namespace Yapoml.Generation
 
                 var fileName = Path.GetFileName(filePath);
 
-                var componentName = fileName.Substring(0, fileName.Length - 8);
+                var componentName = fileName.Substring(0, fileName.Length - ".pc.yaml".Length);
 
                 if (space == null)
                 {

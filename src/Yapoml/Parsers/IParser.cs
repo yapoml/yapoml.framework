@@ -4,8 +4,8 @@ namespace Yapoml.Parsers
 {
     public interface IParser
     {
-        Page ParsePage(string fileName);
+        Page ParsePage(string filePath);
 
-        Component ParseComponent(string fileName);
+        Component ParseComponent(string filePath);
     }
 }

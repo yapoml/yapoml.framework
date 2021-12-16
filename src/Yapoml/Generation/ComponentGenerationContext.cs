@@ -53,14 +53,9 @@ namespace Yapoml.Generation
         {
             get
             {
-                if (Name.EndsWith("s") || Name.EndsWith("(s)"))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                var pluralityService = new Services.PluralizationService();
+
+                return pluralityService.IsPlural(Name);
             }
         }
 

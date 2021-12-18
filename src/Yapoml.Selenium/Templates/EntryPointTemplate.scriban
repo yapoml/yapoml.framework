@@ -15,6 +15,9 @@ namespace Yapoml.Selenium
 {{ for space in spaces }}
 		public {{space.namespace}}.{{space.name}}Space {{space.name}} => new {{space.namespace}}.{{space.name}}Space(_webDriver);
 {{ end }}
+{{ for page in pages }}
+		public {{page.namespace}}.{{page.name}}Page {{page.name}} => new {{page.namespace}}.{{page.name}}Page(_webDriver);
+{{ end }}
 	}
 
 	public static class YapomlExtensions

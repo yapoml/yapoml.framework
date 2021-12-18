@@ -73,6 +73,14 @@ namespace Yapoml.Generation
             }
         }
 
+        public string Version
+        {
+            get
+            {
+                return System.Reflection.Assembly.GetExecutingAssembly().GetName().ToString();
+            }
+        }
+
         private SpaceGenerationContext CreateOrAddSpaces(string filePath)
         {
             var directory = Path.GetDirectoryName(filePath);

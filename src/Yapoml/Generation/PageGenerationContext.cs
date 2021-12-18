@@ -9,7 +9,7 @@ namespace Yapoml.Generation
     {
         public PageGenerationContext(string name, GlobalGenerationContext globalContext, SpaceGenerationContext spaceContext, Page pageModel)
         {
-            Name = name;
+            Name = name.Replace(" ", "").Replace("-", "").Replace("(", "").Replace(")", "");
 
             if (spaceContext != null)
             {

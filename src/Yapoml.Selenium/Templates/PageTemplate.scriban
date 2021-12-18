@@ -17,17 +17,17 @@ namespace {{namespace}}
     {
       get
       {
-        {{ if component.by.method == 'XPath' }}
+        {{ if component.by.method == 'XPath' -}}
         var by = OpenQA.Selenium.By.XPath("{{ component.by.value }}");
-        {{ end }}
+        {{ end -}}
 
-        {{ if component.by.method == 'Css' }}
+        {{ if component.by.method == 'Css' -}}
         var by = OpenQA.Selenium.By.CssSelector("{{ component.by.value }}");
-        {{ end }}
+        {{ end -}}
 
-        {{ if component.by.method == 'Id' }}
+        {{ if component.by.method == 'Id' -}}
         var by = OpenQA.Selenium.By.Id("{{ component.by.value }}");
-        {{ end }}
+        {{ end -}}
         
         {{ if component.is_plural }}
         var webElements = _webDriver.FindElements(by);

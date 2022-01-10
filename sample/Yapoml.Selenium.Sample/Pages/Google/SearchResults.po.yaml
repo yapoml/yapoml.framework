@@ -1,0 +1,11 @@
+﻿ya:
+  ResultsPane:
+    by: id rso
+
+    ya:
+      ResultItems:
+        by: css .g
+
+        ya:
+          Title:
+            by: .//a/h3

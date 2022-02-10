@@ -2,8 +2,6 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using System;
-using WebDriverManager;
-using WebDriverManager.DriverConfigs.Impl;
 using Yapoml.Selenium;
 
 namespace Yapoml.Selenium.Sample
@@ -16,7 +14,6 @@ namespace Yapoml.Selenium.Sample
         [SetUp]
         public void SetUp()
         {
-            new DriverManager().SetUpDriver(new FirefoxConfig());
             _webDriver = new FirefoxDriver();
 
             _webDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);

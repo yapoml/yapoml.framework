@@ -37,3 +37,7 @@ jobs:
   myget:
     runs-on: ubuntu-latest
     needs: build
+    
+    steps:
+    - name: Download Artifacts
+      uses: actions/download-artifact@v2

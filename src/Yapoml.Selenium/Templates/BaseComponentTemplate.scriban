@@ -4,6 +4,7 @@ using System.Drawing;
 
 namespace Yapoml.Selenium
 {
+  /// <inheritdoc/>
   public partial class BaseComponent : IWebElement
   {
     protected IWebDriver WebDriver;

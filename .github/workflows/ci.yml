@@ -24,8 +24,5 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
-    - name: Setup firefox
-      uses: browser-actions/setup-firefox@latest
-    - run: firefox --version
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test test/Yapoml.Test/Yapoml.Test.csproj --no-build --verbosity normal

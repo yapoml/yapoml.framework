@@ -27,9 +27,9 @@ jobs:
     - name: Test
       run: dotnet test test/Yapoml.Test/Yapoml.Test.csproj --no-build --verbosity normal
     - name: Pack
-      run: dotnet pack --no-build
+      run: dotnet pack -c Release
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: my-artifact
+        name: nupkgs
         path: '**/*.nupkg'

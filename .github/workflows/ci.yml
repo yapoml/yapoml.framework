@@ -26,5 +26,6 @@ jobs:
       run: dotnet build --no-restore
     - name: Setup firefox
       uses: browser-actions/setup-firefox@latest
+    - run: firefox --version
     - name: Test
       run: dotnet test --no-build --verbosity normal

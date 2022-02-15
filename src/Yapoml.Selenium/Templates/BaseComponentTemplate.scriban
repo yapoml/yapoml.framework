@@ -71,6 +71,7 @@ namespace Yapoml.Selenium
         return WebElement.GetDomProperty(propertyName);
     }
 
+    [System.Obsolete]
     public string GetProperty(string propertyName)
     {
         return WebElement.GetProperty(propertyName);

@@ -21,7 +21,7 @@ namespace Yapoml.Selenium
         {
             _templateContext = new TemplateContext();
             _templateContext.TemplateLoader = new ResourceTemplateLoader();
-            _templateContext.IndentWithInclude = true;
+            _templateContext.AutoIndent = true;
         }
 
         public void Execute(GeneratorExecutionContext context)

@@ -1,4 +1,5 @@
-﻿using YamlDotNet.Serialization;
+﻿using System;
+using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 using Yapoml.Generation.Parsers.Yaml.Converters;
 
@@ -13,7 +14,14 @@ namespace Yapoml.Generation.Parsers.Yaml
                 .WithNamingConvention(LowerCaseNamingConvention.Instance)
                 .Build();
 
-            return deserializer.Deserialize<T>(content);
+            var result = deserializer.Deserialize<T>(content);
+
+            if (result == null)
+            {
+                result = Activator.CreateInstance<T>();
+            }
+
+            return result;
         }
     }
 }

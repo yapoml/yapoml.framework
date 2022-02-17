@@ -20,13 +20,22 @@ ya:
   Component2: { name: C2 }
 ";
             var page = _parser.Parse<Page>(content);
-            
+
             var components = page.Components;
             components.Should().HaveCount(2);
             var nested1 = components["Component1"];
             nested1.Name.Should().Be("C1");
             var nested2 = components["Component2"];
             nested2.Name.Should().Be("C2");
+        }
+
+        [Test]
+        public void Should_Parse_EmptyPage()
+        {
+            var content = "";
+
+            var page = _parser.Parse<Page>(content);
+            page.Components.Should().BeNull();
         }
     }
 }

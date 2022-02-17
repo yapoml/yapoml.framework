@@ -3,6 +3,7 @@
 
 	<ItemGroup>
 		<AdditionalFiles Include="**\*.po.yaml" />
+		<None Remove="**\*.po.yaml" />
 	</ItemGroup>
 
 </Project>

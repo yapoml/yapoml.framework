@@ -32,7 +32,7 @@
 		<None Include="$(PKGYamlDotNet)\lib\netstandard1.3\YamlDotNet.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 		<None Include="$(PKGScriban)\lib\netstandard2.0\Scriban.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 
-		<None Include="*.props" Pack="true" PackagePath="build/" />
+		<None Include="*.targets" Pack="true" PackagePath="build/" />
 	</ItemGroup>
 
 	<ItemGroup>

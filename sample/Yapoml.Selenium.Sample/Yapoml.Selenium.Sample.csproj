@@ -26,8 +26,8 @@
 		<ProjectReference Include="..\..\src\Yapoml\Yapoml.csproj" />
 	</ItemGroup>
 
-	<!--Import props explicitly, not required when used via nuget package-->
-	<Import Project="..\..\src\Yapoml.Selenium\Yapoml.Selenium.props" />
+	<!--Import targets explicitly, not required when used via nuget package-->
+	<Import Project="..\..\src\Yapoml.Selenium\Yapoml.Selenium.targets" />
 
 	<PropertyGroup>
 		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>

@@ -2,7 +2,7 @@
 using Moq;
 using NUnit.Framework;
 using Yapoml.Generation;
-using Yapoml.Parsers;
+using Yapoml.Generation.Parsers;
 
 namespace Yapoml.Test.Generation
 {
@@ -14,8 +14,8 @@ namespace Yapoml.Test.Generation
         public void SetUp()
         {
             _parser = new Mock<IParser>();
-            _parser.Setup((cp) => cp.ParsePage(It.IsAny<string>())).Returns(new Parsers.Yaml.Pocos.Page());
-            _parser.Setup((cp) => cp.ParseComponent(It.IsAny<string>())).Returns(new Parsers.Yaml.Pocos.Component());
+            _parser.Setup((cp) => cp.ParsePage(It.IsAny<string>())).Returns(new Yapoml.Generation.Parsers.Yaml.Pocos.Page());
+            _parser.Setup((cp) => cp.ParseComponent(It.IsAny<string>())).Returns(new Yapoml.Generation.Parsers.Yaml.Pocos.Component());
         }
 
         [Test]

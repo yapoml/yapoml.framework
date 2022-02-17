@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Yapoml\Yapoml.csproj" />
+    <ProjectReference Include="..\..\src\Yapoml.Generation\Yapoml.Generation.csproj" />
   </ItemGroup>
 
 </Project>

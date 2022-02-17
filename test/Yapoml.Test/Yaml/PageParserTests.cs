@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
-using Yapoml.Parsers.Yaml;
-using Yapoml.Parsers.Yaml.Pocos;
+using Yapoml.Generation.Parsers.Yaml;
+using Yapoml.Generation.Parsers.Yaml.Pocos;
 
 namespace Yapoml.Test.Yaml
 {

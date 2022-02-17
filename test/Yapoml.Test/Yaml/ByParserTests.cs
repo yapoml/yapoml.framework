@@ -1,9 +1,9 @@
 using FluentAssertions;
 using NUnit.Framework;
 using System;
-using Yapoml.Parsers.Yaml;
-using Yapoml.Parsers.Yaml.Pocos;
-using static Yapoml.Parsers.Yaml.Pocos.By;
+using Yapoml.Generation.Parsers.Yaml;
+using Yapoml.Generation.Parsers.Yaml.Pocos;
+using static Yapoml.Generation.Parsers.Yaml.Pocos.By;
 
 namespace Yapoml.Test.Yaml
 {

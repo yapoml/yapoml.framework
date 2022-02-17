@@ -3,7 +3,7 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using Yapoml.Generation;
-using Yapoml.Parsers;
+using Yapoml.Generation.Parsers;
 
 namespace Yapoml.Test.Generation
 {

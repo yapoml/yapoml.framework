@@ -3,6 +3,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using System;
 using Yapoml.Selenium;
+using Yapoml.Extensions.Logging.Serilog;
 
 namespace Yapoml.Selenium.Sample
 {
@@ -50,12 +51,16 @@ namespace Yapoml.Selenium.Sample
         public void SearchForWithYetAnotherPageObject()
         {
             _webDriver.Navigate().GoToUrl("https://www.google.com");
-            
-            var searchInput = _webDriver.Ya().Pages.Google.Search.SearchInput;
+
+            var ya = _webDriver.Ya(
+                //opts => opts.UseSerilog()
+                );
+
+            var searchInput = ya.Pages.Google.Search.SearchInput;
             searchInput.SendKeys("page object pattern");
             searchInput.SendKeys(Keys.Enter);
 
-            var searchResultItems = _webDriver.Ya().Pages.Google.SearchResults.ResultsPane.ResultItems;
+            var searchResultItems = ya.Pages.Google.SearchResults.ResultsPane.ResultItems;
 
             Assert.That(searchResultItems.Count, Is.GreaterThan(0));
 

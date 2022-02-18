@@ -4,6 +4,7 @@ using OpenQA.Selenium.Firefox;
 using System;
 using Yapoml.Selenium;
 using Yapoml.Extensions.Logging.Serilog;
+using System.Linq;
 
 namespace Yapoml.Selenium.Sample
 {
@@ -27,49 +28,40 @@ namespace Yapoml.Selenium.Sample
         }
 
         [Test]
-        public void SearchForWithNative()
+        public void SearchOnGitHub()
         {
-            _webDriver.Navigate().GoToUrl("https://www.google.com");
+            _webDriver.Navigate().GoToUrl("https://github.com");
 
-            var searchInput = _webDriver.FindElement(By.CssSelector(".gLFyf"));
-            searchInput.SendKeys("page object pattern");
-            searchInput.SendKeys(Keys.Enter);
+            _webDriver.FindElement(By.CssSelector(".header-search-input")).SendKeys("yapoml" + Keys.Enter);
 
-            var searchResultItems = _webDriver.FindElement(By.Id("rso")).FindElements(By.CssSelector(".g"));
+            var leftMenu = _webDriver.FindElement(By.CssSelector(".menu"));
 
-            Assert.That(searchResultItems.Count, Is.GreaterThan(0));
+            var menuItems = leftMenu.FindElements(By.TagName("a"));
 
-            foreach (var searchResultItem in searchResultItems)
+            foreach (var menuItem in menuItems)
             {
-                var resultTitle = searchResultItem.FindElement(By.XPath(".//a/h3"));
-
-                Assert.That(resultTitle.Text, Does.Contain("page").IgnoreCase);
+                Assert.That(menuItem.FindElement(By.CssSelector(".Counter")).Text, Is.Not.Empty);
             }
         }
 
         [Test]
-        public void SearchForWithYetAnotherPageObject()
+        public void SearchOnGitHubWithYapoml()
         {
-            _webDriver.Navigate().GoToUrl("https://www.google.com");
+            _webDriver.Navigate().GoToUrl("https://github.com");
 
-            var ya = _webDriver.Ya(
+            var pages = _webDriver.Ya(
                 //opts => opts.UseSerilog()
-                opts => opts.UseLighter(1000)
-                );
+                opts => opts.UseLighter(300)
+                )
+                .Pages.GitHub;
 
-            var searchInput = ya.Pages.Google.Search.SearchInput;
-            searchInput.SendKeys("page object pattern");
-            searchInput.SendKeys(Keys.Enter);
+            pages.HomePage.SearchInput.SendKeys("yapoml" + Keys.Enter);
 
-            var searchResultItems = ya.Pages.Google.SearchResults.ResultsPane.ResultItems;
+            var menuItems = pages.SearchResultsPage.LeftMenu.MenuItems;
 
-            Assert.That(searchResultItems.Count, Is.GreaterThan(0));
-
-            foreach (var searchResultItem in searchResultItems)
+            foreach (var menuItem in menuItems)
             {
-                var resultTitle = searchResultItem.Title;
-
-                Assert.That(resultTitle.Text, Does.Contain("page").IgnoreCase);
+                Assert.That(menuItem.Counter.Text, Is.Not.Empty);
             }
         }
     }

@@ -1,7 +1,7 @@
 ﻿public class {{$1.name}}Component : Yapoml.Selenium.Component
 {
-  public {{$1.name}}Component(OpenQA.Selenium.IWebDriver webDriver, OpenQA.Selenium.IWebElement webElement)
-    : base(webDriver, webElement)
+  public {{$1.name}}Component(OpenQA.Selenium.IWebDriver webDriver, OpenQA.Selenium.IWebElement webElement, Yapoml.Options.ISpaceOptions spaceOptions)
+    : base(webDriver, webElement, spaceOptions)
   {
 
   }
@@ -24,11 +24,15 @@
         {{ end }}
         
         {{ if component.is_plural }}
+        SpaceOptions.Get<Yapoml.Selenium.Events.IEventSource>().ComponentEventSource.RaiseOnFindingComponents("{{component.name}}", by);
         var webElements = WrappedElement.FindElements(by);
-        return webElements.Select(e => new {{component.name}}Component(WebDriver, e)).ToList();
+        SpaceOptions.Get<Yapoml.Selenium.Events.IEventSource>().ComponentEventSource.RaiseOnFoundComponents(by, webElements);
+        return webElements.Select(e => new {{component.name}}Component(WebDriver, e, SpaceOptions)).ToList();
         {{ else }}
+        SpaceOptions.Get<Yapoml.Selenium.Events.IEventSource>().ComponentEventSource.RaiseOnFindingComponent("{{component.name}}", by);
         var webElement = WrappedElement.FindElement(by);
-        return new {{component.name}}Component(WebDriver, webElement);
+        SpaceOptions.Get<Yapoml.Selenium.Events.IEventSource>().ComponentEventSource.RaiseOnFoundComponent(by, WebDriver, webElement);
+        return new {{component.name}}Component(WebDriver, webElement, SpaceOptions);
         {{ end }}
       }
     }

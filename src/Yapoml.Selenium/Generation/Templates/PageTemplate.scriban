@@ -33,13 +33,11 @@ namespace {{namespace}}
         {{ end -}}
         
         {{ if component.is_plural }}
-        _spaceOptions.Logger.Log(Yapoml.Logging.LogLevel.Trace, $"Finding {{component.name}} components {by}");
         var webElements = _webDriver.FindElements(by);
-        return webElements.Select(e => new {{component.name}}Component(_webDriver, e)).ToList();
+        return webElements.Select(e => new {{component.name}}Component(_webDriver, e, _spaceOptions)).ToList();
         {{ else }}
-        _spaceOptions.Logger.Log(Yapoml.Logging.LogLevel.Trace, $"Finding {{component.name}} component {by}");
         var webElement = _webDriver.FindElement(by);
-        return new {{component.name}}Component(_webDriver, webElement);
+        return new {{component.name}}Component(_webDriver, webElement, _spaceOptions);
         {{ end }}
       }
     }

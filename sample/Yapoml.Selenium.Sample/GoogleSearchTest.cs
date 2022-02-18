@@ -54,6 +54,7 @@ namespace Yapoml.Selenium.Sample
 
             var ya = _webDriver.Ya(
                 //opts => opts.UseSerilog()
+                opts => opts.UseLighter(1000)
                 );
 
             var searchInput = ya.Pages.Google.Search.SearchInput;

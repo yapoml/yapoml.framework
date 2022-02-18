@@ -9,7 +9,7 @@ using System.Linq;
 namespace Yapoml.Selenium.Sample
 {
     [TestFixture]
-    public class GoogleSearchTest
+    public class GitHubSearchTest
     {
         private IWebDriver _webDriver;
 

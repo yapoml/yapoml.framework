@@ -1,6 +1,8 @@
 ﻿using OpenQA.Selenium;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using Yapoml.Options;
+using Yapoml.Selenium.Events;
 
 namespace Yapoml.Selenium.Components
 {
@@ -11,10 +13,17 @@ namespace Yapoml.Selenium.Components
 
         public IWebElement WrappedElement { get; private set; }
 
-        public BaseComponent(IWebDriver webDriver, IWebElement webElement)
+        protected ISpaceOptions SpaceOptions { get; private set; }
+
+        protected IEventSource EventSource { get; private set; }
+
+        public BaseComponent(IWebDriver webDriver, IWebElement webElement, ISpaceOptions spaceOptions)
         {
             WebDriver = webDriver;
             WrappedElement = webElement;
+            SpaceOptions = spaceOptions;
+
+            EventSource = spaceOptions.Get<IEventSource>();
         }
 
         public string TagName => WrappedElement.TagName;

@@ -1,9 +1,13 @@
-﻿using Yapoml.Logging;
+﻿using System;
 
 namespace Yapoml.Options
 {
     public interface ISpaceOptions
     {
-        ILogger Logger { get; set; }
+        void Register<T>(T instance);
+
+        event EventHandler<TypeRegisteredEventArgs> OnTypeRegistered;
+
+        T Get<T>();
     }
 }

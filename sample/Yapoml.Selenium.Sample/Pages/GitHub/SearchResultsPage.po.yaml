@@ -1,0 +1,11 @@
+﻿ya:
+  LeftMenu:
+    by: css .menu
+
+    ya:
+      MenuItems:
+        by: ./a
+
+        ya:
+          Counter:
+            by: css .Counter

@@ -33,13 +33,15 @@ namespace {{namespace}}
         {{ end -}}
         
         {{ if component.is_plural }}
-        _spaceOptions.Logger.Log(Yapoml.Logging.LogLevel.Trace, $"Finding {{component.name}} components {by}");
+        _spaceOptions.Get<Yapoml.Selenium.Events.IEventSource>().ComponentEventSource.RaiseOnFindingComponents("{{component.name}}", by);
         var webElements = _webDriver.FindElements(by);
-        return webElements.Select(e => new {{component.name}}Component(_webDriver, e)).ToList();
+        _spaceOptions.Get<Yapoml.Selenium.Events.IEventSource>().ComponentEventSource.RaiseOnFoundComponents(by, webElements);
+        return webElements.Select(e => new {{component.name}}Component(_webDriver, e, _spaceOptions)).ToList();
         {{ else }}
-        _spaceOptions.Logger.Log(Yapoml.Logging.LogLevel.Trace, $"Finding {{component.name}} component {by}");
+        _spaceOptions.Get<Yapoml.Selenium.Events.IEventSource>().ComponentEventSource.RaiseOnFindingComponent("{{component.name}}", by);
         var webElement = _webDriver.FindElement(by);
-        return new {{component.name}}Component(_webDriver, webElement);
+        _spaceOptions.Get<Yapoml.Selenium.Events.IEventSource>().ComponentEventSource.RaiseOnFoundComponent(by, _webDriver, webElement);
+        return new {{component.name}}Component(_webDriver, webElement, _spaceOptions);
         {{ end }}
       }
     }

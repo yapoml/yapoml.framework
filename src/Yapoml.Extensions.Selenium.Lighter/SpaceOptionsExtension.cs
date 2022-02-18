@@ -1,4 +1,6 @@
 ﻿using OpenQA.Selenium;
+using System;
+using System.Drawing;
 using Yapoml.Options;
 using Yapoml.Selenium.Events;
 
@@ -8,9 +10,16 @@ namespace Yapoml.Selenium
     {
         private static int _delay;
 
-        public static ISpaceOptions UseLighter(this ISpaceOptions spaceOptions, int delay = 200)
+        private static Color _color = Color.FromArgb(60, 0, 200, 0);
+
+        public static ISpaceOptions UseLighter(this ISpaceOptions spaceOptions, int delay = 200, Color color = default)
         {
             _delay = delay;
+
+            if (color != default)
+            {
+                _color = color;
+            }
 
             var eventSource = spaceOptions.Get<IEventSource>();
 
@@ -19,19 +28,23 @@ namespace Yapoml.Selenium
             return spaceOptions;
         }
 
-        private static void ComponentEventSource_OnFoundComponent(object sender, Yapoml.Selenium.Events.Args.WebElement.FoundElementEventArgs e)
+        private static void ComponentEventSource_OnFoundComponent(object sender, Events.Args.WebElement.FoundElementEventArgs e)
         {
             var jsExecutor = e.WebDriver as IJavaScriptExecutor;
 
             if (jsExecutor != null)
             {
-                var backgroundColor = e.WebElement.GetCssValue("backgroundColor");
+                try
+                {
+                    var backgroundColor = e.WebElement.GetCssValue("backgroundColor");
 
-                jsExecutor.ExecuteScript("arguments[0].setAttribute('style', 'background: rgba(200, 0, 0, 0.7);');", e.WebElement);
+                    jsExecutor.ExecuteScript($"arguments[0].setAttribute('style', 'background: rgba({_color.R}, {_color.G}, {_color.B}, {(float)_color.A / 100});');", e.WebElement);
 
-                System.Threading.Thread.Sleep(_delay);
+                    System.Threading.Thread.Sleep(_delay);
 
-                jsExecutor.ExecuteScript($"arguments[0].setAttribute('style', '{backgroundColor}');", e.WebElement);
+                    jsExecutor.ExecuteScript($"arguments[0].setAttribute('style', '{backgroundColor}');", e.WebElement);
+                }
+                catch (Exception) { }
             }
         }
     }

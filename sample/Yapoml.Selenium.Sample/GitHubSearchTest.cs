@@ -47,21 +47,21 @@ namespace Yapoml.Selenium.Sample
         [Test]
         public void SearchOnGitHubWithYapoml()
         {
-            _webDriver.Navigate().GoToUrl("https://github.com");
+            _webDriver.Navigate().GoToUrl("https://nuget.org");
 
-            var pages = _webDriver.Ya(
+            var ya = _webDriver.Ya(
                 //opts => opts.UseSerilog()
                 opts => opts.UseLighter(300)
                 )
-                .Pages.GitHub;
+                .Pages.NuGet;
 
-            pages.HomePage.SearchInput.SendKeys("yapoml" + Keys.Enter);
+            ya.HomePage.SearchInput.SendKeys("yaml");
+            ya.HomePage.SearchButton.Click();
 
-            var menuItems = pages.SearchResultsPage.LeftMenu.MenuItems;
-
-            foreach (var menuItem in menuItems)
+            foreach (var package in ya.SearchResultsPage.SearchResultsPane.Packages)
             {
-                Assert.That(menuItem.Counter.Text, Is.Not.Empty);
+                Assert.That(package.Title.Text, Is.Not.Empty);
+                Assert.That(package.Description.Text, Is.Not.Empty);
             }
         }
     }

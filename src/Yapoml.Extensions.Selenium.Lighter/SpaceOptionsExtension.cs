@@ -10,7 +10,7 @@ namespace Yapoml.Selenium
     {
         private static int _delay;
 
-        private static Color _color = Color.FromArgb(60, 0, 200, 0);
+        private static Color _color = Color.FromArgb(70, 255, 255, 0);
 
         public static ISpaceOptions UseLighter(this ISpaceOptions spaceOptions, int delay = 200, Color color = default)
         {

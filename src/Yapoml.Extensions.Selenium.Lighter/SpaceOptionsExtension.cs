@@ -25,13 +25,13 @@ namespace Yapoml.Selenium
 
             if (jsExecutor != null)
             {
-                var style = e.WebElement.GetCssValue("style");
+                var backgroundColor = e.WebElement.GetCssValue("backgroundColor");
 
                 jsExecutor.ExecuteScript("arguments[0].setAttribute('style', 'background: rgba(200, 0, 0, 0.7);');", e.WebElement);
 
                 System.Threading.Thread.Sleep(_delay);
 
-                jsExecutor.ExecuteScript($"arguments[0].setAttribute('style', '{style}');", e.WebElement);
+                jsExecutor.ExecuteScript($"arguments[0].setAttribute('style', '{backgroundColor}');", e.WebElement);
             }
         }
     }

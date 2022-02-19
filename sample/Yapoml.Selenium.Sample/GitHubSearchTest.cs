@@ -55,10 +55,9 @@ namespace Yapoml.Selenium.Sample
                 )
                 .Pages.NuGet;
 
-            ya.HomePage.SearchInput.SendKeys("yaml");
-            ya.HomePage.SearchButton.Click();
+            ya.HomePage.Search("yaml");
 
-            foreach (var package in ya.SearchResultsPage.SearchResultsPane.Packages)
+            foreach (var package in ya.SearchResultsPage.Packages)
             {
                 Assert.That(package.Title.Text, Is.Not.Empty);
                 Assert.That(package.Description.Text, Is.Not.Empty);

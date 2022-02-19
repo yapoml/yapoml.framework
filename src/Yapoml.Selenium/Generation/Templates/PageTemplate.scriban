@@ -3,9 +3,9 @@ using System.Linq;
 
 namespace {{namespace}}
 {
-  public partial class {{name}}Page : Yapoml.Selenium.Page
+  public partial class {{name}} : Yapoml.Selenium.Page
   {
-    public {{name}}Page(IWebDriver webDriver, Yapoml.Options.ISpaceOptions spaceOptions)
+    public {{name}}(IWebDriver webDriver, Yapoml.Options.ISpaceOptions spaceOptions)
         : base(webDriver, spaceOptions)
     {
       

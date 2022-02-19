@@ -1,14 +1,10 @@
 ﻿ya:
-  SearchResultsPane:
-    by: css .list-packages
+  Packages:
+    by: css .package
 
     ya:
-      Packages:
-        by: css .package
+      Title:
+        by: .//a
 
-        ya:
-          Title:
-            by: .//a
-
-          Description:
-            by: css .package-details
+      Description:
+        by: css .package-details

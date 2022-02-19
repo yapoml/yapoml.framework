@@ -17,7 +17,7 @@ namespace Yapoml.Logging
 
         private void Log(LogLevel level, string message)
         {
-            Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} {_shortLevels[level]} {message}");
+            Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff} {_shortLevels[level]} {message}");
         }
     }
 }

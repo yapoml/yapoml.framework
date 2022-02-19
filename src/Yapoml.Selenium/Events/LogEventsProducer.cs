@@ -1,5 +1,4 @@
-﻿using System;
-using Yapoml.Logging;
+﻿using Yapoml.Logging;
 using Yapoml.Options;
 using Yapoml.Selenium.Events.Args.WebElement;
 
@@ -36,17 +35,17 @@ namespace Yapoml.Selenium.Events
 
         private void ComponentEventSource_OnFoundComponents(object sender, FoundElementsEventArgs e)
         {
-            _logger.Log(LogLevel.Trace, $"Found {e.Elements.Count} components");
+            _logger.Trace($"Found {e.Elements.Count} components");
         }
 
         private void ComponentEventSource_OnFindingComponents(object sender, FindingElementEventArgs e)
         {
-            _logger.Log(LogLevel.Trace, $"Finding {e.ComponentName} {e.By}");
+            _logger.Trace($"Finding {e.ComponentName} {e.By}");
         }
 
         private void ComponentEventSource_OnFindingComponent(object sender, FindingElementEventArgs e)
         {
-            _logger.Log(LogLevel.Trace, $"Finding {e.ComponentName} {e.By}");
+            _logger.Trace($"Finding {e.ComponentName} {e.By}");
         }
     }
 }

@@ -10,7 +10,12 @@ namespace Yapoml.Logging
                 { LogLevel.Info, "INF" }
             };
 
-        public void Log(LogLevel level, string message)
+        public void Trace(string message)
+        {
+            Log(LogLevel.Trace, message);
+        }
+
+        private void Log(LogLevel level, string message)
         {
             Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} {_shortLevels[level]} {message}");
         }

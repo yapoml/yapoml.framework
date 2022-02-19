@@ -11,9 +11,9 @@ namespace Yapoml.Extensions.Logging.Serilog
             _logger = logger;
         }
 
-        public void Log(Yapoml.Logging.LogLevel level, string message)
+        public void Trace(string message)
         {
-            _logger.Debug(message);
+            _logger.Verbose(message);
         }
     }
 }

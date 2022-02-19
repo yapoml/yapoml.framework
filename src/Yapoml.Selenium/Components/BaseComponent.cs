@@ -15,7 +15,7 @@ namespace Yapoml.Selenium.Components
 
         protected ISpaceOptions SpaceOptions { get; private set; }
 
-        protected IEventSource EventSource { get; private set; }
+        protected IComponentEventSource EventSource { get; private set; }
 
         public BaseComponent(IWebDriver webDriver, IWebElement webElement, ISpaceOptions spaceOptions)
         {
@@ -23,7 +23,7 @@ namespace Yapoml.Selenium.Components
             WrappedElement = webElement;
             SpaceOptions = spaceOptions;
 
-            EventSource = spaceOptions.Get<IEventSource>();
+            EventSource = spaceOptions.Get<IEventSource>().ComponentEventSource;
         }
 
         public string TagName => WrappedElement.TagName;

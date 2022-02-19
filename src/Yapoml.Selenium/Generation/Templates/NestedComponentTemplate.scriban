@@ -24,14 +24,14 @@
         {{ end }}
         
         {{ if component.is_plural }}
-        SpaceOptions.Get<Yapoml.Selenium.Events.IEventSource>().ComponentEventSource.RaiseOnFindingComponents("{{component.name}}", by);
+        EventSource.RaiseOnFindingComponents("{{component.name}}", by);
         var webElements = WrappedElement.FindElements(by);
-        SpaceOptions.Get<Yapoml.Selenium.Events.IEventSource>().ComponentEventSource.RaiseOnFoundComponents(by, webElements);
+        EventSource.RaiseOnFoundComponents(by, webElements);
         return webElements.Select(e => new {{component.name}}Component(WebDriver, e, SpaceOptions)).ToList();
         {{ else }}
-        SpaceOptions.Get<Yapoml.Selenium.Events.IEventSource>().ComponentEventSource.RaiseOnFindingComponent("{{component.name}}", by);
+        EventSource.RaiseOnFindingComponent("{{component.name}}", by);
         var webElement = WrappedElement.FindElement(by);
-        SpaceOptions.Get<Yapoml.Selenium.Events.IEventSource>().ComponentEventSource.RaiseOnFoundComponent(by, WebDriver, webElement);
+        EventSource.RaiseOnFoundComponent(by, WebDriver, webElement);
         return new {{component.name}}Component(WebDriver, webElement, SpaceOptions);
         {{ end }}
       }

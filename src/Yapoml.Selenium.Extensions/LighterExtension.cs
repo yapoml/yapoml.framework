@@ -6,7 +6,7 @@ using Yapoml.Selenium.Events;
 
 namespace Yapoml.Selenium
 {
-    public static class SpaceOptionsExtension
+    public static class LighterExtension
     {
         private static int _delay;
 

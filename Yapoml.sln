@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yapoml.Generation", "src\Ya
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yapoml.Extensions.Logging.Serilog", "src\Yapoml.Extensions.Logging.Serilog\Yapoml.Extensions.Logging.Serilog.csproj", "{AF17394B-5B0F-4C6A-B644-25B9A24C45FA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yapoml.Extensions.Selenium.Lighter", "src\Yapoml.Extensions.Selenium.Lighter\Yapoml.Extensions.Selenium.Lighter.csproj", "{8F39BBBD-0478-4835-AE24-8D5F4A990BDC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yapoml.Selenium.Extensions", "src\Yapoml.Selenium.Extensions\Yapoml.Selenium.Extensions.csproj", "{B714C151-F110-43F2-9491-86D421051DC2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -103,18 +103,18 @@ Global
 		{AF17394B-5B0F-4C6A-B644-25B9A24C45FA}.Release|x64.Build.0 = Release|Any CPU
 		{AF17394B-5B0F-4C6A-B644-25B9A24C45FA}.Release|x86.ActiveCfg = Release|Any CPU
 		{AF17394B-5B0F-4C6A-B644-25B9A24C45FA}.Release|x86.Build.0 = Release|Any CPU
-		{8F39BBBD-0478-4835-AE24-8D5F4A990BDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8F39BBBD-0478-4835-AE24-8D5F4A990BDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8F39BBBD-0478-4835-AE24-8D5F4A990BDC}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{8F39BBBD-0478-4835-AE24-8D5F4A990BDC}.Debug|x64.Build.0 = Debug|Any CPU
-		{8F39BBBD-0478-4835-AE24-8D5F4A990BDC}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{8F39BBBD-0478-4835-AE24-8D5F4A990BDC}.Debug|x86.Build.0 = Debug|Any CPU
-		{8F39BBBD-0478-4835-AE24-8D5F4A990BDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8F39BBBD-0478-4835-AE24-8D5F4A990BDC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8F39BBBD-0478-4835-AE24-8D5F4A990BDC}.Release|x64.ActiveCfg = Release|Any CPU
-		{8F39BBBD-0478-4835-AE24-8D5F4A990BDC}.Release|x64.Build.0 = Release|Any CPU
-		{8F39BBBD-0478-4835-AE24-8D5F4A990BDC}.Release|x86.ActiveCfg = Release|Any CPU
-		{8F39BBBD-0478-4835-AE24-8D5F4A990BDC}.Release|x86.Build.0 = Release|Any CPU
+		{B714C151-F110-43F2-9491-86D421051DC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B714C151-F110-43F2-9491-86D421051DC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B714C151-F110-43F2-9491-86D421051DC2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B714C151-F110-43F2-9491-86D421051DC2}.Debug|x64.Build.0 = Debug|Any CPU
+		{B714C151-F110-43F2-9491-86D421051DC2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B714C151-F110-43F2-9491-86D421051DC2}.Debug|x86.Build.0 = Debug|Any CPU
+		{B714C151-F110-43F2-9491-86D421051DC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B714C151-F110-43F2-9491-86D421051DC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B714C151-F110-43F2-9491-86D421051DC2}.Release|x64.ActiveCfg = Release|Any CPU
+		{B714C151-F110-43F2-9491-86D421051DC2}.Release|x64.Build.0 = Release|Any CPU
+		{B714C151-F110-43F2-9491-86D421051DC2}.Release|x86.ActiveCfg = Release|Any CPU
+		{B714C151-F110-43F2-9491-86D421051DC2}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

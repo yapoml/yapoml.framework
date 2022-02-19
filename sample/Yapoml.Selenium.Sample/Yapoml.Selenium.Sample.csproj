@@ -21,7 +21,7 @@
 	<ItemGroup>
 		<!--Specify OutputItemType and ReferenceOutputAssembly, not required when used via nuget package-->
 		<ProjectReference Include="..\..\src\Yapoml.Extensions.Logging.Serilog\Yapoml.Extensions.Logging.Serilog.csproj" />
-		<ProjectReference Include="..\..\src\Yapoml.Extensions.Selenium.Lighter\Yapoml.Extensions.Selenium.Lighter.csproj" />
+		<ProjectReference Include="..\..\src\Yapoml.Selenium.Extensions\Yapoml.Selenium.Extensions.csproj" />
 		<ProjectReference Include="..\..\src\Yapoml.Selenium\Yapoml.Selenium.csproj" OutputItemType="Analyzer" />
 		<ProjectReference Include="..\..\src\Yapoml.Generation\Yapoml.Generation.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 		<ProjectReference Include="..\..\src\Yapoml\Yapoml.csproj" />

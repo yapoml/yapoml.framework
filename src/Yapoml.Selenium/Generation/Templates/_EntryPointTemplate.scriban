@@ -25,11 +25,11 @@ namespace Yapoml.Selenium
 		}
 {{ end }}
 {{ for page in pages }}
-		public {{page.namespace}}.{{page.name}}Page {{page.name}}
+		public {{page.namespace}}.{{page.name}} {{page.name}}
 		{
 			get
 			{
-				return new {{page.namespace}}.{{page.name}}Page(_webDriver, _spaceOptions);
+				return new {{page.namespace}}.{{page.name}}(_webDriver, _spaceOptions);
 			}
 		}
 {{ end }}

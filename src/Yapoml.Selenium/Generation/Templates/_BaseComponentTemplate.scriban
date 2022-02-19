@@ -1,6 +1,4 @@
 ﻿using OpenQA.Selenium;
-using System.Collections.ObjectModel;
-using System.Drawing;
 
 namespace Yapoml.Selenium
 {

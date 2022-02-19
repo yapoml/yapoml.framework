@@ -3,19 +3,12 @@ using System.Linq;
 
 namespace {{namespace}}
 {
-  public partial class {{name}}Page
+  public partial class {{name}}Page : Yapoml.Selenium.Page
   {
-    private IWebDriver _webDriver;
-
-    private Yapoml.Options.ISpaceOptions _spaceOptions;
-
-    private Yapoml.Selenium.Events.IComponentEventSource _eventSource;
-
     public {{name}}Page(IWebDriver webDriver, Yapoml.Options.ISpaceOptions spaceOptions)
+        : base(webDriver, spaceOptions)
     {
-      _webDriver = webDriver;
-      _spaceOptions = spaceOptions;
-      _eventSource = spaceOptions.Get<Yapoml.Selenium.Events.IEventSource>().ComponentEventSource;
+      
     }
 
     {{ for component in components}}
@@ -36,15 +29,15 @@ namespace {{namespace}}
         {{ end -}}
         
         {{ if component.is_plural }}
-        _eventSource.RaiseOnFindingComponents("{{component.name}}", by);
-        var webElements = _webDriver.FindElements(by);
-        _eventSource.RaiseOnFoundComponents(by, webElements);
-        return webElements.Select(e => new {{component.name}}Component(_webDriver, e, _spaceOptions)).ToList();
+        EventSource.RaiseOnFindingComponents("{{component.name}}", by);
+        var webElements = WebDriver.FindElements(by);
+        EventSource.RaiseOnFoundComponents(by, webElements);
+        return webElements.Select(e => new {{component.name}}Component(WebDriver, e, SpaceOptions)).ToList();
         {{ else }}
-        _eventSource.RaiseOnFindingComponent("{{component.name}}", by);
-        var webElement = _webDriver.FindElement(by);
-        _eventSource.RaiseOnFoundComponent(by, _webDriver, webElement);
-        return new {{component.name}}Component(_webDriver, webElement, _spaceOptions);
+        EventSource.RaiseOnFindingComponent("{{component.name}}", by);
+        var webElement = WebDriver.FindElement(by);
+        EventSource.RaiseOnFoundComponent(by, WebDriver, webElement);
+        return new {{component.name}}Component(WebDriver, webElement, SpaceOptions);
         {{ end }}
       }
     }

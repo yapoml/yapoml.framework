@@ -10,11 +10,14 @@ namespace Yapoml.Selenium
     {
         private static int _delay;
 
+        private static int _fadeOutSpeed;
+
         private static Color _color = Color.FromArgb(70, 255, 255, 0);
 
-        public static ISpaceOptions UseLighter(this ISpaceOptions spaceOptions, int delay = 200, Color color = default)
+        public static ISpaceOptions UseLighter(this ISpaceOptions spaceOptions, int delay = 200, int fadeOutSpeed = 200, Color color = default)
         {
             _delay = delay;
+            _fadeOutSpeed = fadeOutSpeed;
 
             if (color != default)
             {
@@ -42,7 +45,9 @@ namespace Yapoml.Selenium
 
                     System.Threading.Thread.Sleep(_delay);
 
-                    jsExecutor.ExecuteScript($"arguments[0].setAttribute('style', '{backgroundColor}');", e.WebElement);
+                    jsExecutor.ExecuteScript($"arguments[0].setAttribute('style', 'background: {backgroundColor}; transition: all {_fadeOutSpeed}ms ease-in-out;');", e.WebElement);
+
+                    
                 }
                 catch (Exception) { }
             }

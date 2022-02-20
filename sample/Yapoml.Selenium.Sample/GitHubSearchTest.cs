@@ -47,7 +47,7 @@ namespace Yapoml.Selenium.Sample
 
             var ya = _webDriver.Ya(
                 //opts => opts.UseSerilog()
-                opts => opts.UseLighter(300)
+                opts => opts.UseLighter(delay: 200, fadeOutSpeed: 400)
                 )
                 .Pages.NuGet;
 

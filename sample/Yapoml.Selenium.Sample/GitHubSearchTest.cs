@@ -3,8 +3,6 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using System;
 using Yapoml.Selenium;
-using Yapoml.Extensions.Logging.Serilog;
-using System.Linq;
 
 namespace Yapoml.Selenium.Sample
 {
@@ -30,17 +28,15 @@ namespace Yapoml.Selenium.Sample
         [Test]
         public void SearchOnGitHub()
         {
-            _webDriver.Navigate().GoToUrl("https://github.com");
+            _webDriver.Navigate().GoToUrl("https://nuget.org");
 
-            _webDriver.FindElement(By.CssSelector(".header-search-input")).SendKeys("yapoml" + Keys.Enter);
+            _webDriver.FindElement(By.Id("search")).SendKeys("yaml");
+            _webDriver.FindElement(By.CssSelector(".btn-search")).Click();
 
-            var leftMenu = _webDriver.FindElement(By.CssSelector(".menu"));
-
-            var menuItems = leftMenu.FindElements(By.TagName("a"));
-
-            foreach (var menuItem in menuItems)
+            foreach (var package in _webDriver.FindElements(By.CssSelector(".package")))
             {
-                Assert.That(menuItem.FindElement(By.CssSelector(".Counter")).Text, Is.Not.Empty);
+                Assert.That(package.FindElement(By.XPath(".//a")).Text, Is.Not.Empty);
+                Assert.That(package.FindElement(By.CssSelector(".package-details")).Text, Is.Not.Empty);
             }
         }
 

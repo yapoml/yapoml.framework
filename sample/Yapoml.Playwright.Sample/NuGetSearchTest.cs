@@ -33,7 +33,7 @@ namespace Yapoml.Playwright.Sample
         [Test]
         public async Task Search()
         {
-            await (await _page.QuerySelectorAsync("#search")).TypeAsync("yaml");
+            await _page.TypeAsync("#search", "yaml");
             await _page.ClickAsync(".btn-search");
 
             foreach (var package in await _page.QuerySelectorAllAsync(".package"))

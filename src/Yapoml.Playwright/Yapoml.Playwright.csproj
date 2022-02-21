@@ -4,6 +4,7 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<PlaywrightPlatform>none</PlaywrightPlatform>
 	</PropertyGroup>
 
 	<ItemGroup>

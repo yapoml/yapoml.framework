@@ -7,7 +7,7 @@ using Yapoml.Selenium;
 namespace Yapoml.Selenium.Sample
 {
     [TestFixture]
-    public class GitHubSearchTest
+    public class NuGetSearchTest
     {
         private IWebDriver _webDriver;
 
@@ -17,6 +17,8 @@ namespace Yapoml.Selenium.Sample
             _webDriver = new FirefoxDriver();
 
             _webDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+
+            _webDriver.Navigate().GoToUrl("https://nuget.org");
         }
 
         [TearDown]
@@ -26,10 +28,8 @@ namespace Yapoml.Selenium.Sample
         }
 
         [Test]
-        public void SearchOnGitHub()
+        public void Search()
         {
-            _webDriver.Navigate().GoToUrl("https://nuget.org");
-
             _webDriver.FindElement(By.Id("search")).SendKeys("yaml");
             _webDriver.FindElement(By.CssSelector(".btn-search")).Click();
 
@@ -41,10 +41,8 @@ namespace Yapoml.Selenium.Sample
         }
 
         [Test]
-        public void SearchOnGitHubWithYapoml()
+        public void SearchWithYapoml()
         {
-            _webDriver.Navigate().GoToUrl("https://nuget.org");
-
             var ya = _webDriver.Ya(
                 //opts => opts.UseSerilog()
                 opts => opts.UseLighter(delay: 200, fadeOutSpeed: 400)

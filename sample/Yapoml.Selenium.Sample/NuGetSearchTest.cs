@@ -7,7 +7,7 @@ using Yapoml.Selenium;
 namespace Yapoml.Selenium.Sample
 {
     [TestFixture]
-    public class GitHubSearchTest
+    public class NuGetSearchTest
     {
         private IWebDriver _webDriver;
 

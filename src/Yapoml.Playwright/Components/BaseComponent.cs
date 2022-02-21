@@ -114,12 +114,12 @@ namespace Yapoml.Playwright.Components
 
         public Task<bool> IsEditableAsync()
         {
-            return WrappedElementHandle.IsEditableAsync
+            return WrappedElementHandle.IsEditableAsync();
         }
 
         public Task<bool> IsEnabledAsync()
         {
-            return WrappedElementHandle.IsEnabledAsync
+            return WrappedElementHandle.IsEnabledAsync();
         }
 
         public Task<bool> IsHiddenAsync()

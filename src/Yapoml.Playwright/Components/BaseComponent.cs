@@ -29,12 +29,12 @@ namespace Yapoml.Playwright.Components
 
         public Task<ElementHandleBoundingBoxResult> BoundingBoxAsync()
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.BoundingBoxAsync();
         }
 
         public Task CheckAsync(ElementHandleCheckOptions options = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.CheckAsync(options);
         }
 
         public Task ClickAsync(ElementHandleClickOptions options = null)
@@ -44,187 +44,187 @@ namespace Yapoml.Playwright.Components
 
         public Task<IFrame> ContentFrameAsync()
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.ContentFrameAsync();
         }
 
         public Task DblClickAsync(ElementHandleDblClickOptions options = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.DblClickAsync(options);
         }
 
         public Task DispatchEventAsync(string type, object eventInit = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.DispatchEventAsync(type, eventInit);
         }
 
         public Task<T> EvalOnSelectorAsync<T>(string selector, string expression, object arg = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.EvalOnSelectorAsync<T>(selector, expression, arg);
         }
 
         public Task<T> EvalOnSelectorAllAsync<T>(string selector, string expression, object arg = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.EvalOnSelectorAllAsync<T>(selector, expression, arg);
         }
 
         public Task FillAsync(string value, ElementHandleFillOptions options = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.FillAsync(value, options);
         }
 
         public Task FocusAsync()
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.FocusAsync();
         }
 
         public Task<string> GetAttributeAsync(string name)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.GetAttributeAsync(name);
         }
 
         public Task HoverAsync(ElementHandleHoverOptions options = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.HoverAsync(options);
         }
 
         public Task<string> InnerHTMLAsync()
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.InnerHTMLAsync();
         }
 
         public Task<string> InnerTextAsync()
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.InnerTextAsync();
         }
 
         public Task<string> InputValueAsync(ElementHandleInputValueOptions options = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.InputValueAsync(options);
         }
 
         public Task<bool> IsCheckedAsync()
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.IsCheckedAsync();
         }
 
         public Task<bool> IsDisabledAsync()
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.IsDisabledAsync();
         }
 
         public Task<bool> IsEditableAsync()
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.IsEditableAsync
         }
 
         public Task<bool> IsEnabledAsync()
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.IsEnabledAsync
         }
 
         public Task<bool> IsHiddenAsync()
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle?.IsHiddenAsync();
         }
 
         public Task<bool> IsVisibleAsync()
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.IsVisibleAsync();
         }
 
         public Task<IFrame> OwnerFrameAsync()
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.OwnerFrameAsync();
         }
 
         public Task PressAsync(string key, ElementHandlePressOptions options = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.PressAsync(key, options);
         }
 
         public Task<IElementHandle> QuerySelectorAsync(string selector)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.QuerySelectorAsync(selector);
         }
 
         public Task<IReadOnlyList<IElementHandle>> QuerySelectorAllAsync(string selector)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.QuerySelectorAllAsync(selector);
         }
 
         public Task<byte[]> ScreenshotAsync(ElementHandleScreenshotOptions options = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.ScreenshotAsync(options);
         }
 
         public Task ScrollIntoViewIfNeededAsync(ElementHandleScrollIntoViewIfNeededOptions options = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.ScrollIntoViewIfNeededAsync(options);
         }
 
         public Task<IReadOnlyList<string>> SelectOptionAsync(string values, ElementHandleSelectOptionOptions options = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.SelectOptionAsync(values, options);
         }
 
         public Task<IReadOnlyList<string>> SelectOptionAsync(IElementHandle values, ElementHandleSelectOptionOptions options = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.SelectOptionAsync(values, options);
         }
 
         public Task<IReadOnlyList<string>> SelectOptionAsync(IEnumerable<string> values, ElementHandleSelectOptionOptions options = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.SelectOptionAsync(values, options);
         }
 
         public Task<IReadOnlyList<string>> SelectOptionAsync(SelectOptionValue values, ElementHandleSelectOptionOptions options = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.SelectOptionAsync(values, options);
         }
 
         public Task<IReadOnlyList<string>> SelectOptionAsync(IEnumerable<IElementHandle> values, ElementHandleSelectOptionOptions options = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.SelectOptionAsync(values, options);
         }
 
         public Task<IReadOnlyList<string>> SelectOptionAsync(IEnumerable<SelectOptionValue> values, ElementHandleSelectOptionOptions options = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.SelectOptionAsync(values, options);
         }
 
         public Task SelectTextAsync(ElementHandleSelectTextOptions options = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.SelectTextAsync(options);
         }
 
         public Task SetCheckedAsync(bool checkedState, ElementHandleSetCheckedOptions options = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.SetCheckedAsync(checkedState, options);
         }
 
         public Task SetInputFilesAsync(string files, ElementHandleSetInputFilesOptions options = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.SetInputFilesAsync(files, options);
         }
 
         public Task SetInputFilesAsync(IEnumerable<string> files, ElementHandleSetInputFilesOptions options = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.SetInputFilesAsync(files, options);
         }
 
         public Task SetInputFilesAsync(FilePayload files, ElementHandleSetInputFilesOptions options = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.SetInputFilesAsync(files, options);
         }
 
         public Task SetInputFilesAsync(IEnumerable<FilePayload> files, ElementHandleSetInputFilesOptions options = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.SetInputFilesAsync(files, options);
         }
 
         public Task TapAsync(ElementHandleTapOptions options = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.TapAsync(options);
         }
 
         public Task<string> TextContentAsync()
@@ -239,62 +239,62 @@ namespace Yapoml.Playwright.Components
 
         public Task UncheckAsync(ElementHandleUncheckOptions options = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.UncheckAsync(options);
         }
 
         public Task WaitForElementStateAsync(ElementState state, ElementHandleWaitForElementStateOptions options = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.WaitForElementStateAsync(state, options);
         }
 
         public Task<IElementHandle> WaitForSelectorAsync(string selector, ElementHandleWaitForSelectorOptions options = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.WaitForSelectorAsync(selector, options);
         }
 
         public Task<JsonElement?> EvalOnSelectorAsync(string selector, string expression, object arg = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.EvalOnSelectorAsync(selector, expression, arg);
         }
 
         public IElementHandle AsElement()
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.AsElement();
         }
 
         public Task<T> EvaluateAsync<T>(string expression, object arg = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.EvaluateAsync<T>(expression, arg);
         }
 
         public Task<IJSHandle> EvaluateHandleAsync(string expression, object arg = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.EvaluateHandleAsync(expression, arg);
         }
 
         public Task<Dictionary<string, IJSHandle>> GetPropertiesAsync()
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.GetPropertiesAsync();
         }
 
         public Task<IJSHandle> GetPropertyAsync(string propertyName)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.GetPropertyAsync(propertyName);
         }
 
         public Task<T> JsonValueAsync<T>()
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.JsonValueAsync<T>();
         }
 
         public Task<JsonElement?> EvaluateAsync(string expression, object arg = null)
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.EvaluateAsync(expression, arg);
         }
 
         public ValueTask DisposeAsync()
         {
-            throw new System.NotImplementedException();
+            return WrappedElementHandle.DisposeAsync();
         }
     }
 }

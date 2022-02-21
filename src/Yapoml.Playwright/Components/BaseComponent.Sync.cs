@@ -1,8 +1,8 @@
 ﻿namespace Yapoml.Playwright.Components
 {
-    /// <inheritdoc/>
     public partial class BaseComponent
     {
+        /// <inheritdoc cref="Microsoft.Playwright.IElementHandle.TextContentAsync"/>
         public string TextContent() => TextContentAsync().GetAwaiter().GetResult();
     }
 }

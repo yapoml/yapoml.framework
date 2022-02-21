@@ -1,6 +1,5 @@
 using Microsoft.Playwright;
 using NUnit.Framework;
-using System;
 using System.Threading.Tasks;
 using Yapoml.Playwright;
 
@@ -9,16 +8,6 @@ namespace Yapoml.Selenium.Sample
     [TestFixture]
     public class NuGetSearchTest
     {
-        [OneTimeSetUp]
-        public void SetUpPlaywright()
-        {
-            var exitCode = Program.Main(new[] { "install" });
-            if (exitCode != 0)
-            {
-                throw new Exception($"Playwright exited with code {exitCode}");
-            }
-        }
-
         [TearDown]
         public void TearDown()
         {

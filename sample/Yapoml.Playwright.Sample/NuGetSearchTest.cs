@@ -3,7 +3,7 @@ using NUnit.Framework;
 using System.Threading.Tasks;
 using Yapoml.Playwright;
 
-namespace Yapoml.Selenium.Sample
+namespace Yapoml.Playwright.Sample
 {
     [TestFixture]
     public class NuGetSearchTest

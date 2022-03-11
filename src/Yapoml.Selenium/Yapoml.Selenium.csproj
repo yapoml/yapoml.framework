@@ -4,6 +4,8 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -33,6 +35,7 @@
 		<None Include="$(PKGScriban)\lib\netstandard2.0\Scriban.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 
 		<None Include="*.targets" Pack="true" PackagePath="build/" />
+		<None Include="README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 	<ItemGroup>

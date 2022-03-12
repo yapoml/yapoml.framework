@@ -13,9 +13,9 @@
     	<PackageTags>page generation</PackageTags>
 	</PropertyGroup>
 
-	<PropertyGroup>
+	<ItemGroup>
 		<None Include="..\..\Logo.png" Pack="true" PackagePath="\" Visible="false" />
-	</PropertyGroup>
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="GitVersion.MsBuild" Version="5.8.1">

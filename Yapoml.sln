@@ -9,15 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yapoml.Test", "test\Yapoml.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{2667BE45-044D-4D64-80FE-6EA2EA9DC2B6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{3B1D1964-C938-428D-B387-FE2DCC947672}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yapoml.Generation", "src\Yapoml.Generation\Yapoml.Generation.csproj", "{3027352E-DAFC-43B1-BB2C-9CF50EEB2D5C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yapoml.Extensions.Logging.Serilog", "src\Yapoml.Extensions.Logging.Serilog\Yapoml.Extensions.Logging.Serilog.csproj", "{AF17394B-5B0F-4C6A-B644-25B9A24C45FA}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yapoml.Playwright.Sample", "sample\Yapoml.Playwright.Sample\Yapoml.Playwright.Sample.csproj", "{DC97C7D3-028B-4382-A7D2-93945FB5269F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yapoml.Playwright", "src\Yapoml.Playwright\Yapoml.Playwright.csproj", "{95C372C4-6BC3-4F29-B92E-FF71F1D74369}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,37 +71,12 @@ Global
 		{AF17394B-5B0F-4C6A-B644-25B9A24C45FA}.Release|x64.Build.0 = Release|Any CPU
 		{AF17394B-5B0F-4C6A-B644-25B9A24C45FA}.Release|x86.ActiveCfg = Release|Any CPU
 		{AF17394B-5B0F-4C6A-B644-25B9A24C45FA}.Release|x86.Build.0 = Release|Any CPU
-		{DC97C7D3-028B-4382-A7D2-93945FB5269F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DC97C7D3-028B-4382-A7D2-93945FB5269F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DC97C7D3-028B-4382-A7D2-93945FB5269F}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{DC97C7D3-028B-4382-A7D2-93945FB5269F}.Debug|x64.Build.0 = Debug|Any CPU
-		{DC97C7D3-028B-4382-A7D2-93945FB5269F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{DC97C7D3-028B-4382-A7D2-93945FB5269F}.Debug|x86.Build.0 = Debug|Any CPU
-		{DC97C7D3-028B-4382-A7D2-93945FB5269F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DC97C7D3-028B-4382-A7D2-93945FB5269F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DC97C7D3-028B-4382-A7D2-93945FB5269F}.Release|x64.ActiveCfg = Release|Any CPU
-		{DC97C7D3-028B-4382-A7D2-93945FB5269F}.Release|x64.Build.0 = Release|Any CPU
-		{DC97C7D3-028B-4382-A7D2-93945FB5269F}.Release|x86.ActiveCfg = Release|Any CPU
-		{DC97C7D3-028B-4382-A7D2-93945FB5269F}.Release|x86.Build.0 = Release|Any CPU
-		{95C372C4-6BC3-4F29-B92E-FF71F1D74369}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{95C372C4-6BC3-4F29-B92E-FF71F1D74369}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{95C372C4-6BC3-4F29-B92E-FF71F1D74369}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{95C372C4-6BC3-4F29-B92E-FF71F1D74369}.Debug|x64.Build.0 = Debug|Any CPU
-		{95C372C4-6BC3-4F29-B92E-FF71F1D74369}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{95C372C4-6BC3-4F29-B92E-FF71F1D74369}.Debug|x86.Build.0 = Debug|Any CPU
-		{95C372C4-6BC3-4F29-B92E-FF71F1D74369}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{95C372C4-6BC3-4F29-B92E-FF71F1D74369}.Release|Any CPU.Build.0 = Release|Any CPU
-		{95C372C4-6BC3-4F29-B92E-FF71F1D74369}.Release|x64.ActiveCfg = Release|Any CPU
-		{95C372C4-6BC3-4F29-B92E-FF71F1D74369}.Release|x64.Build.0 = Release|Any CPU
-		{95C372C4-6BC3-4F29-B92E-FF71F1D74369}.Release|x86.ActiveCfg = Release|Any CPU
-		{95C372C4-6BC3-4F29-B92E-FF71F1D74369}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A9F1F038-5CB2-493A-A69C-FB425191F8E2} = {2667BE45-044D-4D64-80FE-6EA2EA9DC2B6}
-		{DC97C7D3-028B-4382-A7D2-93945FB5269F} = {3B1D1964-C938-428D-B387-FE2DCC947672}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BE5EBFB9-D0AA-48E8-91D2-ED421E7164C0}

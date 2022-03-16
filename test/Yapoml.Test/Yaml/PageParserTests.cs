@@ -22,9 +22,9 @@ Component2: { by: asd }
 
             var components = page.Components;
             components.Should().HaveCount(2);
-            var nested1 = components["Component1"];
+            var nested1 = components[0];
             nested1.Name.Should().Be("Component1");
-            var nested2 = components["Component2"];
+            var nested2 = components[1];
             nested2.Name.Should().Be("Component2");
         }
 

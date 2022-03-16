@@ -34,7 +34,7 @@ namespace Yapoml.Generation
             {
                 foreach (var nestedComponent in component.Components)
                 {
-                    ComponentGenerationContextes.Add(new ComponentGenerationContext(nestedComponent.Key, globalGenerationContext, spaceGenerationContext, nestedComponent.Value));
+                    ComponentGenerationContextes.Add(new ComponentGenerationContext(nestedComponent.Name, globalGenerationContext, spaceGenerationContext, nestedComponent));
                 }
             }
         }

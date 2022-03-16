@@ -32,8 +32,8 @@ namespace Yapoml.Generation.Parsers.Yaml.Converters
 
                     component.Name = componentName;
 
-                    if (page.Components == null) page.Components = new Dictionary<string, Component>();
-                    page.Components.Add(componentName, component);
+                    if (page.Components == null) page.Components = new List<Component>();
+                    page.Components.Add(component);
                 }
             }
 

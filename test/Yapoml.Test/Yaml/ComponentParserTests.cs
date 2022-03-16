@@ -39,10 +39,10 @@ Component3: { by: c3 }
 
             var nestedComponents = component.Components;
             nestedComponents.Should().HaveCount(2);
-            var nested2 = nestedComponents["Component2"];
-            nested2.Name.Should().BeNull();
-            var nested3 = nestedComponents["Component3"];
-            nested3.Name.Should().BeNull();
+            var nested2 = nestedComponents[0];
+            nested2.Name.Should().Be("Component2");
+            var nested3 = nestedComponents[1];
+            nested3.Name.Should().Be("Component3");
         }
     }
 }

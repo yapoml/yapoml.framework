@@ -37,9 +37,10 @@ namespace Yapoml.Generation.Parsers.Yaml.Converters
                             var componentName = scalar.Value;
 
                             var innerComponent = (Component)ReadYaml(parser, typeof(Component));
+                            innerComponent.Name = componentName;
 
-                            if (component.Components == null) component.Components = new Dictionary<string, Component>();
-                            component.Components.Add(componentName, innerComponent);
+                            if (component.Components == null) component.Components = new List<Component>();
+                            component.Components.Add(innerComponent);
                         }
                     }
                 }

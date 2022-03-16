@@ -4,6 +4,6 @@ namespace Yapoml.Generation.Parsers.Yaml.Pocos
 {
     public class Page
     {
-        public Dictionary<string, Component> Components { get; set; }
+        public IList<Component> Components { get; set; }
     }
 }

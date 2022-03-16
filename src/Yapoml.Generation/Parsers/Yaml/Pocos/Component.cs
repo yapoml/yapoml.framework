@@ -8,6 +8,6 @@ namespace Yapoml.Generation.Parsers.Yaml.Pocos
 
         public By By { get; set; }
 
-        public Dictionary<string, Component> Components { get; set; }
+        public IList<Component> Components { get; set; }
     }
 }

@@ -13,20 +13,19 @@ namespace Yapoml.Test.Yaml
         public void Should_Parse_Page()
         {
             var content = @"
-ya:
-  Component1:
-    name: C1
+Component1:
+  by: qwe
 
-  Component2: { name: C2 }
+Component2: { by: asd }
 ";
             var page = _parser.Parse<Page>(content);
 
             var components = page.Components;
             components.Should().HaveCount(2);
             var nested1 = components["Component1"];
-            nested1.Name.Should().Be("C1");
+            nested1.Name.Should().Be("Component1");
             var nested2 = components["Component2"];
-            nested2.Name.Should().Be("C2");
+            nested2.Name.Should().Be("Component2");
         }
 
         [Test]

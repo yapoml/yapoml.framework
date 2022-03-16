@@ -1,9 +1,8 @@
 Given `Some\SearchPage.po.yaml` file
 
 ```yaml
-ya:
-  SearchInput:
-    by: ./input
+SearchInput:
+  by: ./input
 ```
 
 It should generate `SearchPage.cs`

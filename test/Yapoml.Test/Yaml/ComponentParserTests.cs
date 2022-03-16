@@ -13,11 +13,10 @@ namespace Yapoml.Test.Yaml
         public void Should_Parse_Component()
         {
             var content = @"
-name: C1
 by: ./abc
 ";
             var component = _parser.Parse<Component>(content);
-            component.Name.Should().Be("C1");
+            component.Name.Should().BeNull();
             component.By.Should().NotBeNull();
             component.By.Method.Should().Be(By.ByMethod.XPath);
             component.By.Value.Should().Be("./abc");
@@ -27,25 +26,23 @@ by: ./abc
         public void Should_Parse_Nested_Components()
         {
             var content = @"
-name: C1
 by: css .abc
 
-ya:
-  Component2:
-    name: C2
+Component2:
+  by: c2
 
-  Component3: { name: C3 }
+Component3: { by: c3 }
 ";
             var component = _parser.Parse<Component>(content);
-            component.Name.Should().Be("C1");
+            component.Name.Should().BeNull();
             component.By.Should().NotBeNull();
 
             var nestedComponents = component.Components;
             nestedComponents.Should().HaveCount(2);
             var nested2 = nestedComponents["Component2"];
-            nested2.Name.Should().Be("C2");
+            nested2.Name.Should().BeNull();
             var nested3 = nestedComponents["Component3"];
-            nested3.Name.Should().Be("C3");
+            nested3.Name.Should().BeNull();
         }
     }
 }

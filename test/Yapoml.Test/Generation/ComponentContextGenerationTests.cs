@@ -15,12 +15,10 @@ namespace Yapoml.Test.Generation
         public void Parse_Component()
         {
             File.WriteAllText("my_component.pc.yaml", @"
-name: c1
 by: qwe
 
-ya:
-  c2:
-    by: asd
+c2:
+  by: asd
 "
                 );
 
@@ -33,7 +31,7 @@ ya:
             gc.Components.Should().HaveCount(1);
 
             var component = gc.Components[0];
-            component.Name.Should().Be("c1");
+            component.Name.Should().Be("my_component");
 
             component.ComponentGenerationContextes[0].Name.Should().Be("c2");
         }

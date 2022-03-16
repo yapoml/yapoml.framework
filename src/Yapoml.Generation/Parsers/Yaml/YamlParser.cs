@@ -10,6 +10,8 @@ namespace Yapoml.Generation.Parsers.Yaml
         public T Parse<T>(string content)
         {
             var deserializer = new DeserializerBuilder()
+                .WithTypeConverter(new PageConverter())
+                .WithTypeConverter(new ComponentConverter())
                 .WithTypeConverter(new ByConverter())
                 .WithNamingConvention(LowerCaseNamingConvention.Instance)
                 .Build();

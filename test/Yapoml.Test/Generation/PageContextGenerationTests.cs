@@ -15,9 +15,8 @@ namespace Yapoml.Test.Generation
         public void Parse_Page()
         {
             File.WriteAllText("my_page.po.yaml", @"
-ya:
-  C1:
-    by: qwe
+C1:
+  by: qwe
 "
                 );
 

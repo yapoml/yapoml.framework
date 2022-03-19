@@ -1,6 +1,8 @@
 ﻿using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using System;
+using System.IO;
 using Yapoml.Generation;
 using Yapoml.Generation.Parsers;
 
@@ -62,6 +64,49 @@ namespace Yapoml.Test.Generation
             gc.Spaces.Should().HaveCount(0);
 
             gc.Pages.Should().HaveCount(1);
+        }
+
+        [Test]
+        public void Should_Resolve_Inheritance()
+        {
+            var gc = new GlobalGenerationContext(Environment.CurrentDirectory, "A.B", new Parser());
+            
+            File.WriteAllText("MyBasePage.po.yaml", @"
+
+");
+            gc.AddFile(Environment.CurrentDirectory + "\\MyBasePage.po.yaml");
+
+            File.WriteAllText("MyPage.po.yaml", @"
+base: mybasepage
+");
+            
+            gc.AddFile(Environment.CurrentDirectory + "\\MyPage.po.yaml");
+
+            File.WriteAllText("MySecondPage.po.yaml", @"
+extends: mybasepage
+");
+
+            gc.AddFile(Environment.CurrentDirectory + "\\MySecondPage.po.yaml");
+
+            gc.ResolveReferences();
+
+            gc.Pages[1].BasePageContext.Should().Be(gc.Pages[0]);
+            gc.Pages[2].BasePageContext.Should().Be(gc.Pages[0]);
+        }
+
+        [Test]
+        public void Should_Throw_Resolve_Inheritance_IfNotFound()
+        {
+            var gc = new GlobalGenerationContext(Environment.CurrentDirectory, "A.B", new Parser());
+
+            File.WriteAllText("MyPage.po.yaml", @"
+base: mybasepage
+");
+
+            gc.AddFile(Environment.CurrentDirectory + "\\MyPage.po.yaml");
+
+            Action act = () => gc.ResolveReferences();
+            act.Should().Throw<Exception>().And.Message.Should().Contain("MyPage");
         }
     }
 }

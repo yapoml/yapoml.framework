@@ -38,5 +38,7 @@ namespace Yapoml.Generation
         public SpaceGenerationContext ParentContext { get; }
 
         public IList<ComponentGenerationContext> Components { get; } = new List<ComponentGenerationContext>();
+
+        public PageGenerationContext BasePageContext { get; set; }
     }
 }

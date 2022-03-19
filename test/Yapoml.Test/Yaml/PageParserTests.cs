@@ -20,6 +20,8 @@ Component2: { by: asd }
 ";
             var page = _parser.Parse<Page>(content);
 
+            page.BasePage.Should().BeNull();
+
             var components = page.Components;
             components.Should().HaveCount(2);
             var nested1 = components[0];
@@ -35,6 +37,40 @@ Component2: { by: asd }
 
             var page = _parser.Parse<Page>(content);
             page.Components.Should().BeNull();
+            page.BasePage.Should().BeNull();
+        }
+
+        [Test]
+        public void Should_Parse_Extends()
+        {
+            var content = @"
+extends: SomeBasePage
+";
+
+            var page = _parser.Parse<Page>(content);
+            page.BasePage.Should().Be("SomeBasePage");
+        }
+
+        [Test]
+        public void Should_Parse_Base()
+        {
+            var content = @"
+base: SomeBasePage
+";
+
+            var page = _parser.Parse<Page>(content);
+            page.BasePage.Should().Be("SomeBasePage");
+        }
+
+        [Test]
+        public void Should_Parse_EmptyExtends()
+        {
+            var content = @"
+extends:
+";
+
+            var page = _parser.Parse<Page>(content);
+            page.BasePage.Should().BeEmpty();
         }
     }
 }

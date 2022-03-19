@@ -26,14 +26,22 @@ namespace Yapoml.Generation.Parsers.Yaml.Converters
             {
                 if (parser.TryConsume<Scalar>(out var scalar))
                 {
-                    var componentName = scalar.Value;
+                    if (scalar.Value.ToLower() == "base" || scalar.Value.ToLower() == "extends")
+                    {
+                        page.BasePage = parser.Consume<Scalar>().Value;
+                    }
+                    else
+                    {
 
-                    var component = (Component)_componentConverter.ReadYaml(parser, typeof(Component));
+                        var componentName = scalar.Value;
 
-                    component.Name = componentName;
+                        var component = (Component)_componentConverter.ReadYaml(parser, typeof(Component));
 
-                    if (page.Components == null) page.Components = new List<Component>();
-                    page.Components.Add(component);
+                        component.Name = componentName;
+
+                        if (page.Components == null) page.Components = new List<Component>();
+                        page.Components.Add(component);
+                    }
                 }
             }
 

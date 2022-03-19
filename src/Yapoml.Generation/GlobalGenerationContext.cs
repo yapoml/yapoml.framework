@@ -104,14 +104,11 @@ namespace Yapoml.Generation
 
                 if (childPage.ParentContext != null)
                 {
-                    foreach (var space in childPage.ParentContext.Spaces)
-                    {
-                        var basePage = DiscoverSpace(space, basePageName);
+                    var basePage = DiscoverSpace(childPage.ParentContext, basePageName);
 
-                        if (basePage != null)
-                        {
-                            childPage.BasePageContext = basePage;
-                        }
+                    if (basePage != null)
+                    {
+                        childPage.BasePageContext = basePage;
                     }
                 }
                 else

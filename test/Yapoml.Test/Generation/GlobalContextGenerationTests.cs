@@ -74,19 +74,19 @@ namespace Yapoml.Test.Generation
             File.WriteAllText("MyBasePage.po.yaml", @"
 
 ");
-            gc.AddFile(Environment.CurrentDirectory + "\\MyBasePage.po.yaml");
+            gc.AddFile(Environment.CurrentDirectory + "/MyBasePage.po.yaml");
 
             File.WriteAllText("MyPage.po.yaml", @"
 base: mybasepage
 ");
             
-            gc.AddFile(Environment.CurrentDirectory + "\\MyPage.po.yaml");
+            gc.AddFile(Environment.CurrentDirectory + "/MyPage.po.yaml");
 
             File.WriteAllText("MySecondPage.po.yaml", @"
 extends: mybasepage
 ");
 
-            gc.AddFile(Environment.CurrentDirectory + "\\MySecondPage.po.yaml");
+            gc.AddFile(Environment.CurrentDirectory + "/MySecondPage.po.yaml");
 
             gc.ResolveReferences();
 
@@ -103,7 +103,7 @@ extends: mybasepage
 base: mybasepage
 ");
 
-            gc.AddFile(Environment.CurrentDirectory + "\\MyPage.po.yaml");
+            gc.AddFile(Environment.CurrentDirectory + "/MyPage.po.yaml");
 
             Action act = () => gc.ResolveReferences();
             act.Should().Throw<Exception>().And.Message.Should().Contain("MyPage");

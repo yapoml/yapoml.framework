@@ -102,23 +102,25 @@ namespace Yapoml.Generation
                 var basePageName = pageContext.Value;
                 var childPage = pageContext.Key;
 
-                foreach (var page in Pages)
+                if (childPage.ParentContext != null)
                 {
-                    if (EvaluatePage(page, basePageName))
-                    {
-                        childPage.BasePageContext = page;
-                    }
-                }
-
-                if (childPage.BasePageContext == null)
-                {
-                    foreach(var space in Spaces)
+                    foreach (var space in childPage.ParentContext.Spaces)
                     {
                         var basePage = DiscoverSpace(space, basePageName);
 
                         if (basePage != null)
                         {
                             childPage.BasePageContext = basePage;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var page in this.Pages)
+                    {
+                        if (EvaluatePage(page, basePageName))
+                        {
+                            childPage.BasePageContext = page;
                         }
                     }
                 }
@@ -142,9 +144,9 @@ namespace Yapoml.Generation
                 }
             }
 
-            foreach (var innerSpace in space.Spaces)
+            if (space.ParentContext != null)
             {
-                return DiscoverSpace(innerSpace, basePageName);
+                return DiscoverSpace(space.ParentContext, basePageName);
             }
 
             return basePage;

@@ -19,6 +19,7 @@ namespace Yapoml.Test.Services
         [Test]
         [TestCase("Statuses", "Status")]
         [TestCase("Items", "Item")]
+        [TestCase("MenuItems", "MenuItem")]
         public void Should_Singularize(string word, string expectedSingular)
         {
             var service = new PluralizationService();

@@ -72,5 +72,20 @@ extends:
             var page = _parser.Parse<Page>(content);
             page.BasePage.Should().BeEmpty();
         }
+
+        [Test]
+        public void Should_Parse_VerySimplifiedPage()
+        {
+            var content = @"
+C1: css qwe
+";
+
+            var page = _parser.Parse<Page>(content);
+
+            var component = page.Components[0];
+            component.Name.Should().Be("C1");
+            component.By.Method.Should().Be(By.ByMethod.Css);
+            component.By.Value.Should().Be("qwe");
+        }
     }
 }

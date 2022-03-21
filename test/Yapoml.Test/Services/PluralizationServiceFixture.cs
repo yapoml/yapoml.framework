@@ -15,5 +15,15 @@ namespace Yapoml.Test.Services
 
             service.IsPlural(word).Should().Be(expectedIsPlural);
         }
+
+        [Test]
+        [TestCase("Statuses", "Status")]
+        [TestCase("Items", "Item")]
+        public void Should_Singularize(string word, string expectedSingular)
+        {
+            var service = new PluralizationService();
+
+            service.Singularize(word).Should().Be(expectedSingular);
+        }
     }
 }

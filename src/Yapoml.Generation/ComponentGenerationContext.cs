@@ -59,6 +59,16 @@ namespace Yapoml.Generation
             }
         }
 
+        public string SingularName
+        {
+            get
+            {
+                var pluralityService = new Services.PluralizationService();
+
+                return pluralityService.Singularize(Name);
+            }
+        }
+
         public IList<ComponentGenerationContext> ComponentGenerationContextes { get; } = new List<ComponentGenerationContext>();
     }
 }

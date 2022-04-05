@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Yapoml.Generation
 {
@@ -8,7 +6,7 @@ namespace Yapoml.Generation
     {
         public SpaceGenerationContext(string name, GlobalGenerationContext globalContext, SpaceGenerationContext parentContext)
         {
-            Name = name;
+            Name = NormalizeName(name);
 
             if (parentContext != null)
             {
@@ -33,5 +31,10 @@ namespace Yapoml.Generation
         public IList<PageGenerationContext> Pages { get; } = new List<PageGenerationContext>();
 
         public IList<ComponentGenerationContext> Components { get; } = new List<ComponentGenerationContext>();
+
+        private string NormalizeName(string name)
+        {
+            return name.Replace(" ", "_").Replace("-", "_");
+        }
     }
 }

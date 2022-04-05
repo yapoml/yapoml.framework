@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Yapoml.Generation.Parsers.Yaml.Pocos;
 
 namespace Yapoml.Generation
@@ -9,7 +7,7 @@ namespace Yapoml.Generation
     {
         public PageGenerationContext(string name, GlobalGenerationContext globalContext, SpaceGenerationContext spaceContext, Page pageModel)
         {
-            Name = name.Replace(" ", "").Replace("-", "").Replace("(", "").Replace(")", "");
+            Name = NormalizeName(name);
 
             if (spaceContext != null)
             {
@@ -40,5 +38,10 @@ namespace Yapoml.Generation
         public IList<ComponentGenerationContext> Components { get; } = new List<ComponentGenerationContext>();
 
         public PageGenerationContext BasePageContext { get; set; }
+
+        private string NormalizeName(string name)
+        {
+            return name.Replace(" ", "").Replace("-", "").Replace("(", "").Replace(")", "");
+        }
     }
 }

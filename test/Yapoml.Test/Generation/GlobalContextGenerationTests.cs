@@ -108,5 +108,29 @@ base: mybasepage
             Action act = () => gc.ResolveReferences();
             act.Should().Throw<Exception>().And.Message.Should().Contain("MyPage");
         }
+
+        [Test]
+        [TestCase("with space", "withspace")]
+        [TestCase("with-dash", "withdash")]
+        public void Should_Normalize_PageName(string pageName, string expectedPageName)
+        {
+            var gc = new GlobalGenerationContext("/some/path", "A.B", _parser.Object);
+
+            gc.AddFile($"/some/path/{pageName}.po.yaml");
+
+            gc.Pages[0].Name.Should().Be(expectedPageName);
+        }
+
+        [Test]
+        [TestCase("with space", "with_space")]
+        [TestCase("with-dash", "with_dash")]
+        public void Should_Normalize_SpaceName(string spaceName, string expectedSpaceName)
+        {
+            var gc = new GlobalGenerationContext("/some/path", "A.B", _parser.Object);
+
+            gc.AddFile($"/some/path/{spaceName}/page.po.yaml");
+
+            gc.Spaces[0].Name.Should().Be(expectedSpaceName);
+        }
     }
 }

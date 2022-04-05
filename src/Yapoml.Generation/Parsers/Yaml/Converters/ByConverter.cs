@@ -19,15 +19,20 @@ namespace Yapoml.Generation.Parsers.Yaml.Converters
             {
                 var value = scalar.Value;
 
-                if (value.StartsWith("xpath "))
+                if (value.StartsWith("by ", StringComparison.OrdinalIgnoreCase))
+                {
+                    value = value.Substring(3);
+                }
+
+                if (value.StartsWith("xpath ", StringComparison.OrdinalIgnoreCase))
                 {
                     return new By { Method = By.ByMethod.XPath, Value = value.Substring(6, value.Length - 6) };
                 }
-                else if (value.StartsWith("css "))
+                else if (value.StartsWith("css ", StringComparison.OrdinalIgnoreCase))
                 {
                     return new By { Method = By.ByMethod.Css, Value = value.Substring(4, value.Length - 4) };
                 }
-                else if (value.StartsWith("id "))
+                else if (value.StartsWith("id ", StringComparison.OrdinalIgnoreCase))
                 {
                     return new By { Method = By.ByMethod.Id, Value = value.Substring(3, value.Length - 3) };
                 }

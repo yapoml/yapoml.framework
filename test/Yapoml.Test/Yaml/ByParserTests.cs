@@ -46,5 +46,20 @@ namespace Yapoml.Test.Yaml
 
             action.Should().Throw<Exception>().WithInnerException<Exception>().WithMessage("Cannot map*");
         }
+
+        [Test]
+        [TestCase("by xpath ./a", "./a", ByMethod.XPath)]
+        [TestCase("BY xPath ./a", "./a", ByMethod.XPath)]
+        [TestCase("xpath ./a", "./a", ByMethod.XPath)]
+        [TestCase("xPath ./a", "./a", ByMethod.XPath)]
+        public void Should_Parse_By_Scalar(string value, string expectedValue, ByMethod expectedMethod)
+        {
+            var content = $"{value}";
+
+            var by = _parser.Parse<By>(content);
+
+            by.Method.Should().Be(expectedMethod);
+            by.Value.Should().Be(expectedValue);
+        }
     }
 }

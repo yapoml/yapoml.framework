@@ -38,7 +38,7 @@ namespace Yapoml.Generation.Parsers.Yaml.Converters
                 }
                 else
                 {
-                    return new By { Method = By.ByMethod.XPath, Value = value };
+                    return new By { Method = By.ByMethod.None, Value = value };
                 }
 
 

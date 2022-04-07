@@ -13,13 +13,13 @@ namespace Yapoml.Test.Yaml
         public void Should_Parse_Component()
         {
             var content = @"
-by: ./abc
+by: abc
 ";
             var component = _parser.Parse<Component>(content);
             component.Name.Should().BeNull();
             component.By.Should().NotBeNull();
-            component.By.Method.Should().Be(By.ByMethod.XPath);
-            component.By.Value.Should().Be("./abc");
+            component.By.Method.Should().Be(By.ByMethod.None);
+            component.By.Value.Should().Be("abc");
         }
 
         [Test]

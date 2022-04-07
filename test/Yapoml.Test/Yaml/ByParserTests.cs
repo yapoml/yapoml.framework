@@ -30,11 +30,11 @@ namespace Yapoml.Test.Yaml
         }
 
         [Test]
-        public void Should_Parse_By_Scalar_Xpath_AsDefault()
+        public void Should_Parse_By_Scalar_None_AsDefault()
         {
             var content = @"./abc";
             var by = _parser.Parse<By>(content);
-            by.Method.Should().Be(ByMethod.XPath);
+            by.Method.Should().Be(ByMethod.None);
             by.Value.Should().Be("./abc");
         }
 

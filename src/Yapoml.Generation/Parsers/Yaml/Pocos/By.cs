@@ -8,6 +8,7 @@
 
         public enum ByMethod
         {
+            None,
             XPath,
             Css,
             Id

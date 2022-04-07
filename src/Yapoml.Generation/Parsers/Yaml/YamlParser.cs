@@ -13,6 +13,7 @@ namespace Yapoml.Generation.Parsers.Yaml
                 .WithTypeConverter(new PageConverter())
                 .WithTypeConverter(new ComponentConverter())
                 .WithTypeConverter(new ByConverter())
+                .WithTypeConverter(new UrlConverter())
                 .WithNamingConvention(LowerCaseNamingConvention.Instance)
                 .Build();
 

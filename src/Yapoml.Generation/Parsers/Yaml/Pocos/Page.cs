@@ -7,5 +7,7 @@ namespace Yapoml.Generation.Parsers.Yaml.Pocos
         public IList<Component> Components { get; set; }
 
         public string BasePage { get; set; }
+
+        public Url Url { get; set; }
     }
 }

@@ -17,31 +17,7 @@ namespace Yapoml.Generation.Parsers.Yaml.Converters
         {
             if (parser.TryConsume<Scalar>(out var scalar))
             {
-                var value = scalar.Value;
-
-                if (value.StartsWith("by ", StringComparison.OrdinalIgnoreCase))
-                {
-                    value = value.Substring(3);
-                }
-
-                if (value.StartsWith("xpath ", StringComparison.OrdinalIgnoreCase))
-                {
-                    return new By { Method = By.ByMethod.XPath, Value = value.Substring(6, value.Length - 6) };
-                }
-                else if (value.StartsWith("css ", StringComparison.OrdinalIgnoreCase))
-                {
-                    return new By { Method = By.ByMethod.Css, Value = value.Substring(4, value.Length - 4) };
-                }
-                else if (value.StartsWith("id ", StringComparison.OrdinalIgnoreCase))
-                {
-                    return new By { Method = By.ByMethod.Id, Value = value.Substring(3, value.Length - 3) };
-                }
-                else
-                {
-                    return new By { Method = By.ByMethod.None, Value = value };
-                }
-
-
+                return ParseScalarValue(scalar.Value);
             }
             else
             {
@@ -80,6 +56,31 @@ namespace Yapoml.Generation.Parsers.Yaml.Converters
         public void WriteYaml(IEmitter emitter, object value, Type type)
         {
             throw new NotImplementedException();
+        }
+
+        public By ParseScalarValue(string value)
+        {
+            if (value.StartsWith("by ", StringComparison.OrdinalIgnoreCase))
+            {
+                value = value.Substring(3);
+            }
+
+            if (value.StartsWith("xpath ", StringComparison.OrdinalIgnoreCase))
+            {
+                return new By { Method = By.ByMethod.XPath, Value = value.Substring(6, value.Length - 6) };
+            }
+            else if (value.StartsWith("css ", StringComparison.OrdinalIgnoreCase))
+            {
+                return new By { Method = By.ByMethod.Css, Value = value.Substring(4, value.Length - 4) };
+            }
+            else if (value.StartsWith("id ", StringComparison.OrdinalIgnoreCase))
+            {
+                return new By { Method = By.ByMethod.Id, Value = value.Substring(3, value.Length - 3) };
+            }
+            else
+            {
+                return new By { Method = By.ByMethod.None, Value = value };
+            }
         }
     }
 }

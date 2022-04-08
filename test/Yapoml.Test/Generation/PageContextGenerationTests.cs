@@ -32,6 +32,8 @@ C1:
             page.Namespace.Should().Be("A.B");
 
             gc.Pages[0].Components.Should().HaveCount(1);
+
+            gc.Pages[0].Url.Should().BeNull();
         }
 
         [Test]

@@ -52,7 +52,7 @@ namespace Yapoml.Generation
             return name.Replace(" ", "").Replace("-", "").Replace("(", "").Replace(")", "");
         }
 
-        public struct UrlContext
+        public class UrlContext
         {
             public UrlContext(string path, IList<QueryParamContext> queryParams)
             {
@@ -68,7 +68,7 @@ namespace Yapoml.Generation
 
             public IList<QueryParamContext> QueryParams { get; }
 
-            public struct QueryParamContext
+            public class QueryParamContext
             {
                 public QueryParamContext(string name, bool isOptional)
                 {
@@ -81,7 +81,7 @@ namespace Yapoml.Generation
                 public bool IsOptional { get; }
             }
 
-            private static IList<string> ParseSegments(string path)
+            private IList<string> ParseSegments(string path)
             {
                 // todo: performance, don't use regex for simple searching for {segment}
                 var matches = Regex.Matches(path, "{(.*?)}");

@@ -67,6 +67,12 @@ namespace Yapoml.Generation.Parsers.Yaml.Converters
 
                                                 queryParam.IsOptional = isOptional;
                                             }
+                                            else if (queryParamMap.Value.Equals("required", StringComparison.OrdinalIgnoreCase))
+                                            {
+                                                var isRequired = new Deserializer().Deserialize<bool>(parser);
+
+                                                queryParam.IsOptional = !isRequired;
+                                            }
                                             else
                                             {
                                                 parser.SkipThisAndNestedEvents();

@@ -57,6 +57,8 @@ query:
 
             url.QueryParams[0].Name.Should().Be("param1");
             url.QueryParams[1].Name.Should().Be("param2");
+
+            url.QueryParams[0].IsOptional.Should().BeTrue();
         }
 
         [Test]
@@ -67,6 +69,25 @@ path: some/path
 query:
   - name: param1
     optional: no
+";
+            var url = _parser.Parse<Url>(content);
+            url.Path.Should().Be("some/path");
+
+            url.QueryParams.Should().NotBeNull();
+            url.QueryParams.Should().HaveCount(1);
+
+            url.QueryParams[0].Name.Should().Be("param1");
+            url.QueryParams[0].IsOptional.Should().Be(false);
+        }
+
+        [Test]
+        public void Should_Parse_Required_Query()
+        {
+            var content = @"
+path: some/path
+query:
+  - name: param1
+    required: yes
 ";
             var url = _parser.Parse<Url>(content);
             url.Path.Should().Be("some/path");

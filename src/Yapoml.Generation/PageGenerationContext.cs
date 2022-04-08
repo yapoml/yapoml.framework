@@ -98,10 +98,12 @@ namespace Yapoml.Generation
 
             public static UrlContext FromUrl(Url urlModel)
             {
-                var queryParams = new List<QueryParamContext>();
+                List<QueryParamContext> queryParams = null;
 
                 if (urlModel.QueryParams != null)
                 {
+                    queryParams = new List<QueryParamContext>();
+
                     foreach (var param in urlModel.QueryParams)
                     {
                         queryParams.Add(new QueryParamContext(param.Name, param.IsOptional));

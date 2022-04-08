@@ -6,13 +6,6 @@ namespace Yapoml.Generation.Parsers.Yaml.Pocos
     {
         public string Path { get; set; }
 
-        public IList<QueryParam> QueryParams { get; set; }
-
-        public class QueryParam
-        {
-            public string Name { get; set; }
-
-            public bool IsOptional { get; set; } = true;
-        }
+        public IList<string> Params { get; set; }
     }
 }

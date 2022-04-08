@@ -42,9 +42,8 @@ C1:
             File.WriteAllText("my_page.po.yaml", @"
 url:
   path: projects/{projectId}/users/{userId}/roles
-  query:
-    - name: count
-      optional: false
+  params:
+    - count
     - offset
 "
                 );
@@ -59,12 +58,11 @@ url:
             url.QueryParams.Should().HaveCount(2);
 
             var countParam = url.QueryParams[0];
-            countParam.Name.Should().Be("count");
-            countParam.IsOptional.Should().BeFalse();
+            countParam.Should().Be("count");
+
 
             var offsetParam = url.QueryParams[1];
-            offsetParam.Name.Should().Be("offset");
-            offsetParam.IsOptional.Should().BeTrue();
+            offsetParam.Should().Be("offset");
 
             url.Segments.Should().HaveCount(2);
 

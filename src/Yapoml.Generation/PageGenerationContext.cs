@@ -54,7 +54,7 @@ namespace Yapoml.Generation
 
         public class UrlContext
         {
-            public UrlContext(string path, IList<QueryParamContext> queryParams)
+            public UrlContext(string path, IList<string> queryParams)
             {
                 Path = path;
                 QueryParams = queryParams;
@@ -66,20 +66,7 @@ namespace Yapoml.Generation
 
             public IList<string> Segments { get; }
 
-            public IList<QueryParamContext> QueryParams { get; }
-
-            public class QueryParamContext
-            {
-                public QueryParamContext(string name, bool isOptional)
-                {
-                    Name = name;
-                    IsOptional = isOptional;
-                }
-
-                public string Name { get; }
-
-                public bool IsOptional { get; }
-            }
+            public IList<string> QueryParams { get; }
 
             private IList<string> ParseSegments(string path)
             {
@@ -103,15 +90,15 @@ namespace Yapoml.Generation
 
             public static UrlContext FromUrl(Url urlModel)
             {
-                List<QueryParamContext> queryParams = null;
+                List<string> queryParams = null;
 
-                if (urlModel.QueryParams != null)
+                if (urlModel.Params != null)
                 {
-                    queryParams = new List<QueryParamContext>();
+                    queryParams = new List<string>();
 
-                    foreach (var param in urlModel.QueryParams)
+                    foreach (var param in urlModel.Params)
                     {
-                        queryParams.Add(new QueryParamContext(param.Name, param.IsOptional));
+                        queryParams.Add(param);
                     }
                 }
 

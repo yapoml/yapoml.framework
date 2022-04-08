@@ -4,7 +4,6 @@ using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
 using YamlDotNet.Serialization;
 using Yapoml.Generation.Parsers.Yaml.Pocos;
-using static Yapoml.Generation.Parsers.Yaml.Pocos.Url;
 
 namespace Yapoml.Generation.Parsers.Yaml.Converters
 {
@@ -37,56 +36,29 @@ namespace Yapoml.Generation.Parsers.Yaml.Converters
 
                             url = new Url { Path = pathValue };
                         }
-                        else if (urlProperty.Value.Equals("query", StringComparison.OrdinalIgnoreCase))
+                        else if (urlProperty.Value.Equals("params", StringComparison.OrdinalIgnoreCase))
                         {
-                            var queryParams = new List<QueryParam>();
+                            var queryParams = new List<string>();
 
                             if (parser.TryConsume<SequenceStart>(out _))
                             {
                                 while (!parser.TryConsume<SequenceEnd>(out _))
                                 {
-                                    var queryParam = new QueryParam();
-
-                                    if (parser.TryConsume<Scalar>(out var queryParamScalar))
-                                    {
-                                        queryParam.Name = queryParamScalar.Value;
-                                    }
-                                    else if (parser.TryConsume<MappingStart>(out _))
-                                    {
-                                        while (parser.TryConsume<Scalar>(out var queryParamMap))
-                                        {
-                                            if (queryParamMap.Value.Equals("name", StringComparison.OrdinalIgnoreCase))
-                                            {
-                                                var nameValue = parser.Consume<Scalar>().Value;
-
-                                                queryParam.Name = nameValue;
-                                            }
-                                            else if (queryParamMap.Value.Equals("optional", StringComparison.OrdinalIgnoreCase))
-                                            {
-                                                var isOptional = new Deserializer().Deserialize<bool>(parser);
-
-                                                queryParam.IsOptional = isOptional;
-                                            }
-                                            else if (queryParamMap.Value.Equals("required", StringComparison.OrdinalIgnoreCase))
-                                            {
-                                                var isRequired = new Deserializer().Deserialize<bool>(parser);
-
-                                                queryParam.IsOptional = !isRequired;
-                                            }
-                                            else
-                                            {
-                                                parser.SkipThisAndNestedEvents();
-                                            }
-                                        }
-
-                                        parser.Consume<MappingEnd>();
-                                    }
+                                    var queryParam = parser.Consume<Scalar>().Value;
 
                                     queryParams.Add(queryParam);
                                 }
                             }
+                            else
+                            {
+                                parser.SkipThisAndNestedEvents();
+                            }
 
-                            url.QueryParams = queryParams;
+                            url.Params = queryParams;
+                        }
+                        else
+                        {
+                            parser.SkipThisAndNestedEvents();
                         }
                     }
 

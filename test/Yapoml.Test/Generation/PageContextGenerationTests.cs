@@ -55,13 +55,13 @@ url:
             var url = gc.Pages[0].Url;
 
             url.Path.Should().Be("projects/{projectId}/users/{userId}/roles");
-            url.QueryParams.Should().HaveCount(2);
+            url.Params.Should().HaveCount(2);
 
-            var countParam = url.QueryParams[0];
+            var countParam = url.Params[0];
             countParam.Should().Be("count");
 
 
-            var offsetParam = url.QueryParams[1];
+            var offsetParam = url.Params[1];
             offsetParam.Should().Be("offset");
 
             url.Segments.Should().HaveCount(2);

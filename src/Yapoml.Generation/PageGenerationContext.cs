@@ -57,7 +57,7 @@ namespace Yapoml.Generation
             public UrlContext(string path, IList<string> queryParams)
             {
                 Path = path;
-                QueryParams = queryParams;
+                Params = queryParams;
 
                 Segments = ParseSegments(path);
             }
@@ -66,7 +66,7 @@ namespace Yapoml.Generation
 
             public IList<string> Segments { get; }
 
-            public IList<string> QueryParams { get; }
+            public IList<string> Params { get; }
 
             private IList<string> ParseSegments(string path)
             {

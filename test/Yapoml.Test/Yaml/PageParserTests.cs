@@ -41,6 +41,18 @@ Component2: { by: asd }
         }
 
         [Test]
+        public void Should_Parse_Url()
+        {
+            var content = @"
+url: /some/path
+";
+
+            var page = _parser.Parse<Page>(content);
+            page.Url.Should().NotBeNull();
+            page.Url.Path.Should().Be("/some/path");
+        }
+
+        [Test]
         public void Should_Parse_Extends()
         {
             var content = @"

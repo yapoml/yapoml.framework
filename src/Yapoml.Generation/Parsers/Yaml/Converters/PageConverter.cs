@@ -11,6 +11,8 @@ namespace Yapoml.Generation.Parsers.Yaml.Converters
     {
         private ComponentConverter _componentConverter = new ComponentConverter();
 
+        private UrlConverter _urlConverter = new UrlConverter();
+
         public bool Accepts(Type type)
         {
             return typeof(Page) == type;
@@ -30,9 +32,12 @@ namespace Yapoml.Generation.Parsers.Yaml.Converters
                     {
                         page.BasePage = parser.Consume<Scalar>().Value;
                     }
+                    else if (scalar.Value.ToLower() == "url")
+                    {
+                        page.Url = (Url)_urlConverter.ReadYaml(parser, typeof(Url));
+                    }
                     else
                     {
-
                         var componentName = scalar.Value;
 
                         var component = (Component)_componentConverter.ReadYaml(parser, typeof(Component));

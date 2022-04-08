@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Yapoml.Generation.Parsers.Yaml.Pocos;
 
 namespace Yapoml.Generation
@@ -20,6 +21,11 @@ namespace Yapoml.Generation
 
             ParentContext = spaceContext;
 
+            if (pageModel.Url != null)
+            {
+                Url = UrlContext.FromUrl(pageModel.Url);
+            }
+
             if (pageModel.Components != null)
             {
                 foreach (var component in pageModel.Components)
@@ -39,9 +45,71 @@ namespace Yapoml.Generation
 
         public PageGenerationContext BasePageContext { get; set; }
 
+        public UrlContext Url { get; }
+
         private string NormalizeName(string name)
         {
             return name.Replace(" ", "").Replace("-", "").Replace("(", "").Replace(")", "");
+        }
+
+        public struct UrlContext
+        {
+            public UrlContext(string path, IList<QueryParamContext> queryParams)
+            {
+                Path = path;
+                QueryParams = queryParams;
+
+                Segments = ParseSegments(path);
+            }
+
+            public string Path { get; }
+
+            public IList<string> Segments { get; }
+
+            public IList<QueryParamContext> QueryParams { get; }
+
+            public struct QueryParamContext
+            {
+                public QueryParamContext(string name, bool isOptional)
+                {
+                    Name = name;
+                    IsOptional = isOptional;
+                }
+
+                public string Name { get; }
+
+                public bool IsOptional { get; }
+            }
+
+            private static IList<string> ParseSegments(string path)
+            {
+                // todo: performance, don't use regex for simple searching for {segment}
+                var matches = Regex.Matches(path, "{(.*?)}");
+
+                var segments = new List<string>();
+
+                foreach (Match match in matches)
+                {
+                    segments.Add(match.Groups[1].Value);
+                }
+
+                return segments;
+            }
+
+            public static UrlContext FromUrl(Url urlModel)
+            {
+                var queryParams = new List<QueryParamContext>();
+
+                if (urlModel.QueryParams != null)
+                {
+                    foreach (var param in urlModel.QueryParams)
+                    {
+                        queryParams.Add(new QueryParamContext(param.Name, param.IsOptional));
+                    }
+                }
+
+                return new UrlContext(urlModel.Path, queryParams);
+            }
         }
     }
 }

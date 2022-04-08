@@ -86,11 +86,16 @@ namespace Yapoml.Generation
                 // todo: performance, don't use regex for simple searching for {segment}
                 var matches = Regex.Matches(path, "{(.*?)}");
 
-                var segments = new List<string>();
+                List<string> segments = null;
 
-                foreach (Match match in matches)
+                if (matches.Count > 0)
                 {
-                    segments.Add(match.Groups[1].Value);
+                    segments = new List<string>();
+
+                    foreach (Match match in matches)
+                    {
+                        segments.Add(match.Groups[1].Value);
+                    }
                 }
 
                 return segments;

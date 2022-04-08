@@ -33,5 +33,44 @@ C1:
 
             gc.Pages[0].Components.Should().HaveCount(1);
         }
+
+        [Test]
+        public void Parse_Page_Url()
+        {
+            File.WriteAllText("my_page.po.yaml", @"
+url:
+  path: projects/{projectId}/users/{userId}/roles
+  query:
+    - name: count
+      optional: false
+    - offset
+"
+                );
+
+            var gc = new GlobalGenerationContext(Environment.CurrentDirectory, "A.B", _parser);
+
+            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.po.yaml"));
+
+            var url = gc.Pages[0].Url;
+
+            url.Path.Should().Be("projects/{projectId}/users/{userId}/roles");
+            url.QueryParams.Should().HaveCount(2);
+
+            var countParam = url.QueryParams[0];
+            countParam.Name.Should().Be("count");
+            countParam.IsOptional.Should().BeFalse();
+
+            var offsetParam = url.QueryParams[1];
+            offsetParam.Name.Should().Be("offset");
+            offsetParam.IsOptional.Should().BeTrue();
+
+            url.Segments.Should().HaveCount(2);
+
+            var projectSegment = url.Segments[0];
+            projectSegment.Should().Be("projectId");
+
+            var userIdSegment = url.Segments[1];
+            userIdSegment.Should().Be("userId");
+        }
     }
 }

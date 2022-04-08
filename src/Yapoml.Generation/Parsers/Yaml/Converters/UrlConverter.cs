@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
 using YamlDotNet.Serialization;
 using Yapoml.Generation.Parsers.Yaml.Pocos;
+using static Yapoml.Generation.Parsers.Yaml.Pocos.Url;
 
 namespace Yapoml.Generation.Parsers.Yaml.Converters
 {
@@ -35,11 +37,53 @@ namespace Yapoml.Generation.Parsers.Yaml.Converters
 
                             url = new Url { Path = pathValue };
                         }
-                    }
-                    else
-                    {
+                        else if (urlProperty.Value.Equals("query", StringComparison.OrdinalIgnoreCase))
+                        {
+                            var queryParams = new List<QueryParam>();
 
+                            if (parser.TryConsume<SequenceStart>(out _))
+                            {
+                                while (!parser.TryConsume<SequenceEnd>(out _))
+                                {
+                                    var queryParam = new QueryParam();
+
+                                    if (parser.TryConsume<Scalar>(out var queryParamScalar))
+                                    {
+                                        queryParam.Name = queryParamScalar.Value;
+                                    }
+                                    else if (parser.TryConsume<MappingStart>(out _))
+                                    {
+                                        while (parser.TryConsume<Scalar>(out var queryParamMap))
+                                        {
+                                            if (queryParamMap.Value.Equals("name", StringComparison.OrdinalIgnoreCase))
+                                            {
+                                                var nameValue = parser.Consume<Scalar>().Value;
+
+                                                queryParam.Name = nameValue;
+                                            }
+                                            else if (queryParamMap.Value.Equals("optional", StringComparison.OrdinalIgnoreCase))
+                                            {
+                                                var isOptional = new Deserializer().Deserialize<bool>(parser);
+
+                                                queryParam.IsOptional = isOptional;
+                                            }
+                                            else
+                                            {
+                                                parser.SkipThisAndNestedEvents();
+                                            }
+                                        }
+
+                                        parser.Consume<MappingEnd>();
+                                    }
+
+                                    queryParams.Add(queryParam);
+                                }
+                            }
+
+                            url.QueryParams = queryParams;
+                        }
                     }
+
 
                     //parser.SkipThisAndNestedEvents();
                 }

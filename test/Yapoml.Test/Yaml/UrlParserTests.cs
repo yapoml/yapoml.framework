@@ -28,11 +28,24 @@ path: some/path
         }
 
         [Test]
-        public void Should_Parse_Query()
+        public void Should_Parse_Params()
         {
             var content = @"
 path: some/path
 params:
+";
+            var url = _parser.Parse<Url>(content);
+            url.Path.Should().Be("some/path");
+
+            url.Params.Should().BeEmpty();
+        }
+
+        [Test]
+        public void Should_Parse_Query()
+        {
+            var content = @"
+path: some/path
+query:
 ";
             var url = _parser.Parse<Url>(content);
             url.Path.Should().Be("some/path");

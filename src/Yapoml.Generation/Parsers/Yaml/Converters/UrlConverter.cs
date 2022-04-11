@@ -36,7 +36,7 @@ namespace Yapoml.Generation.Parsers.Yaml.Converters
 
                             url = new Url { Path = pathValue };
                         }
-                        else if (urlProperty.Value.Equals("params", StringComparison.OrdinalIgnoreCase))
+                        else if (urlProperty.Value.Equals("params", StringComparison.OrdinalIgnoreCase) || urlProperty.Value.Equals("query", StringComparison.OrdinalIgnoreCase))
                         {
                             var queryParams = new List<string>();
 

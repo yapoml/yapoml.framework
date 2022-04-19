@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
-using Yapoml.Generation.Services;
+using Yapoml.Workspace.Services;
 
 namespace Yapoml.Test.Services
 {

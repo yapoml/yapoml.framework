@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+
+		<Description>Yet another page object generation</Description>
+    	<Authors>Nikolay Borisenko</Authors>
+    	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+    	<PackageProjectUrl>https://yapoml.github.io</PackageProjectUrl>
+    	<PackageIcon>Logo.png</PackageIcon>
+    	<RepositoryType>GitHub</RepositoryType>
+    	<RepositoryUrl>https://github.com/yapoml/framework</RepositoryUrl>
+    	<PackageTags>page generation</PackageTags>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\..\Logo.png" Pack="true" PackagePath="\" Visible="false" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="GitVersion.MsBuild" Version="5.10.1">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="YamlDotNet" Version="11.2.1" />
+	</ItemGroup>
+
+</Project>

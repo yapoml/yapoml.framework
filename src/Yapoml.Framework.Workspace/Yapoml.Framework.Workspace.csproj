@@ -11,6 +11,9 @@
     	<RepositoryType>GitHub</RepositoryType>
     	<RepositoryUrl>https://github.com/yapoml/framework</RepositoryUrl>
     	<PackageTags>page generation</PackageTags>
+
+		<SignAssembly>True</SignAssembly>
+		<AssemblyOriginatorKeyFile>..\..\Yapoml.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
 
 	<ItemGroup>

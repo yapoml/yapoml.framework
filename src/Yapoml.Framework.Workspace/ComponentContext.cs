@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Yapoml.Framework.Workspace.Parsers.Yaml.Pocos;
+using Yapoml.Framework.Workspace.Services;
 
 namespace Yapoml.Framework.Workspace
 {
@@ -19,7 +20,10 @@ namespace Yapoml.Framework.Workspace
                 Name = name;
             }
 
-            By = component.By;
+            if (component.By != null)
+            {
+                By = new ByContext(component.By.Method, component.By.Value);
+            }
 
             if (space != null)
             {
@@ -47,7 +51,7 @@ namespace Yapoml.Framework.Workspace
 
         public string Namespace { get; }
 
-        public By By { get; }
+        public ByContext By { get; }
 
         public bool IsPlural
         {
@@ -70,5 +74,19 @@ namespace Yapoml.Framework.Workspace
         }
 
         public IList<ComponentContext> Components { get; } = new List<ComponentContext>();
+
+        public class ByContext
+        {
+            public ByContext(By.ByMethod method, string value)
+            {
+                Method = method;
+                Value = value;
+                Segments = new SegmentsParser().ParseSegments(value);
+            }
+
+            public By.ByMethod Method { get; }
+            public string Value { get; }
+            public IList<string> Segments { get; }
+        }
     }
 }

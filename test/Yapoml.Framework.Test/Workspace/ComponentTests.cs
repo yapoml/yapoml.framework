@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using Yapoml.Framework.Workspace.Parsers;
 using Yapoml.Framework.Workspace;
+using System.Linq;
 
 namespace Yapoml.Framewok.Test.Workspace
 {
@@ -54,6 +55,45 @@ by: qwe
 
             var component = gc.Components[0];
             component.Name.Should().Be("my_component");
+        }
+
+        [Test]
+        public void Component_Segment()
+        {
+            File.WriteAllText("my_component.pc.yaml", @"
+by: qwe {param1}
+"
+                );
+
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser);
+
+            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.pc.yaml"));
+
+            var component = gc.Components[0];
+            component.By.Should().NotBeNull();
+            component.By.Value.Should().Be("qwe {param1}");
+            component.By.Segments.Should().HaveCount(1);
+            component.By.Segments.First().Should().Be("param1");
+        }
+
+        [Test]
+        public void Component_Segments()
+        {
+            File.WriteAllText("my_component.pc.yaml", @"
+by: qwe {param1} {param2}
+"
+                );
+
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser);
+
+            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.pc.yaml"));
+
+            var component = gc.Components[0];
+            component.By.Should().NotBeNull();
+            component.By.Value.Should().Be("qwe {param1} {param2}");
+            component.By.Segments.Should().HaveCount(2);
+            component.By.Segments[0].Should().Be("param1");
+            component.By.Segments[1].Should().Be("param2");
         }
     }
 }

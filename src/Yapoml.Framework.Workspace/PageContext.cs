@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using Yapoml.Framework.Workspace.Parsers.Yaml.Pocos;
+using Yapoml.Framework.Workspace.Services;
 
 namespace Yapoml.Framework.Workspace
 {
@@ -59,7 +59,7 @@ namespace Yapoml.Framework.Workspace
                 Path = path;
                 Params = queryParams;
 
-                Segments = ParseSegments(path);
+                Segments = new SegmentsParser().ParseSegments(path);
             }
 
             public string Path { get; }
@@ -67,26 +67,6 @@ namespace Yapoml.Framework.Workspace
             public IList<string> Segments { get; }
 
             public IList<string> Params { get; }
-
-            private IList<string> ParseSegments(string path)
-            {
-                // todo: performance, don't use regex for simple searching for {segment}
-                var matches = Regex.Matches(path, "{(.*?)}");
-
-                List<string> segments = null;
-
-                if (matches.Count > 0)
-                {
-                    segments = new List<string>();
-
-                    foreach (Match match in matches)
-                    {
-                        segments.Add(match.Groups[1].Value);
-                    }
-                }
-
-                return segments;
-            }
 
             public static UrlContext FromUrl(Url urlModel)
             {

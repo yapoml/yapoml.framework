@@ -72,5 +72,29 @@ url:
             var userIdSegment = url.Segments[1];
             userIdSegment.Should().Be("userId");
         }
+
+        [Test]
+        public void Parse_Pages()
+        {
+            File.WriteAllText("my_page.po.yaml", @"
+C1:
+  by: qwe
+
+---
+
+C2:
+  by: asd
+"
+                );
+
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser);
+
+            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.po.yaml"));
+
+            gc.Pages.Should().HaveCount(2);
+
+            gc.Pages[0].Name.Should().Be("my_page");
+            gc.Pages[1].Name.Should().Be("my_page_1");
+        }
     }
 }

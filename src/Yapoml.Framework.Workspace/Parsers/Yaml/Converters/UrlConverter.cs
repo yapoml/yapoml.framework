@@ -22,10 +22,8 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
             {
                 url = new Url { Path = scalar.Value };
             }
-            else
+            else if (parser.TryConsume<MappingStart>(out _))
             {
-                parser.TryConsume<MappingStart>(out _);
-
                 while (!parser.TryConsume<MappingEnd>(out _))
                 {
                     if (parser.TryConsume<Scalar>(out var urlProperty))
@@ -61,12 +59,12 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
                             parser.SkipThisAndNestedEvents();
                         }
                     }
-
-
-                    //parser.SkipThisAndNestedEvents();
                 }
             }
-
+            else
+            {
+                parser.SkipThisAndNestedEvents();
+            }
             return url;
         }
 

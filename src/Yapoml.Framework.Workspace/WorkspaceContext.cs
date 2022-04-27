@@ -33,28 +33,40 @@ namespace Yapoml.Framework.Workspace
 
             if (filePath.ToLowerInvariant().EndsWith(".po.yaml"))
             {
-                var page = Parser.ParsePage(filePath);
-                var fileName = Path.GetFileName(filePath);
-                var pageName = fileName.Substring(0, fileName.Length - ".po.yaml".Length);
+                var pages = Parser.ParsePages(filePath);
 
-                PageContext pageContext;
-
-                if (space == null)
+                for (int i = 0; i < pages.Count; i++)
                 {
-                    pageContext = new PageContext(pageName, this, null, page);
+                    var page = pages[i];
 
-                    Pages.Add(pageContext);
-                }
-                else
-                {
-                    pageContext = new PageContext(pageName, this, space, page);
+                    var fileName = Path.GetFileName(filePath);
+                    var pageName = fileName.Substring(0, fileName.Length - ".po.yaml".Length);
 
-                    space.Pages.Add(pageContext);
-                }
+                    // adjust page family
+                    if (i != 0)
+                    {
+                        pageName = $"{pageName}_{i}";
+                    }
 
-                if (page.BasePage != null)
-                {
-                    _inheritedPages.Add(pageContext, page.BasePage);
+                    PageContext pageContext;
+
+                    if (space == null)
+                    {
+                        pageContext = new PageContext(pageName, this, null, page);
+
+                        Pages.Add(pageContext);
+                    }
+                    else
+                    {
+                        pageContext = new PageContext(pageName, this, space, page);
+
+                        space.Pages.Add(pageContext);
+                    }
+
+                    if (page.BasePage != null)
+                    {
+                        _inheritedPages.Add(pageContext, page.BasePage);
+                    }
                 }
             }
             else if (filePath.ToLowerInvariant().EndsWith(".pc.yaml"))

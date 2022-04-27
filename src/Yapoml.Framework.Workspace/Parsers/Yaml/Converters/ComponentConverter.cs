@@ -47,7 +47,15 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
                             component.Components.Add(innerComponent);
                         }
                     }
+                    else
+                    {
+                        parser.SkipThisAndNestedEvents();
+                    }
                 }
+            }
+            else
+            {
+                parser.SkipThisAndNestedEvents();
             }
 
             return component;

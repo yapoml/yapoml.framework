@@ -48,6 +48,10 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
                         page.Components.Add(component);
                     }
                 }
+                else
+                {
+                    parser.SkipThisAndNestedEvents();
+                }
             }
 
             return page;

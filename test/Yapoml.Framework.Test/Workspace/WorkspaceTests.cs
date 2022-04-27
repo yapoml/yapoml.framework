@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using Yapoml.Framework.Workspace.Parsers;
 using Yapoml.Framework.Workspace;
+using System.Collections.Generic;
 
 namespace Yapoml.Framewok.Test.Workspace
 {
@@ -16,7 +17,7 @@ namespace Yapoml.Framewok.Test.Workspace
         public void SetUp()
         {
             _parser = new Mock<IWorkspaceParser>();
-            _parser.Setup((cp) => cp.ParsePage(It.IsAny<string>())).Returns(new Framework.Workspace.Parsers.Yaml.Pocos.Page());
+            _parser.Setup((cp) => cp.ParsePages(It.IsAny<string>())).Returns(new List<Framework.Workspace.Parsers.Yaml.Pocos.Page> { new Framework.Workspace.Parsers.Yaml.Pocos.Page() });
             _parser.Setup((cp) => cp.ParseComponent(It.IsAny<string>())).Returns(new Framework.Workspace.Parsers.Yaml.Pocos.Component());
         }
 

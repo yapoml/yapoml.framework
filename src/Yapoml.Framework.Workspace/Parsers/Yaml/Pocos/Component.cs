@@ -8,6 +8,8 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Pocos
 
         public By By { get; set; }
 
+        public string Ref { get; set; }
+
         public IList<Component> Components { get; set; }
     }
 }

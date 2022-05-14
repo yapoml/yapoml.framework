@@ -20,6 +20,7 @@ by: abc
             component.By.Should().NotBeNull();
             component.By.Method.Should().Be(By.ByMethod.None);
             component.By.Value.Should().Be("abc");
+            component.Ref.Should().BeNull();
         }
 
         [Test]
@@ -43,6 +44,17 @@ Component3: { by: c3 }
             nested2.Name.Should().Be("Component2");
             var nested3 = nestedComponents[1];
             nested3.Name.Should().Be("Component3");
+        }
+
+        [Test]
+        public void Should_Parse_Ref()
+        {
+            var content = @"
+ref: abc
+";
+            var component = _parser.Parse<Component>(content);
+
+            component.Ref.Should().Be("abc");
         }
     }
 }

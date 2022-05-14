@@ -96,6 +96,43 @@ extends: mybasepage
         }
 
         [Test]
+        public void Should_Resolve_ReferencedComponent_InPage()
+        {
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", new WorkspaceParser());
+
+            File.WriteAllText("MyPage.po.yaml", @"
+C1: qwe
+C2:
+  ref: C1
+");
+            gc.AddFile(Environment.CurrentDirectory + "/MyPage.po.yaml");
+
+            gc.ResolveReferences();
+
+            gc.Pages[0].Components[1].ReferencedComponent.Should().BeSameAs(gc.Pages[0].Components[0]);
+        }
+
+        [Test]
+        public void Should_Resolve_ReferencedComponent_InSpace()
+        {
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", new WorkspaceParser());
+
+            File.WriteAllText("MyComponent.pc.yaml", @"
+");
+            gc.AddFile(Environment.CurrentDirectory + "/MyComponent.pc.yaml");
+
+            File.WriteAllText("MyPage.po.yaml", @"
+C2:
+  ref: MyComponent
+");
+            gc.AddFile(Environment.CurrentDirectory + "/MyPage.po.yaml");
+
+            gc.ResolveReferences();
+
+            gc.Pages[0].Components[0].ReferencedComponent.Should().BeSameAs(gc.Components[0]);
+        }
+
+        [Test]
         public void Should_Throw_Resolve_Inheritance_IfNotFound()
         {
             var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", new WorkspaceParser());
@@ -108,6 +145,22 @@ base: mybasepage
 
             Action act = () => gc.ResolveReferences();
             act.Should().Throw<Exception>().And.Message.Should().Contain("MyPage");
+        }
+
+        [Test]
+        public void Should_Throw_Resolve_References_IfNotFound()
+        {
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", new WorkspaceParser());
+
+            File.WriteAllText("MyPage.po.yaml", @"
+MyComponent:
+  ref: UnknownComponent
+");
+
+            gc.AddFile(Environment.CurrentDirectory + "/MyPage.po.yaml");
+
+            Action act = () => gc.ResolveReferences();
+            act.Should().Throw<Exception>().And.Message.Should().Contain("UnknownComponent");
         }
 
         [Test]

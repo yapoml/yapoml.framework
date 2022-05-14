@@ -41,6 +41,11 @@ namespace Yapoml.Framework.Workspace
                     Components.Add(new ComponentContext(nestedComponent.Name, workspace, space, nestedComponent));
                 }
             }
+
+            if (component.Ref != null)
+            {
+                ReferencedComponentName = component.Ref;
+            }
         }
 
         public WorkspaceContext Workspace { get; }
@@ -52,6 +57,10 @@ namespace Yapoml.Framework.Workspace
         public string Namespace { get; }
 
         public ByContext By { get; }
+
+        public string ReferencedComponentName { get; }
+
+        public ComponentContext ReferencedComponent { get; set; }
 
         public bool IsPlural
         {

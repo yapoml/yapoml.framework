@@ -90,13 +90,13 @@ namespace Yapoml.Framework.Workspace
 
                 if (space == null)
                 {
-                    componentContext = new ComponentContext(componentName, this, null, null, component);
+                    componentContext = new ComponentContext(componentName, this, null, null, null, component);
 
                     Components.Add(componentContext);
                 }
                 else
                 {
-                    componentContext = new ComponentContext(componentName, this, space, null, component);
+                    componentContext = new ComponentContext(componentName, this, space, null, null, component);
 
                     space.Components.Add(componentContext);
                 }

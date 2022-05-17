@@ -240,6 +240,12 @@ namespace Yapoml.Framework.Workspace
                 {
                     throw new Exception($"Cannot resolve referenced '{referencingComponent.Value}' component for '{referencingComponent.Key.Name}'.");
                 }
+
+                // implicitly use By from referenced component
+                if (referencingComponent.Key.By == null)
+                {
+                    referencingComponent.Key.By = referencingComponent.Key.ReferencedComponent.By;
+                }
             }
         }
 

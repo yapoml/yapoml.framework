@@ -56,7 +56,7 @@ namespace Yapoml.Framework.Workspace
 
         public string Namespace { get; }
 
-        public ByContext By { get; }
+        public ByContext By { get; set; }
 
         public string ReferencedComponentName { get; }
 

@@ -27,7 +27,7 @@ namespace Yapoml.Framework.Workspace
 
             if (parentComponent != null)
             {
-                Namespace = $"{parentComponent.Namespace}.{parentComponent.SingularName}";
+                Namespace = $"{parentComponent.Namespace}.{parentComponent.SingularName}Component";
             }
             else if (page != null)
             {

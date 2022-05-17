@@ -27,11 +27,11 @@ namespace Yapoml.Framework.Workspace
 
             if (parentComponent != null)
             {
-                Namespace = $"{parentComponent.Namespace}.{parentComponent.SingularName}Component";
+                Namespace = $"{parentComponent.Namespace}.{parentComponent.SingularName}";
             }
             else if (page != null)
             {
-                Namespace = $"{page.Namespace}.{page.Name}Page";
+                Namespace = $"{page.Namespace}.{page.Name}";
             }
             else if (space != null)
             {

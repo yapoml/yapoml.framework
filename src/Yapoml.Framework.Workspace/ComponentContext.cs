@@ -6,7 +6,7 @@ namespace Yapoml.Framework.Workspace
 {
     public class ComponentContext
     {
-        public ComponentContext(string name, WorkspaceContext workspace, SpaceContext space, Component component)
+        public ComponentContext(string name, WorkspaceContext workspace, SpaceContext space, ComponentContext parentComponent, Component component)
         {
             Workspace = workspace;
             Space = space;
@@ -25,7 +25,12 @@ namespace Yapoml.Framework.Workspace
                 By = new ByContext(component.By.Method, component.By.Value);
             }
 
-            if (space != null)
+            if (parentComponent != null)
+            {
+                Namespace = $"{parentComponent.Namespace}.{parentComponent.SingularName}";
+
+            }
+            else if (space != null)
             {
                 Namespace = space.Namespace;
             }
@@ -38,7 +43,7 @@ namespace Yapoml.Framework.Workspace
             {
                 foreach (var nestedComponent in component.Components)
                 {
-                    Components.Add(new ComponentContext(nestedComponent.Name, workspace, space, nestedComponent));
+                    Components.Add(new ComponentContext(nestedComponent.Name, workspace, space, this, nestedComponent));
                 }
             }
 

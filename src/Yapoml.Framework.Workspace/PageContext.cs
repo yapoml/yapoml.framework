@@ -30,7 +30,7 @@ namespace Yapoml.Framework.Workspace
             {
                 foreach (var component in pageModel.Components)
                 {
-                    Components.Add(new ComponentContext(component.Name, workspace, space, component));
+                    Components.Add(new ComponentContext(component.Name, workspace, space, null, component));
                 }
             }
         }

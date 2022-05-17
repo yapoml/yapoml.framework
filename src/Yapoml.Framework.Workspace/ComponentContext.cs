@@ -31,7 +31,7 @@ namespace Yapoml.Framework.Workspace
             }
             else if (page != null)
             {
-                Namespace = $"{page.Namespace}Page";
+                Namespace = $"{page.Namespace}.{page.Name}Page";
             }
             else if (space != null)
             {

@@ -10,6 +10,8 @@ namespace Yapoml.Framework.Workspace
         {
             Name = NormalizeName(name);
 
+            Workspace = workspace;
+
             if (space != null)
             {
                 Namespace = $"{space.Namespace}";
@@ -34,6 +36,8 @@ namespace Yapoml.Framework.Workspace
                 }
             }
         }
+
+        public WorkspaceContext Workspace { get; }
 
         public string Name { get; }
 

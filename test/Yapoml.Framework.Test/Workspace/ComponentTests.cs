@@ -15,17 +15,14 @@ namespace Yapoml.Framewok.Test.Workspace
         [Test]
         public void Parse_Component()
         {
-            File.WriteAllText("my_component.pc.yaml", @"
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser);
+
+            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.pc.yaml"), @"
 by: qwe
 
 c2:
   by: asd
-"
-                );
-
-            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser);
-
-            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.pc.yaml"));
+");
 
             gc.Spaces.Should().BeEmpty();
 
@@ -40,14 +37,11 @@ c2:
         [Test]
         public void Component_Name_Should_Be_Optional()
         {
-            File.WriteAllText("my_component.pc.yaml", @"
-by: qwe
-"
-                );
-
             var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser);
 
-            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.pc.yaml"));
+            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.pc.yaml"), @"
+by: qwe
+");
 
             gc.Spaces.Should().BeEmpty();
 
@@ -60,14 +54,11 @@ by: qwe
         [Test]
         public void Component_Segment()
         {
-            File.WriteAllText("my_component.pc.yaml", @"
-by: qwe {param1}
-"
-                );
-
             var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser);
 
-            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.pc.yaml"));
+            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.pc.yaml"), @"
+by: qwe {param1}
+");
 
             var component = gc.Components[0];
             component.By.Should().NotBeNull();
@@ -79,14 +70,11 @@ by: qwe {param1}
         [Test]
         public void Component_Segments()
         {
-            File.WriteAllText("my_component.pc.yaml", @"
-by: qwe {param1} {param2}
-"
-                );
-
             var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser);
 
-            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.pc.yaml"));
+            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.pc.yaml"), @"
+by: qwe {param1} {param2}
+");
 
             var component = gc.Components[0];
             component.By.Should().NotBeNull();

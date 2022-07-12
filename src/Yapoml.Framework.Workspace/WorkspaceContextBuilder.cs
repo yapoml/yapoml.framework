@@ -9,7 +9,7 @@ namespace Yapoml.Framework.Workspace
         private readonly string _rootNamespace;
         private readonly IWorkspaceParser _parser;
 
-        private readonly IList<string> _files = new List<string>();
+        private readonly IList<FileInfo> _files = new List<FileInfo>();
 
         public WorkspaceContextBuilder(string rootDirectoryPath, string rootNamespace, IWorkspaceParser parser)
         {
@@ -18,9 +18,9 @@ namespace Yapoml.Framework.Workspace
             _parser = parser;
         }
 
-        public WorkspaceContextBuilder AddFile(string filePath)
+        public WorkspaceContextBuilder AddFile(string filePath, string fileContent)
         {
-            _files.Add(filePath);
+            _files.Add(new FileInfo(filePath, fileContent));
 
             return this;
         }
@@ -29,14 +29,27 @@ namespace Yapoml.Framework.Workspace
         {
             var globalContext = new WorkspaceContext(_rootDirectoryPath, _rootNamespace, _parser);
 
-            foreach (var filePath in _files)
+            foreach (var file in _files)
             {
-                globalContext.AddFile(filePath);
+                globalContext.AddFile(file.Path, file.Content);
             }
 
             globalContext.ResolveReferences();
 
             return globalContext;
+        }
+
+        struct FileInfo
+        {
+            public FileInfo(string path, string content)
+            {
+                Path = path;
+                Content = content;
+            }
+
+            public string Path { get; }
+
+            public string Content { get; }
         }
     }
 }

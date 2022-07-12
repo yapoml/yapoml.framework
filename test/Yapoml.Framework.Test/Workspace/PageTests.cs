@@ -14,15 +14,12 @@ namespace Yapoml.Framewok.Test.Workspace
         [Test]
         public void Parse_Page()
         {
-            File.WriteAllText("my_page.po.yaml", @"
-C1:
-  by: qwe
-"
-                );
-
             var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser);
 
-            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.po.yaml"));
+            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.po.yaml"), @"
+C1:
+  by: qwe
+");
 
             gc.Spaces.Should().BeEmpty();
 
@@ -39,18 +36,15 @@ C1:
         [Test]
         public void Parse_Page_Url()
         {
-            File.WriteAllText("my_page.po.yaml", @"
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser);
+
+            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.po.yaml"), @"
 url:
   path: projects/{projectId}/users/{userId}/roles
   params:
     - count
     - offset
-"
-                );
-
-            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser);
-
-            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.po.yaml"));
+");
 
             var url = gc.Pages[0].Url;
 
@@ -76,7 +70,9 @@ url:
         [Test]
         public void Parse_Pages()
         {
-            File.WriteAllText("my_page.po.yaml", @"
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser);
+
+            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.po.yaml"), @"
 C1:
   by: qwe
 
@@ -84,12 +80,7 @@ C1:
 
 C2:
   by: asd
-"
-                );
-
-            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser);
-
-            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.po.yaml"));
+");
 
             gc.Pages.Should().HaveCount(2);
 

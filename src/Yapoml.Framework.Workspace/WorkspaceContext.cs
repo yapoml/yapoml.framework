@@ -27,13 +27,13 @@ namespace Yapoml.Framework.Workspace
 
         public IList<ComponentContext> Components { get; } = new List<ComponentContext>();
 
-        public void AddFile(string filePath)
+        public void AddFile(string filePath, string content)
         {
             var space = CreateOrAddSpaces(filePath);
 
             if (filePath.ToLowerInvariant().EndsWith(".po.yaml"))
             {
-                var pages = Parser.ParsePages(filePath);
+                var pages = Parser.ParsePages(content);
 
                 for (int i = 0; i < pages.Count; i++)
                 {
@@ -80,7 +80,7 @@ namespace Yapoml.Framework.Workspace
             }
             else if (filePath.ToLowerInvariant().EndsWith(".pc.yaml"))
             {
-                var component = Parser.ParseComponent(filePath);
+                var component = Parser.ParseComponent(content);
 
                 var fileName = Path.GetFileName(filePath);
 

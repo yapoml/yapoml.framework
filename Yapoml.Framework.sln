@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yapoml.Framework.Workspace"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yapoml.Framewok.Test", "test\Yapoml.Framework.Test\Yapoml.Framewok.Test.csproj", "{6D4F312A-CFBE-4BB0-856B-018626116C52}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yapoml.Framework.Benchmark", "test\Yapoml.Framework.Benchmark\Yapoml.Framework.Benchmark.csproj", "{18DD6755-F67D-4246-AF00-D3B1FBCCF8ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,12 +59,25 @@ Global
 		{6D4F312A-CFBE-4BB0-856B-018626116C52}.Release|x64.Build.0 = Release|Any CPU
 		{6D4F312A-CFBE-4BB0-856B-018626116C52}.Release|x86.ActiveCfg = Release|Any CPU
 		{6D4F312A-CFBE-4BB0-856B-018626116C52}.Release|x86.Build.0 = Release|Any CPU
+		{18DD6755-F67D-4246-AF00-D3B1FBCCF8ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18DD6755-F67D-4246-AF00-D3B1FBCCF8ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18DD6755-F67D-4246-AF00-D3B1FBCCF8ED}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{18DD6755-F67D-4246-AF00-D3B1FBCCF8ED}.Debug|x64.Build.0 = Debug|Any CPU
+		{18DD6755-F67D-4246-AF00-D3B1FBCCF8ED}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{18DD6755-F67D-4246-AF00-D3B1FBCCF8ED}.Debug|x86.Build.0 = Debug|Any CPU
+		{18DD6755-F67D-4246-AF00-D3B1FBCCF8ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18DD6755-F67D-4246-AF00-D3B1FBCCF8ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18DD6755-F67D-4246-AF00-D3B1FBCCF8ED}.Release|x64.ActiveCfg = Release|Any CPU
+		{18DD6755-F67D-4246-AF00-D3B1FBCCF8ED}.Release|x64.Build.0 = Release|Any CPU
+		{18DD6755-F67D-4246-AF00-D3B1FBCCF8ED}.Release|x86.ActiveCfg = Release|Any CPU
+		{18DD6755-F67D-4246-AF00-D3B1FBCCF8ED}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6D4F312A-CFBE-4BB0-856B-018626116C52} = {2667BE45-044D-4D64-80FE-6EA2EA9DC2B6}
+		{18DD6755-F67D-4246-AF00-D3B1FBCCF8ED} = {2667BE45-044D-4D64-80FE-6EA2EA9DC2B6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BE5EBFB9-D0AA-48E8-91D2-ED421E7164C0}

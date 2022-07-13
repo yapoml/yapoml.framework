@@ -32,6 +32,8 @@ jobs:
       with:
         name: nupkgs
         path: '**/*.nupkg'
+    - name: Benchmark
+      run: dotnet run -c Release --project test/Yapoml.Framework.Benchmark --no-build
         
   myget:
     if: github.ref == 'refs/heads/develop'

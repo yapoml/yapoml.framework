@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace Yapoml.Framework.Workspace.Services
 {
@@ -7,18 +6,26 @@ namespace Yapoml.Framework.Workspace.Services
     {
         public IList<string> ParseSegments(string value)
         {
-            // todo: performance, don't use regex for simple searching for {segment}
-            var matches = Regex.Matches(value, "{(.*?)}");
-
             List<string> segments = null;
 
-            if (matches.Count > 0)
-            {
-                segments = new List<string>();
+            int currentOpeningPosition = -1;
 
-                foreach (Match match in matches)
+            for (int i = 0; i < value.Length; i++)
+            {
+                if (value[i] == '{')
                 {
-                    segments.Add(match.Groups[1].Value);
+                    currentOpeningPosition = i;
+                }
+                else if (value[i] == '}' && currentOpeningPosition != -1)
+                {
+                    if (segments is null)
+                    {
+                        segments = new List<string>();
+                    }
+
+                    segments.Add(value.Substring(currentOpeningPosition + 1, i - currentOpeningPosition - 1));
+
+                    currentOpeningPosition = -1;
                 }
             }
 

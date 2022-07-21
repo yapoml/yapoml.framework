@@ -1,9 +1,15 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
+using System.Diagnostics;
 using System.Text;
 using Yapoml.Framework.Workspace.Parsers;
 
 BenchmarkRunner.Run<BenchmarkFixture>();
+
+//var sw = Stopwatch.StartNew();
+//var fixture = new BenchmarkFixture();
+//fixture.Test500();
+//Console.WriteLine(sw.Elapsed);
 
 [MemoryDiagnoser]
 public class BenchmarkFixture
@@ -24,7 +30,7 @@ public class BenchmarkFixture
                 stringBuilder.AppendLine($"{new string(' ', (i + 1) * 2 + 2)}by: ./qwe");
             }
         }
-        
+
         _pageContent = stringBuilder.ToString();
     }
 
@@ -33,7 +39,11 @@ public class BenchmarkFixture
     {
         var builder = new Yapoml.Framework.Workspace.WorkspaceContextBuilder(Environment.CurrentDirectory, "A.B", new WorkspaceParser());
 
-        builder.AddFile(Environment.CurrentDirectory + "/MyPage.po.yaml", _pageContent);
+        for (int i = 0; i < 100; i++)
+        {
+            builder.AddFile(Environment.CurrentDirectory + $"/MyPage{i}.po.yaml", _pageContent);
+        }
+
 
         builder.Build();
     }

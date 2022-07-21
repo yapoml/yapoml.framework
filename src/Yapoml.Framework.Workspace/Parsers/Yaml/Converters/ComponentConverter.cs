@@ -9,7 +9,7 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
 {
     class ComponentConverter : IYamlTypeConverter
     {
-        private ByConverter _byConverter = new ByConverter();
+        private readonly ByConverter _byConverter = new ByConverter();
 
         public bool Accepts(Type type)
         {

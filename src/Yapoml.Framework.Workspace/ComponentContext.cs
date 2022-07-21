@@ -109,7 +109,7 @@ namespace Yapoml.Framework.Workspace
             {
                 Method = method;
                 Value = value;
-                Segments = new SegmentsParser().ParseSegments(value);
+                Segments = SegmentsParser.ParseSegments(value);
             }
 
             public By.ByMethod Method { get; }

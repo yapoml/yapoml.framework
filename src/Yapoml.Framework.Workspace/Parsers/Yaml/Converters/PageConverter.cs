@@ -9,9 +9,9 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
 {
     class PageConverter : IYamlTypeConverter
     {
-        private ComponentConverter _componentConverter = new ComponentConverter();
+        private readonly ComponentConverter _componentConverter = new ComponentConverter();
 
-        private UrlConverter _urlConverter = new UrlConverter();
+        private readonly UrlConverter _urlConverter = new UrlConverter();
 
         public bool Accepts(Type type)
         {

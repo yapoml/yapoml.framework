@@ -2,9 +2,9 @@
 
 namespace Yapoml.Framework.Workspace.Services
 {
-    internal class SegmentsParser
+    internal static class SegmentsParser
     {
-        public IList<string> ParseSegments(string value)
+        public static IList<string> ParseSegments(string value)
         {
             List<string> segments = null;
 

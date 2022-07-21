@@ -63,7 +63,7 @@ namespace Yapoml.Framework.Workspace
                 Path = path;
                 Params = queryParams;
 
-                Segments = new SegmentsParser().ParseSegments(path);
+                Segments = SegmentsParser.ParseSegments(path);
             }
 
             public string Path { get; }

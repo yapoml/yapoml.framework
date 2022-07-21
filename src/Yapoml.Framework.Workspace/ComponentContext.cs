@@ -70,23 +70,34 @@ namespace Yapoml.Framework.Workspace
 
         public ComponentContext ReferencedComponent { get; set; }
 
+        private bool? _isPlural;
+
         public bool IsPlural
         {
             get
             {
-                var pluralityService = new Services.PluralizationService();
 
-                return pluralityService.IsPlural(Name);
+                if (!_isPlural.HasValue)
+                {
+                    _isPlural = new Services.PluralizationService().IsPlural(Name);
+                }
+
+                return _isPlural.Value;
             }
         }
+
+        private string _singularName;
 
         public string SingularName
         {
             get
             {
-                var pluralityService = new Services.PluralizationService();
+                if (_singularName is null)
+                {
+                    _singularName = new Services.PluralizationService().Singularize(Name);
+                }
 
-                return pluralityService.Singularize(Name);
+                return _singularName;
             }
         }
 

@@ -25,35 +25,48 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml
 
         public T Parse<T>(string content)
         {
-            var parser = new Parser(new StringReader(content));
-
-            return Parse<T>(parser);
+            using (var stringReader = new StringReader(content))
+            {
+                return Parse<T>(GetParser(stringReader));
+            }
         }
 
         public IList<T> ParseMany<T>(string content)
         {
             var results = new List<T>();
 
-            var parser = new Parser(new StringReader(content));
-
-            parser.Consume<YamlDotNet.Core.Events.StreamStart>();
-
-            while (parser.TryConsume<YamlDotNet.Core.Events.DocumentStart>(out _))
+            using (var stringReader = new StringReader(content))
             {
-                while (!parser.TryConsume<YamlDotNet.Core.Events.DocumentEnd>(out _))
-                {
-                    var result = Parse<T>(parser);
+                var parser = GetParser(stringReader);
 
-                    results.Add(result);
+                parser.Consume<YamlDotNet.Core.Events.StreamStart>();
+
+                while (parser.TryConsume<YamlDotNet.Core.Events.DocumentStart>(out _))
+                {
+                    while (!parser.TryConsume<YamlDotNet.Core.Events.DocumentEnd>(out _))
+                    {
+                        var result = Parse<T>(parser);
+
+                        results.Add(result);
+                    }
                 }
+
+                parser.Consume<YamlDotNet.Core.Events.StreamEnd>();
+
+                // resolve empty content as default T
+                if (results.Count == 0) results.Add(Activator.CreateInstance<T>());
             }
 
-            parser.Consume<YamlDotNet.Core.Events.StreamEnd>();
-
-            // resolve empty content as default T
-            if (results.Count == 0) results.Add(Activator.CreateInstance<T>());
-
             return results;
+        }
+
+        private IParser GetParser(TextReader textReader)
+        {
+            var scanner = new Scanner(textReader, skipComments: true);
+
+            var parser = new Parser(scanner);
+
+            return parser;
         }
 
         private T Parse<T>(IParser parser)

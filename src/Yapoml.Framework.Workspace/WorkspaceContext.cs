@@ -74,6 +74,8 @@ namespace Yapoml.Framework.Workspace
                         foreach (var componentContext in pageContext.Components)
                         {
                             FindReferencingComponents(_referencingComponents, componentContext);
+
+                            FindInheritedComponents(_inheritedComponents, componentContext);
                         }
                     }
                 }
@@ -102,6 +104,8 @@ namespace Yapoml.Framework.Workspace
                 }
 
                 FindReferencingComponents(_referencingComponents, componentContext);
+
+                FindInheritedComponents(_inheritedComponents, componentContext);
             }
         }
 
@@ -117,10 +121,13 @@ namespace Yapoml.Framework.Workspace
         {
             ResolveInheritedPages();
             ResolveReferencingComponents();
+            ResolveInheritedComponents();
         }
 
         private readonly IDictionary<PageContext, string> _inheritedPages = new Dictionary<PageContext, string>();
         private readonly IDictionary<ComponentContext, string> _referencingComponents = new Dictionary<ComponentContext, string>();
+        private readonly IDictionary<ComponentContext, string> _inheritedComponents = new Dictionary<ComponentContext, string>();
+
 
         private void ResolveInheritedPages()
         {
@@ -249,6 +256,58 @@ namespace Yapoml.Framework.Workspace
             }
         }
 
+        private void ResolveInheritedComponents()
+        {
+            // todo: reimplement it to not travel through entire tree again and again
+            foreach (var baseComponent in _inheritedComponents)
+            {
+                baseComponent.Key.BaseComponent = DiscoverComponents(this.Components, baseComponent.Value);
+
+                if (baseComponent.Key.BaseComponent == null)
+                {
+                    if (this.Pages != null)
+                    {
+                        foreach (var pageContext in this.Pages)
+                        {
+                            baseComponent.Key.BaseComponent = DiscoverComponents(pageContext.Components, baseComponent.Value);
+
+                            if (baseComponent.Key.BaseComponent != null)
+                            {
+                                break;
+                            }
+                        }
+                    }
+
+                    if (baseComponent.Key.BaseComponent == null)
+                    {
+                        if (this.Spaces != null)
+                        {
+                            foreach (var space in this.Spaces)
+                            {
+                                baseComponent.Key.BaseComponent = DiscoverSpaceForRefComponent(space, baseComponent.Value);
+
+                                if (baseComponent.Key.BaseComponent != null)
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (baseComponent.Key.BaseComponent == null)
+                {
+                    throw new Exception($"Cannot resolve base '{baseComponent.Value}' component for '{baseComponent.Key.Name}'.");
+                }
+
+                // implicitly use By from base component
+                if (baseComponent.Key.By == null)
+                {
+                    baseComponent.Key.By = baseComponent.Key.BaseComponent.By;
+                }
+            }
+        }
+
         private ComponentContext DiscoverSpaceForRefComponent(SpaceContext space, string refName)
         {
             var component = DiscoverComponents(space.Components, refName);
@@ -308,6 +367,22 @@ namespace Yapoml.Framework.Workspace
         private bool EvaluateComponent(ComponentContext component, string refName)
         {
             return component.Name.Equals(refName, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private void FindInheritedComponents(IDictionary<ComponentContext, string> inheritedComponents, ComponentContext component)
+        {
+            if (component.BaseComponentName != null)
+            {
+                inheritedComponents.Add(component, component.BaseComponentName);
+            }
+
+            if (component.Components != null)
+            {
+                foreach (var c in component.Components)
+                {
+                    FindInheritedComponents(inheritedComponents, c);
+                }
+            }
         }
 
         private SpaceContext CreateOrAddSpaces(string filePath)

@@ -40,6 +40,10 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
                         {
                             component.Ref = parser.Consume<Scalar>().Value;
                         }
+                        else if (scalar.Value.ToLower() == "base" || scalar.Value.ToLower() == "extends")
+                        {
+                            component.BaseComponent = parser.Consume<Scalar>().Value;
+                        }
                         else
                         {
                             var componentName = scalar.Value;

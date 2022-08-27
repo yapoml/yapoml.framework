@@ -54,6 +54,11 @@ namespace Yapoml.Framework.Workspace
             {
                 ReferencedComponentName = component.Ref;
             }
+
+            if (component.BaseComponent != null)
+            {
+                BaseComponentName = component.BaseComponent;
+            }
         }
 
         public WorkspaceContext Workspace { get; }
@@ -70,6 +75,10 @@ namespace Yapoml.Framework.Workspace
 
         public ComponentContext ReferencedComponent { get; set; }
 
+        public string BaseComponentName { get; }
+
+        public ComponentContext BaseComponent { get; set; }
+
         private bool? _isPlural;
 
         public bool IsPlural
@@ -79,7 +88,7 @@ namespace Yapoml.Framework.Workspace
 
                 if (!_isPlural.HasValue)
                 {
-                    _isPlural = new Services.PluralizationService().IsPlural(Name);
+                    _isPlural = new PluralizationService().IsPlural(Name);
                 }
 
                 return _isPlural.Value;
@@ -94,7 +103,7 @@ namespace Yapoml.Framework.Workspace
             {
                 if (_singularName is null)
                 {
-                    _singularName = new Services.PluralizationService().Singularize(Name);
+                    _singularName = new PluralizationService().Singularize(Name);
                 }
 
                 return _singularName;

@@ -2,7 +2,6 @@
 using Moq;
 using NUnit.Framework;
 using System;
-using System.IO;
 using Yapoml.Framework.Workspace.Parsers;
 using Yapoml.Framework.Workspace;
 using System.Collections.Generic;
@@ -73,11 +72,15 @@ namespace Yapoml.Framewok.Test.Workspace
             var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", new WorkspaceParser());
 
             gc.AddFile(Environment.CurrentDirectory + "/MyBasePage.po.yaml", @"
-
+MyBaseComp: ./a
 ");
 
             gc.AddFile(Environment.CurrentDirectory + "/MyPage.po.yaml", @"
 base: mybasepage
+
+MyComp:
+  base: MyBaseComp
+  by: ./b
 ");
 
             gc.AddFile(Environment.CurrentDirectory + "/MySecondPage.po.yaml", @"
@@ -88,6 +91,8 @@ extends: mybasepage
 
             gc.Pages[1].BasePage.Should().Be(gc.Pages[0]);
             gc.Pages[2].BasePage.Should().Be(gc.Pages[0]);
+
+            gc.Pages[1].Components[0].BaseComponent.Should().Be(gc.Pages[0].Components[0]);
         }
 
         [Test]

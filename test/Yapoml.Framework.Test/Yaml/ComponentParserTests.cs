@@ -56,5 +56,20 @@ ref: abc
 
             component.Ref.Should().Be("abc");
         }
+
+        [Test]
+        [TestCase("base")]
+        [TestCase("Base")]
+        [TestCase("extends")]
+        [TestCase("Extends")]
+        public void Should_Parse_Base(string keyword)
+        {
+            var content = @$"
+{keyword}: abc
+";
+            var component = _parser.Parse<Component>(content);
+
+            component.BaseComponent.Should().Be("abc");
+        }
     }
 }

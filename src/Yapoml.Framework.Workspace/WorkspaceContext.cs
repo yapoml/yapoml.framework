@@ -265,6 +265,22 @@ namespace Yapoml.Framework.Workspace
 
                 if (baseComponent.Key.BaseComponent == null)
                 {
+                    if (this.Spaces != null)
+                    {
+                        foreach (var space in this.Spaces)
+                        {
+                            baseComponent.Key.BaseComponent = DiscoverSpaceForRefComponent(space, baseComponent.Value);
+
+                            if (baseComponent.Key.BaseComponent != null)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (baseComponent.Key.BaseComponent == null)
+                {
                     if (this.Pages != null)
                     {
                         foreach (var pageContext in this.Pages)
@@ -274,22 +290,6 @@ namespace Yapoml.Framework.Workspace
                             if (baseComponent.Key.BaseComponent != null)
                             {
                                 break;
-                            }
-                        }
-                    }
-
-                    if (baseComponent.Key.BaseComponent == null)
-                    {
-                        if (this.Spaces != null)
-                        {
-                            foreach (var space in this.Spaces)
-                            {
-                                baseComponent.Key.BaseComponent = DiscoverSpaceForRefComponent(space, baseComponent.Value);
-
-                                if (baseComponent.Key.BaseComponent != null)
-                                {
-                                    break;
-                                }
                             }
                         }
                     }
@@ -334,6 +334,11 @@ namespace Yapoml.Framework.Workspace
                         foreach (var s in space.Spaces)
                         {
                             component = DiscoverSpaceForRefComponent(s, refName);
+
+                            if (component != null)
+                            {
+                                break;
+                            }
                         }
                     }
                 }

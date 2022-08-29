@@ -362,7 +362,12 @@ namespace Yapoml.Framework.Workspace
                 }
                 else
                 {
-                    return DiscoverComponents(component.Components, refName);
+                    var c = DiscoverComponents(component.Components, refName);
+                    
+                    if (c != null)
+                    {
+                        return c;
+                    }
                 }
             }
 

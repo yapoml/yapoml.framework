@@ -41,7 +41,7 @@ c2:
         {
             var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
 
-            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.pc.yaml"), @"
+            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.pc.yml"), @"
 by: qwe
 ");
 

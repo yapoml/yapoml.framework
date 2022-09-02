@@ -40,7 +40,7 @@ C1:
         {
             var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
 
-            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.po.yaml"), @"
+            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.po.yml"), @"
 url:
   path: projects/{projectId}/users/{userId}/roles
   params:

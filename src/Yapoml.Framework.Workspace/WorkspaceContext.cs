@@ -36,7 +36,7 @@ namespace Yapoml.Framework.Workspace
         {
             var space = CreateOrAddSpaces(filePath);
 
-            if (filePath.ToLowerInvariant().EndsWith(".po.yaml"))
+            if (filePath.EndsWith(".po.yaml", StringComparison.OrdinalIgnoreCase) || filePath.EndsWith(".po.yml", StringComparison.OrdinalIgnoreCase))
             {
                 var pages = _parser.ParsePages(content);
 
@@ -44,8 +44,8 @@ namespace Yapoml.Framework.Workspace
                 {
                     var page = pages[i];
 
-                    var fileName = Path.GetFileName(filePath);
-                    var pageName = fileName.Substring(0, fileName.Length - ".po.yaml".Length);
+                    var fileName = Path.GetFileNameWithoutExtension(filePath);
+                    var pageName = fileName.Substring(0, fileName.Length - ".po".Length);
 
                     // adjust page family
                     if (i != 0)
@@ -71,15 +71,15 @@ namespace Yapoml.Framework.Workspace
                     _workspaceReferenceResolver.AppendPage(pageContext);
                 }
             }
-            else if (filePath.ToLowerInvariant().EndsWith(".pc.yaml"))
+            else if (filePath.EndsWith(".pc.yaml", StringComparison.OrdinalIgnoreCase) || filePath.EndsWith(".pc.yml", StringComparison.OrdinalIgnoreCase))
             {
                 var component = _parser.ParseComponent(content);
 
-                var fileName = Path.GetFileName(filePath);
+                var fileName = Path.GetFileNameWithoutExtension(filePath);
 
                 if (string.IsNullOrEmpty(component.Name))
                 {
-                    component.Name = fileName.Substring(0, fileName.Length - ".pc.yaml".Length);
+                    component.Name = fileName.Substring(0, fileName.Length - ".pc".Length);
                 }
 
                 ComponentContext componentContext;

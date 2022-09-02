@@ -3,19 +3,22 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Yapoml.Framework.Workspace.Parsers;
+using Yapoml.Framework.Workspace.Services;
 
 namespace Yapoml.Framework.Workspace
 {
     public class WorkspaceContext
     {
-        public WorkspaceContext(string rootDirectoryPath, string rootNamespace, IWorkspaceParser parser)
+        public WorkspaceContext(string rootDirectoryPath, string rootNamespace, IWorkspaceParser parser, IWorkspaceReferenceResolver workspaceWalker)
         {
             RootDirectoryPath = rootDirectoryPath.Replace("/", "\\").TrimEnd('\\');
             RootNamespace = rootNamespace;
-            Parser = parser;
+            _parser = parser;
+            _workspaceReferenceResolver = workspaceWalker;
         }
 
-        private IWorkspaceParser Parser { get; }
+        private readonly IWorkspaceParser _parser;
+        private readonly IWorkspaceReferenceResolver _workspaceReferenceResolver;
 
         public string RootDirectoryPath { get; }
 
@@ -33,7 +36,7 @@ namespace Yapoml.Framework.Workspace
 
             if (filePath.ToLowerInvariant().EndsWith(".po.yaml"))
             {
-                var pages = Parser.ParsePages(content);
+                var pages = _parser.ParsePages(content);
 
                 for (int i = 0; i < pages.Count; i++)
                 {
@@ -63,26 +66,12 @@ namespace Yapoml.Framework.Workspace
                         space.Pages.Add(pageContext);
                     }
 
-                    if (page.BasePage != null)
-                    {
-                        _inheritedPages.Add(pageContext, page.BasePage);
-                    }
-
-                    // find referencing components
-                    if (pageContext.Components != null)
-                    {
-                        foreach (var componentContext in pageContext.Components)
-                        {
-                            FindReferencingComponents(_referencingComponents, componentContext);
-
-                            FindInheritedComponents(_inheritedComponents, componentContext);
-                        }
-                    }
+                    _workspaceReferenceResolver.AppendPage(pageContext);
                 }
             }
             else if (filePath.ToLowerInvariant().EndsWith(".pc.yaml"))
             {
-                var component = Parser.ParseComponent(content);
+                var component = _parser.ParseComponent(content);
 
                 var fileName = Path.GetFileName(filePath);
 
@@ -103,9 +92,7 @@ namespace Yapoml.Framework.Workspace
                     space.Components.Add(componentContext);
                 }
 
-                FindReferencingComponents(_referencingComponents, componentContext);
-
-                FindInheritedComponents(_inheritedComponents, componentContext);
+                _workspaceReferenceResolver.AppendComponent(componentContext);
             }
         }
 
@@ -119,280 +106,7 @@ namespace Yapoml.Framework.Workspace
 
         public void ResolveReferences()
         {
-            ResolveInheritedPages();
-            ResolveReferencingComponents();
-            ResolveInheritedComponents();
-        }
-
-        private readonly IDictionary<PageContext, string> _inheritedPages = new Dictionary<PageContext, string>();
-        private readonly IDictionary<ComponentContext, string> _referencingComponents = new Dictionary<ComponentContext, string>();
-        private readonly IDictionary<ComponentContext, string> _inheritedComponents = new Dictionary<ComponentContext, string>();
-
-
-        private void ResolveInheritedPages()
-        {
-            foreach (var pageContext in _inheritedPages)
-            {
-                var basePageName = pageContext.Value;
-                var childPage = pageContext.Key;
-
-                if (childPage.ParentSpace != null)
-                {
-                    var basePage = DiscoverSpace(childPage.ParentSpace, basePageName);
-
-                    if (basePage != null)
-                    {
-                        childPage.BasePage = basePage;
-                    }
-                }
-                else
-                {
-                    foreach (var page in Pages)
-                    {
-                        if (EvaluatePage(page, basePageName))
-                        {
-                            childPage.BasePage = page;
-                        }
-                    }
-                }
-
-                if (childPage.BasePage == null)
-                {
-                    throw new Exception($"Cannot resolve '{basePageName}' base page for '{childPage.Name}' page.");
-                }
-            }
-        }
-
-        private PageContext DiscoverSpace(SpaceContext space, string basePageName)
-        {
-            PageContext basePage = null;
-
-            foreach (var page in space.Pages)
-            {
-                if (EvaluatePage(page, basePageName))
-                {
-                    return page;
-                }
-            }
-
-            if (space.ParentSpace != null)
-            {
-                return DiscoverSpace(space.ParentSpace, basePageName);
-            }
-
-            return basePage;
-        }
-
-        private bool EvaluatePage(PageContext page, string basePageName)
-        {
-            return page.Name.Equals(basePageName, StringComparison.OrdinalIgnoreCase);
-        }
-
-        private void FindReferencingComponents(IDictionary<ComponentContext, string> referencingComponents, ComponentContext component)
-        {
-            if (component.ReferencedComponentName != null)
-            {
-                referencingComponents.Add(component, component.ReferencedComponentName);
-            }
-
-            if (component.Components != null)
-            {
-                foreach (var c in component.Components)
-                {
-                    FindReferencingComponents(referencingComponents, c);
-                }
-            }
-        }
-
-        private void ResolveReferencingComponents()
-        {
-            // todo: reimplement it to not travel through entire tree again and again
-            foreach (var referencingComponent in _referencingComponents)
-            {
-                referencingComponent.Key.ReferencedComponent = DiscoverComponents(this.Components, referencingComponent.Value);
-
-                if (referencingComponent.Key.ReferencedComponent == null)
-                {
-                    if (this.Pages != null)
-                    {
-                        foreach (var pageContext in this.Pages)
-                        {
-                            referencingComponent.Key.ReferencedComponent = DiscoverComponents(pageContext.Components, referencingComponent.Value);
-
-                            if (referencingComponent.Key.ReferencedComponent != null)
-                            {
-                                break;
-                            }
-                        }
-                    }
-
-                    if (referencingComponent.Key.ReferencedComponent == null)
-                    {
-                        if (this.Spaces != null)
-                        {
-                            foreach (var space in this.Spaces)
-                            {
-                                referencingComponent.Key.ReferencedComponent = DiscoverSpaceForRefComponent(space, referencingComponent.Value);
-
-                                if (referencingComponent.Key.ReferencedComponent != null)
-                                {
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (referencingComponent.Key.ReferencedComponent == null)
-                {
-                    throw new Exception($"Cannot resolve referenced '{referencingComponent.Value}' component for '{referencingComponent.Key.Name}'.");
-                }
-
-                // implicitly use By from referenced component
-                if (referencingComponent.Key.By == null)
-                {
-                    referencingComponent.Key.By = referencingComponent.Key.ReferencedComponent.By;
-                }
-            }
-        }
-
-        private void ResolveInheritedComponents()
-        {
-            // todo: reimplement it to not travel through entire tree again and again
-            foreach (var baseComponent in _inheritedComponents)
-            {
-                baseComponent.Key.BaseComponent = DiscoverComponents(this.Components, baseComponent.Value);
-
-                if (baseComponent.Key.BaseComponent == null)
-                {
-                    if (this.Spaces != null)
-                    {
-                        foreach (var space in this.Spaces)
-                        {
-                            baseComponent.Key.BaseComponent = DiscoverSpaceForRefComponent(space, baseComponent.Value);
-
-                            if (baseComponent.Key.BaseComponent != null)
-                            {
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                if (baseComponent.Key.BaseComponent == null)
-                {
-                    if (this.Pages != null)
-                    {
-                        foreach (var pageContext in this.Pages)
-                        {
-                            baseComponent.Key.BaseComponent = DiscoverComponents(pageContext.Components, baseComponent.Value);
-
-                            if (baseComponent.Key.BaseComponent != null)
-                            {
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                if (baseComponent.Key.BaseComponent == null)
-                {
-                    throw new Exception($"Cannot resolve base '{baseComponent.Value}' component for '{baseComponent.Key.Name}'.");
-                }
-
-                // implicitly use By from base component
-                if (baseComponent.Key.By == null)
-                {
-                    baseComponent.Key.By = baseComponent.Key.BaseComponent.By;
-                }
-            }
-        }
-
-        private ComponentContext DiscoverSpaceForRefComponent(SpaceContext space, string refName)
-        {
-            var component = DiscoverComponents(space.Components, refName);
-
-            if (component == null)
-            {
-                if (space.Pages != null)
-                {
-                    foreach (var page in space.Pages)
-                    {
-                        component = DiscoverComponents(page.Components, refName);
-
-                        if (component != null)
-                        {
-                            break;
-                        }
-                    }
-                }
-
-                if (component == null)
-                {
-                    if (space.Spaces != null)
-                    {
-                        foreach (var s in space.Spaces)
-                        {
-                            component = DiscoverSpaceForRefComponent(s, refName);
-
-                            if (component != null)
-                            {
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-
-            return component;
-        }
-
-        private ComponentContext DiscoverComponents(IList<ComponentContext> components, string refName)
-        {
-            if (components == null)
-            {
-                return null;
-            }
-
-            foreach (var component in components)
-            {
-                if (EvaluateComponent(component, refName))
-                {
-                    return component;
-                }
-                else
-                {
-                    var c = DiscoverComponents(component.Components, refName);
-                    
-                    if (c != null)
-                    {
-                        return c;
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        private bool EvaluateComponent(ComponentContext component, string refName)
-        {
-            return component.Name.Equals(refName, StringComparison.OrdinalIgnoreCase);
-        }
-
-        private void FindInheritedComponents(IDictionary<ComponentContext, string> inheritedComponents, ComponentContext component)
-        {
-            if (component.BaseComponentName != null)
-            {
-                inheritedComponents.Add(component, component.BaseComponentName);
-            }
-
-            if (component.Components != null)
-            {
-                foreach (var c in component.Components)
-                {
-                    FindInheritedComponents(inheritedComponents, c);
-                }
-            }
+            _workspaceReferenceResolver.Resolve();
         }
 
         private SpaceContext CreateOrAddSpaces(string filePath)

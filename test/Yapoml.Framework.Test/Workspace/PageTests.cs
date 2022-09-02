@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using Yapoml.Framework.Workspace.Parsers;
 using Yapoml.Framework.Workspace;
+using Yapoml.Framework.Workspace.Services;
 
 namespace Yapoml.Framewok.Test.Workspace
 {
@@ -14,7 +15,7 @@ namespace Yapoml.Framewok.Test.Workspace
         [Test]
         public void Parse_Page()
         {
-            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser);
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver());
 
             gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.po.yaml"), @"
 C1:
@@ -36,7 +37,7 @@ C1:
         [Test]
         public void Parse_Page_Url()
         {
-            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser);
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver());
 
             gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.po.yaml"), @"
 url:
@@ -70,7 +71,7 @@ url:
         [Test]
         public void Parse_Pages()
         {
-            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser);
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver());
 
             gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.po.yaml"), @"
 C1:

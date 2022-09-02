@@ -28,6 +28,11 @@ namespace Yapoml.Framework.Workspace
                 Url = UrlContext.FromUrl(pageModel.Url);
             }
 
+            if (pageModel.BasePage != null)
+            {
+                BasePageName = pageModel.BasePage;
+            }
+
             if (pageModel.Components != null)
             {
                 foreach (var component in pageModel.Components)
@@ -46,6 +51,8 @@ namespace Yapoml.Framework.Workspace
         public SpaceContext ParentSpace { get; }
 
         public IList<ComponentContext> Components { get; } = new List<ComponentContext>();
+
+        public string BasePageName { get; }
 
         public PageContext BasePage { get; set; }
 

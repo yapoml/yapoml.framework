@@ -5,6 +5,7 @@ using System;
 using Yapoml.Framework.Workspace.Parsers;
 using Yapoml.Framework.Workspace;
 using System.Collections.Generic;
+using Yapoml.Framework.Workspace.Services;
 
 namespace Yapoml.Framewok.Test.Workspace
 {
@@ -23,7 +24,7 @@ namespace Yapoml.Framewok.Test.Workspace
         [Test]
         public void Add_Files()
         {
-            var gc = new WorkspaceContext("/some/path", "A.B", _parser.Object);
+            var gc = new WorkspaceContext("/some/path", "A.B", _parser.Object, new WorkspaceReferenceResolver());
 
             gc.AddFile("/some/path/any/other/file1.po.yaml", "");
             gc.AddFile("/some/path/any/other/file2.po.yaml", "");
@@ -54,7 +55,7 @@ namespace Yapoml.Framewok.Test.Workspace
         [Test]
         public void Add_Root_File()
         {
-            var gc = new WorkspaceContext("/some/path", "A.B", _parser.Object);
+            var gc = new WorkspaceContext("/some/path", "A.B", _parser.Object, new WorkspaceReferenceResolver());
 
             gc.AddFile("/some/path/file.po.yaml", "");
 
@@ -69,7 +70,7 @@ namespace Yapoml.Framewok.Test.Workspace
         [Test]
         public void Should_Resolve_Inheritance()
         {
-            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", new WorkspaceParser());
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", new WorkspaceParser(), new WorkspaceReferenceResolver());
 
             gc.AddFile(Environment.CurrentDirectory + "/MyBasePage.po.yaml", @"
 MyBaseComp: ./a
@@ -98,7 +99,7 @@ extends: mybasepage
         [Test]
         public void Should_Resolve_ReferencedComponent_InPage()
         {
-            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", new WorkspaceParser());
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", new WorkspaceParser(), new WorkspaceReferenceResolver());
 
             gc.AddFile(Environment.CurrentDirectory + "/MyPage.po.yaml", @"
 C1: qwe
@@ -114,7 +115,7 @@ C2:
         [Test]
         public void Should_Resolve_ReferencedComponent_InSpace()
         {
-            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", new WorkspaceParser());
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", new WorkspaceParser(), new WorkspaceReferenceResolver());
 
             gc.AddFile(Environment.CurrentDirectory + "/MyComponent.pc.yaml", "");
 
@@ -131,7 +132,7 @@ C2:
         [Test]
         public void Should_Throw_Resolve_Inheritance_IfNotFound()
         {
-            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", new WorkspaceParser());
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", new WorkspaceParser(), new WorkspaceReferenceResolver());
 
             gc.AddFile(Environment.CurrentDirectory + "/MyPage.po.yaml", @"
 base: mybasepage
@@ -144,7 +145,7 @@ base: mybasepage
         [Test]
         public void Should_Throw_Resolve_References_IfNotFound()
         {
-            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", new WorkspaceParser());
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", new WorkspaceParser(), new WorkspaceReferenceResolver());
 
             gc.AddFile(Environment.CurrentDirectory + "/MyPage.po.yaml", @"
 MyComponent:
@@ -160,7 +161,7 @@ MyComponent:
         [TestCase("with-dash", "withdash")]
         public void Should_Normalize_PageName(string pageName, string expectedPageName)
         {
-            var gc = new WorkspaceContext("/some/path", "A.B", _parser.Object);
+            var gc = new WorkspaceContext("/some/path", "A.B", _parser.Object, new WorkspaceReferenceResolver());
 
             gc.AddFile($"/some/path/{pageName}.po.yaml", "");
 
@@ -172,7 +173,7 @@ MyComponent:
         [TestCase("with-dash", "with_dash")]
         public void Should_Normalize_SpaceName(string spaceName, string expectedSpaceName)
         {
-            var gc = new WorkspaceContext("/some/path", "A.B", _parser.Object);
+            var gc = new WorkspaceContext("/some/path", "A.B", _parser.Object, new WorkspaceReferenceResolver());
 
             gc.AddFile($"/some/path/{spaceName}/page.po.yaml", "");
 

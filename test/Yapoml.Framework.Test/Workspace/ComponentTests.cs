@@ -5,6 +5,7 @@ using System.IO;
 using Yapoml.Framework.Workspace.Parsers;
 using Yapoml.Framework.Workspace;
 using System.Linq;
+using Yapoml.Framework.Workspace.Services;
 
 namespace Yapoml.Framewok.Test.Workspace
 {
@@ -15,7 +16,7 @@ namespace Yapoml.Framewok.Test.Workspace
         [Test]
         public void Parse_Component()
         {
-            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser);
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver());
 
             gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.pc.yaml"), @"
 by: qwe
@@ -37,7 +38,7 @@ c2:
         [Test]
         public void Component_Name_Should_Be_Optional()
         {
-            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser);
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver());
 
             gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.pc.yaml"), @"
 by: qwe
@@ -54,7 +55,7 @@ by: qwe
         [Test]
         public void Component_Segment()
         {
-            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser);
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver());
 
             gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.pc.yaml"), @"
 by: qwe {param1}
@@ -70,7 +71,7 @@ by: qwe {param1}
         [Test]
         public void Component_Segments()
         {
-            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser);
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver());
 
             gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.pc.yaml"), @"
 by: qwe {param1} {param2}

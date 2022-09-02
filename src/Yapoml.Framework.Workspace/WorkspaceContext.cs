@@ -9,16 +9,18 @@ namespace Yapoml.Framework.Workspace
 {
     public class WorkspaceContext
     {
-        public WorkspaceContext(string rootDirectoryPath, string rootNamespace, IWorkspaceParser parser, IWorkspaceReferenceResolver workspaceWalker)
+        private readonly IWorkspaceParser _parser;
+        private readonly IWorkspaceReferenceResolver _workspaceReferenceResolver;
+        private readonly INameNormalizer _nameNormalizer;
+
+        public WorkspaceContext(string rootDirectoryPath, string rootNamespace, IWorkspaceParser parser, IWorkspaceReferenceResolver workspaceWalker, INameNormalizer nameNormalizer)
         {
             RootDirectoryPath = rootDirectoryPath.Replace("/", "\\").TrimEnd('\\');
             RootNamespace = rootNamespace;
             _parser = parser;
             _workspaceReferenceResolver = workspaceWalker;
+            _nameNormalizer = nameNormalizer;
         }
-
-        private readonly IWorkspaceParser _parser;
-        private readonly IWorkspaceReferenceResolver _workspaceReferenceResolver;
 
         public string RootDirectoryPath { get; }
 
@@ -55,13 +57,13 @@ namespace Yapoml.Framework.Workspace
 
                     if (space == null)
                     {
-                        pageContext = new PageContext(pageName, this, null, page);
+                        pageContext = new PageContext(pageName, this, null, page, _nameNormalizer);
 
                         Pages.Add(pageContext);
                     }
                     else
                     {
-                        pageContext = new PageContext(pageName, this, space, page);
+                        pageContext = new PageContext(pageName, this, space, page, _nameNormalizer);
 
                         space.Pages.Add(pageContext);
                     }
@@ -75,19 +77,22 @@ namespace Yapoml.Framework.Workspace
 
                 var fileName = Path.GetFileName(filePath);
 
-                var componentName = fileName.Substring(0, fileName.Length - ".pc.yaml".Length);
+                if (string.IsNullOrEmpty(component.Name))
+                {
+                    component.Name = fileName.Substring(0, fileName.Length - ".pc.yaml".Length);
+                }
 
                 ComponentContext componentContext;
 
                 if (space == null)
                 {
-                    componentContext = new ComponentContext(componentName, this, null, null, null, component);
+                    componentContext = new ComponentContext(this, null, null, null, component, _nameNormalizer);
 
                     Components.Add(componentContext);
                 }
                 else
                 {
-                    componentContext = new ComponentContext(componentName, this, space, null, null, component);
+                    componentContext = new ComponentContext(this, space, null, null, component, _nameNormalizer);
 
                     space.Components.Add(componentContext);
                 }
@@ -119,22 +124,22 @@ namespace Yapoml.Framework.Workspace
 
             if (parts.Length != 0)
             {
-                SpaceContext nestedSpace = Spaces.FirstOrDefault(s => s.Namespace == $"{RootNamespace}.{parts[0]}");
+                SpaceContext nestedSpace = Spaces.FirstOrDefault(s => s.Namespace == $"{RootNamespace}.{_nameNormalizer.Normalize(parts[0])}");
 
                 if (nestedSpace == null)
                 {
-                    nestedSpace = new SpaceContext(parts[0], this, null);
+                    nestedSpace = new SpaceContext(parts[0], this, null, _nameNormalizer);
 
                     Spaces.Add(nestedSpace);
                 }
 
                 for (int i = 1; i < parts.Length; i++)
                 {
-                    var candidateNestedSpace = nestedSpace.Spaces.FirstOrDefault(s => s.Name == parts[i]);
+                    var candidateNestedSpace = nestedSpace.Spaces.FirstOrDefault(s => s.Name == _nameNormalizer.Normalize(parts[i]));
 
                     if (candidateNestedSpace == null)
                     {
-                        var newNestedSpace = new SpaceContext(parts[i], this, nestedSpace);
+                        var newNestedSpace = new SpaceContext(parts[i], this, nestedSpace, _nameNormalizer);
 
                         nestedSpace.Spaces.Add(newNestedSpace);
 

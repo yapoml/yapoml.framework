@@ -10,6 +10,7 @@ namespace Yapoml.Framework.Workspace
         private readonly string _rootNamespace;
         private readonly IWorkspaceParser _parser;
         private IWorkspaceReferenceResolver _workspaceReferenceResolver;
+        private INameNormalizer _nameNormalizer;
 
         private IDictionary<string, string> _files = new Dictionary<string, string>();
 
@@ -34,13 +35,21 @@ namespace Yapoml.Framework.Workspace
             return this;
         }
 
+        public WorkspaceContextBuilder WithNameNormalizer(INameNormalizer nameNormalizer)
+        {
+            _nameNormalizer = nameNormalizer;
+
+            return this;
+        }
+
         public WorkspaceContext Build()
         {
             var workspaceContext = new WorkspaceContext(
                 _rootDirectoryPath,
                 _rootNamespace,
                 _parser,
-                _workspaceReferenceResolver ?? new WorkspaceReferenceResolver());
+                _workspaceReferenceResolver ?? new WorkspaceReferenceResolver(),
+                _nameNormalizer ?? new NameNormalizer());
 
             foreach (var file in _files)
             {

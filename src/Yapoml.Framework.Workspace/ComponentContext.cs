@@ -6,19 +6,12 @@ namespace Yapoml.Framework.Workspace
 {
     public class ComponentContext
     {
-        public ComponentContext(string name, WorkspaceContext workspace, SpaceContext space, PageContext page, ComponentContext parentComponent, Component component)
+        public ComponentContext(WorkspaceContext workspace, SpaceContext space, PageContext page, ComponentContext parentComponent, Component component, INameNormalizer nameNormalizer)
         {
             Workspace = workspace;
             Space = space;
 
-            if (!string.IsNullOrEmpty(component.Name))
-            {
-                Name = component.Name;
-            }
-            else
-            {
-                Name = name;
-            }
+            Name = nameNormalizer.Normalize(component.Name);
 
             if (component.By != null)
             {
@@ -46,18 +39,18 @@ namespace Yapoml.Framework.Workspace
             {
                 foreach (var nestedComponent in component.Components)
                 {
-                    Components.Add(new ComponentContext(nestedComponent.Name, workspace, space, null, this, nestedComponent));
+                    Components.Add(new ComponentContext(workspace, space, null, this, nestedComponent, nameNormalizer));
                 }
             }
 
             if (component.Ref != null)
             {
-                ReferencedComponentName = component.Ref;
+                ReferencedComponentName = nameNormalizer.Normalize(component.Ref);
             }
 
             if (component.BaseComponent != null)
             {
-                BaseComponentName = component.BaseComponent;
+                BaseComponentName = nameNormalizer.Normalize(component.BaseComponent);
             }
         }
 

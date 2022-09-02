@@ -11,11 +11,12 @@ namespace Yapoml.Framewok.Test.Workspace
     internal class PageTests
     {
         private WorkspaceParser _parser = new WorkspaceParser();
+        private INameNormalizer _nameNormalizer = new NameNormalizer();
 
         [Test]
         public void Parse_Page()
         {
-            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver());
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
 
             gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.po.yaml"), @"
 C1:
@@ -26,7 +27,7 @@ C1:
 
             gc.Pages.Should().HaveCount(1);
             var page = gc.Pages[0];
-            page.Name.Should().Be("my_page");
+            page.Name.Should().Be("MyPage");
             page.Namespace.Should().Be("A.B");
 
             gc.Pages[0].Components.Should().HaveCount(1);
@@ -37,7 +38,7 @@ C1:
         [Test]
         public void Parse_Page_Url()
         {
-            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver());
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
 
             gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.po.yaml"), @"
 url:
@@ -71,7 +72,7 @@ url:
         [Test]
         public void Parse_Pages()
         {
-            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver());
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
 
             gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.po.yaml"), @"
 C1:
@@ -85,8 +86,8 @@ C2:
 
             gc.Pages.Should().HaveCount(2);
 
-            gc.Pages[0].Name.Should().Be("my_page");
-            gc.Pages[1].Name.Should().Be("my_page_1");
+            gc.Pages[0].Name.Should().Be("MyPage");
+            gc.Pages[1].Name.Should().Be("MyPage1");
         }
     }
 }

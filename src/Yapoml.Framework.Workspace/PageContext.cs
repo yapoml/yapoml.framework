@@ -6,9 +6,9 @@ namespace Yapoml.Framework.Workspace
 {
     public class PageContext
     {
-        public PageContext(string name, WorkspaceContext workspace, SpaceContext space, Page pageModel)
+        public PageContext(string name, WorkspaceContext workspace, SpaceContext space, Page pageModel, INameNormalizer nameNormalizer)
         {
-            Name = NormalizeName(name);
+            Name = nameNormalizer.Normalize(name);
 
             Workspace = workspace;
 
@@ -30,14 +30,14 @@ namespace Yapoml.Framework.Workspace
 
             if (pageModel.BasePage != null)
             {
-                BasePageName = pageModel.BasePage;
+                BasePageName = nameNormalizer.Normalize(pageModel.BasePage);
             }
 
             if (pageModel.Components != null)
             {
                 foreach (var component in pageModel.Components)
                 {
-                    Components.Add(new ComponentContext(component.Name, workspace, space, this, null, component));
+                    Components.Add(new ComponentContext(workspace, space, this, null, component, nameNormalizer));
                 }
             }
         }
@@ -57,11 +57,6 @@ namespace Yapoml.Framework.Workspace
         public PageContext BasePage { get; set; }
 
         public UrlContext Url { get; }
-
-        private string NormalizeName(string name)
-        {
-            return name.Replace(" ", "").Replace("-", "").Replace("(", "").Replace(")", "");
-        }
 
         public class UrlContext
         {

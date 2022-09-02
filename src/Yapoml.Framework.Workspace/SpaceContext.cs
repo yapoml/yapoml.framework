@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
+using Yapoml.Framework.Workspace.Services;
 
 namespace Yapoml.Framework.Workspace
 {
     public class SpaceContext
     {
-        public SpaceContext(string name, WorkspaceContext workspace, SpaceContext parentSpaceContext)
+        public SpaceContext(string name, WorkspaceContext workspace, SpaceContext parentSpaceContext, INameNormalizer nameNormalizer)
         {
-            Name = NormalizeName(name);
+            Name = nameNormalizer.Normalize(name);
 
             if (parentSpaceContext != null)
             {
@@ -31,10 +32,5 @@ namespace Yapoml.Framework.Workspace
         public IList<PageContext> Pages { get; } = new List<PageContext>();
 
         public IList<ComponentContext> Components { get; } = new List<ComponentContext>();
-
-        private string NormalizeName(string name)
-        {
-            return name.Replace(" ", "_").Replace("-", "_");
-        }
     }
 }

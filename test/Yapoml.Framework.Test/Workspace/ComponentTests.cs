@@ -12,11 +12,12 @@ namespace Yapoml.Framewok.Test.Workspace
     internal class ComponentTests
     {
         private WorkspaceParser _parser = new WorkspaceParser();
+        private INameNormalizer _nameNormalizer = new NameNormalizer();
 
         [Test]
         public void Parse_Component()
         {
-            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver());
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
 
             gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.pc.yaml"), @"
 by: qwe
@@ -30,15 +31,15 @@ c2:
             gc.Components.Should().HaveCount(1);
 
             var component = gc.Components[0];
-            component.Name.Should().Be("my_component");
+            component.Name.Should().Be("MyComponent");
 
-            component.Components[0].Name.Should().Be("c2");
+            component.Components[0].Name.Should().Be("C2");
         }
 
         [Test]
         public void Component_Name_Should_Be_Optional()
         {
-            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver());
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
 
             gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.pc.yaml"), @"
 by: qwe
@@ -49,13 +50,13 @@ by: qwe
             gc.Components.Should().HaveCount(1);
 
             var component = gc.Components[0];
-            component.Name.Should().Be("my_component");
+            component.Name.Should().Be("MyComponent");
         }
 
         [Test]
         public void Component_Segment()
         {
-            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver());
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
 
             gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.pc.yaml"), @"
 by: qwe {param1}
@@ -71,7 +72,7 @@ by: qwe {param1}
         [Test]
         public void Component_Segments()
         {
-            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver());
+            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
 
             gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.pc.yaml"), @"
 by: qwe {param1} {param2}

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Yapoml.Framework.Workspace.Parsers;
+﻿using Yapoml.Framework.Workspace.Parsers;
 using Yapoml.Framework.Workspace.Services;
 
 namespace Yapoml.Framework.Workspace
@@ -12,7 +11,7 @@ namespace Yapoml.Framework.Workspace
         private IWorkspaceReferenceResolver _workspaceReferenceResolver;
         private INameNormalizer _nameNormalizer;
 
-        private IDictionary<string, string> _files = new Dictionary<string, string>();
+        private WorkspaceContext _workspaceContext;
 
         public WorkspaceContextBuilder(string rootDirectoryPath, string rootNamespace, IWorkspaceParser parser)
         {
@@ -23,7 +22,9 @@ namespace Yapoml.Framework.Workspace
 
         public WorkspaceContextBuilder AddFile(string filePath, string fileContent)
         {
-            _files[filePath] = fileContent;
+            EnsureWorkspaceCreated();
+
+            _workspaceContext.AddFile(filePath, fileContent);
 
             return this;
         }
@@ -44,21 +45,24 @@ namespace Yapoml.Framework.Workspace
 
         public WorkspaceContext Build()
         {
-            var workspaceContext = new WorkspaceContext(
-                _rootDirectoryPath,
-                _rootNamespace,
-                _parser,
-                _workspaceReferenceResolver ?? new WorkspaceReferenceResolver(),
-                _nameNormalizer ?? new NameNormalizer());
+            EnsureWorkspaceCreated();
 
-            foreach (var file in _files)
+            _workspaceContext.ResolveReferences();
+
+            return _workspaceContext;
+        }
+
+        private void EnsureWorkspaceCreated()
+        {
+            if (_workspaceContext == null)
             {
-                workspaceContext.AddFile(file.Key, file.Value);
+                _workspaceContext = new WorkspaceContext(
+                    _rootDirectoryPath,
+                    _rootNamespace,
+                    _parser,
+                    _workspaceReferenceResolver ?? new WorkspaceReferenceResolver(),
+                    _nameNormalizer ?? new NameNormalizer());
             }
-
-            workspaceContext.ResolveReferences();
-
-            return workspaceContext;
         }
     }
 }

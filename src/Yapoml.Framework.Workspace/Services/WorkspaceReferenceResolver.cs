@@ -125,7 +125,9 @@ namespace Yapoml.Framework.Workspace.Services
 
         private PageContext FindPage(string name, PageContext ignoredPage)
         {
-            return _flatPages.FirstOrDefault(p => p.Name.Equals(name, StringComparison.OrdinalIgnoreCase) && p != ignoredPage);
+            return _flatPages.FirstOrDefault(p => p.Name.Equals(name, StringComparison.OrdinalIgnoreCase)
+                && ignoredPage.Namespace.StartsWith(p.Namespace)
+                && p != ignoredPage);
         }
     }
 }

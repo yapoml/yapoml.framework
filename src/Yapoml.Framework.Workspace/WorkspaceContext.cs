@@ -11,7 +11,6 @@ namespace Yapoml.Framework.Workspace
     {
         private readonly IWorkspaceParser _parser;
         private readonly IWorkspaceReferenceResolver _workspaceReferenceResolver;
-        private readonly INameNormalizer _nameNormalizer;
 
         public WorkspaceContext(string rootDirectoryPath, string rootNamespace, IWorkspaceParser parser, IWorkspaceReferenceResolver workspaceWalker, INameNormalizer nameNormalizer)
         {
@@ -19,13 +18,13 @@ namespace Yapoml.Framework.Workspace
             RootNamespace = rootNamespace;
             _parser = parser;
             _workspaceReferenceResolver = workspaceWalker;
-            _nameNormalizer = nameNormalizer;
+            NameNormalizer = nameNormalizer;
         }
 
         public string RootDirectoryPath { get; }
 
         public string RootNamespace { get; }
-
+        public INameNormalizer NameNormalizer { get; }
         public IList<SpaceContext> Spaces { get; } = new List<SpaceContext>();
 
         public IList<PageContext> Pages { get; } = new List<PageContext>();
@@ -53,17 +52,19 @@ namespace Yapoml.Framework.Workspace
                         pageName = $"{pageName}_{i}";
                     }
 
+                    page.Name = pageName;
+
                     PageContext pageContext;
 
                     if (space == null)
                     {
-                        pageContext = new PageContext(pageName, this, null, page, _nameNormalizer);
+                        pageContext = new PageContext(this, null, page);
 
                         Pages.Add(pageContext);
                     }
                     else
                     {
-                        pageContext = new PageContext(pageName, this, space, page, _nameNormalizer);
+                        pageContext = new PageContext(this, space, page);
 
                         space.Pages.Add(pageContext);
                     }
@@ -86,13 +87,13 @@ namespace Yapoml.Framework.Workspace
 
                 if (space == null)
                 {
-                    componentContext = new ComponentContext(this, null, null, null, component, _nameNormalizer);
+                    componentContext = new ComponentContext(this, null, null, null, component);
 
                     Components.Add(componentContext);
                 }
                 else
                 {
-                    componentContext = new ComponentContext(this, space, null, null, component, _nameNormalizer);
+                    componentContext = new ComponentContext(this, space, null, null, component);
 
                     space.Components.Add(componentContext);
                 }
@@ -124,22 +125,22 @@ namespace Yapoml.Framework.Workspace
 
             if (parts.Length != 0)
             {
-                SpaceContext nestedSpace = Spaces.FirstOrDefault(s => s.Namespace == $"{RootNamespace}.{_nameNormalizer.Normalize(parts[0])}");
+                SpaceContext nestedSpace = Spaces.FirstOrDefault(s => s.Namespace == $"{RootNamespace}.{NameNormalizer.Normalize(parts[0])}");
 
                 if (nestedSpace == null)
                 {
-                    nestedSpace = new SpaceContext(parts[0], this, null, _nameNormalizer);
+                    nestedSpace = new SpaceContext(parts[0], this, null);
 
                     Spaces.Add(nestedSpace);
                 }
 
                 for (int i = 1; i < parts.Length; i++)
                 {
-                    var candidateNestedSpace = nestedSpace.Spaces.FirstOrDefault(s => s.Name == _nameNormalizer.Normalize(parts[i]));
+                    var candidateNestedSpace = nestedSpace.Spaces.FirstOrDefault(s => s.Name == NameNormalizer.Normalize(parts[i]));
 
                     if (candidateNestedSpace == null)
                     {
-                        var newNestedSpace = new SpaceContext(parts[i], this, nestedSpace, _nameNormalizer);
+                        var newNestedSpace = new SpaceContext(parts[i], this, nestedSpace);
 
                         nestedSpace.Spaces.Add(newNestedSpace);
 

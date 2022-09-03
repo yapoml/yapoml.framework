@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Yapoml.Framework.Workspace.Parsers.Yaml.Pocos;
 using Yapoml.Framework.Workspace.Services;
 
@@ -6,69 +7,125 @@ namespace Yapoml.Framework.Workspace
 {
     public class ComponentContext
     {
-        public ComponentContext(WorkspaceContext workspace, SpaceContext space, PageContext page, ComponentContext parentComponent, Component component, INameNormalizer nameNormalizer)
+        private readonly Component _component;
+
+        public ComponentContext(WorkspaceContext workspace, SpaceContext space, PageContext page, ComponentContext parentComponent, Component component)
         {
             Workspace = workspace;
             Space = space;
+            Page = page;
+            ParentComponent = parentComponent;
 
-            Name = nameNormalizer.Normalize(component.Name);
-
-            if (component.By != null)
-            {
-                By = new ByContext(component.By.Method, component.By.Value);
-            }
-
-            if (parentComponent != null)
-            {
-                Namespace = $"{parentComponent.Namespace}.{parentComponent.SingularName}Component";
-            }
-            else if (page != null)
-            {
-                Namespace = $"{page.Namespace}.{page.Name}";
-            }
-            else if (space != null)
-            {
-                Namespace = space.Namespace;
-            }
-            else
-            {
-                Namespace = workspace.RootNamespace;
-            }
-
-            if (component.Components != null)
-            {
-                foreach (var nestedComponent in component.Components)
-                {
-                    Components.Add(new ComponentContext(workspace, space, null, this, nestedComponent, nameNormalizer));
-                }
-            }
-
-            if (component.Ref != null)
-            {
-                ReferencedComponentName = nameNormalizer.Normalize(component.Ref);
-            }
-
-            if (component.BaseComponent != null)
-            {
-                BaseComponentName = nameNormalizer.Normalize(component.BaseComponent);
-            }
+            _component = component;
         }
 
         public WorkspaceContext Workspace { get; }
 
         public SpaceContext Space { get; }
 
-        public string Name { get; }
+        public PageContext Page { get; }
 
-        public string Namespace { get; }
+        public ComponentContext ParentComponent { get; }
 
-        public ByContext By { get; set; }
+        private string _name;
+        public string Name
+        {
+            get
+            {
+                if (_name is null)
+                {
+                    _name = Workspace.NameNormalizer.Normalize(_component.Name);
+                }
 
-        public string ReferencedComponentName { get; }
+                return _name;
+            }
+        }
+
+        private string _namespace;
+        public string Namespace
+        {
+            get
+            {
+                if (_namespace is null)
+                {
+                    if (ParentComponent != null)
+                    {
+                        _namespace = $"{ParentComponent.Namespace}.{ParentComponent.SingularName}Component";
+                    }
+                    else if (Page != null)
+                    {
+                        _namespace = $"{Page.Namespace}.{Page.Name}";
+                    }
+                    else if (Space != null)
+                    {
+                        _namespace = Space.Namespace;
+                    }
+                    else
+                    {
+                        _namespace = Workspace.RootNamespace;
+                    }
+                }
+
+                return _namespace;
+            }
+        }
+
+        private ByContext _by;
+        public ByContext By
+        {
+            get
+            {
+                if (_by is null)
+                {
+                    if (_component.By != null)
+                    {
+                        _by = new ByContext(_component.By.Method, _component.By.Value);
+                    }
+                }
+
+                return _by;
+            }
+            set
+            {
+                _by = value;
+            }
+        }
+
+        private string _referencedComponentName;
+        public string ReferencedComponentName
+        {
+            get
+            {
+                if (_referencedComponentName is null)
+                {
+                    if (_component.Ref != null)
+                    {
+                        _referencedComponentName = Workspace.NameNormalizer.Normalize(_component.Ref);
+                    }
+                }
+
+                return _referencedComponentName;
+            }
+        }
 
         public ComponentContext ReferencedComponent { get; set; }
 
-        public string BaseComponentName { get; }
+        private string _baseComponentName;
+        public string BaseComponentName
+        {
+            get
+            {
+                if (_baseComponentName is null)
+                {
+                    if (_component.BaseComponent != null)
+                    {
+                        _baseComponentName = Workspace.NameNormalizer.Normalize(_component.BaseComponent);
+                    }
+                }
+
+                return _baseComponentName;
+            }
+        }
 
         public ComponentContext BaseComponent { get; set; }
 
@@ -103,7 +160,22 @@ namespace Yapoml.Framework.Workspace
             }
         }
 
-        public IList<ComponentContext> Components { get; } = new List<ComponentContext>();
+        private IReadOnlyList<ComponentContext> _components;
+        public IReadOnlyList<ComponentContext> Components
+        {
+            get
+            {
+                if (_components is null)
+                {
+                    if (_component.Components != null)
+                    {
+                        _components = _component.Components.Select(c => new ComponentContext(Workspace, Space, null, this, c)).ToList();
+                    }
+                }
+
+                return _components;
+            }
+        }
 
         public class ByContext
         {

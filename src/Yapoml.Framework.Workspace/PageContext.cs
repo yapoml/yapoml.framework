@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Yapoml.Framework.Workspace.Parsers.Yaml.Pocos;
 using Yapoml.Framework.Workspace.Services;
 
@@ -6,22 +7,14 @@ namespace Yapoml.Framework.Workspace
 {
     public class PageContext
     {
-        public PageContext(string name, WorkspaceContext workspace, SpaceContext space, Page pageModel, INameNormalizer nameNormalizer)
+        private readonly Page _page;
+
+        public PageContext(WorkspaceContext workspace, SpaceContext space, Page pageModel)
         {
-            Name = nameNormalizer.Normalize(name);
-
             Workspace = workspace;
-
-            if (space != null)
-            {
-                Namespace = $"{space.Namespace}";
-            }
-            else
-            {
-                Namespace = $"{workspace.RootNamespace}";
-            }
-
             ParentSpace = space;
+
+            _page = pageModel;
 
             if (pageModel.Url != null)
             {
@@ -30,27 +23,62 @@ namespace Yapoml.Framework.Workspace
 
             if (pageModel.BasePage != null)
             {
-                BasePageName = nameNormalizer.Normalize(pageModel.BasePage);
-            }
-
-            if (pageModel.Components != null)
-            {
-                foreach (var component in pageModel.Components)
-                {
-                    Components.Add(new ComponentContext(workspace, space, this, null, component, nameNormalizer));
-                }
+                BasePageName = workspace.NameNormalizer.Normalize(pageModel.BasePage);
             }
         }
 
         public WorkspaceContext Workspace { get; }
 
-        public string Name { get; }
+        private string _name;
+        public string Name
+        {
+            get
+            {
+                if (_name == null)
+                {
+                    _name = Workspace.NameNormalizer.Normalize(_page.Name);
+                }
 
-        public string Namespace { get; }
+                return _name;
+            }
+        }
+
+        private string _namespace;
+        public string Namespace
+        {
+            get
+            {
+                if (_namespace is null)
+                {
+                    if (ParentSpace != null)
+                    {
+                        _namespace = ParentSpace.Namespace;
+                    }
+                    else
+                    {
+                        _namespace = Workspace.RootNamespace;
+                    }
+                }
+
+                return _namespace;
+            }
+        }
 
         public SpaceContext ParentSpace { get; }
 
-        public IList<ComponentContext> Components { get; } = new List<ComponentContext>();
+        private IReadOnlyList<ComponentContext> _components;
+        public IReadOnlyList<ComponentContext> Components
+        {
+            get
+            {
+                if (_components is null)
+                {
+                    _components = _page.Components?.Select(c => new ComponentContext(Workspace, ParentSpace, this, null, c)).ToList();
+                }
+
+                return _components;
+            }
+        }
 
         public string BasePageName { get; }
 

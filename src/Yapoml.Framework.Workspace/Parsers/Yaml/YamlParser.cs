@@ -14,11 +14,16 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml
 
         public YamlParser()
         {
+            var urlConverter = new UrlConverter();
+            var byConverter = new ByConverter();
+            var componentConverter = new ComponentConverter(byConverter);
+            var pageConverter = new PageConverter(componentConverter, urlConverter);
+
             _deserializer = new DeserializerBuilder()
-                .WithTypeConverter(new PageConverter())
-                .WithTypeConverter(new ComponentConverter())
-                .WithTypeConverter(new ByConverter())
-                .WithTypeConverter(new UrlConverter())
+                .WithTypeConverter(pageConverter)
+                .WithTypeConverter(componentConverter)
+                .WithTypeConverter(byConverter)
+                .WithTypeConverter(urlConverter)
                 .WithNamingConvention(LowerCaseNamingConvention.Instance)
                 .Build();
         }

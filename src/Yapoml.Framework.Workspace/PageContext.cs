@@ -15,16 +15,6 @@ namespace Yapoml.Framework.Workspace
             ParentSpace = space;
 
             _page = pageModel;
-
-            if (pageModel.Url != null)
-            {
-                Url = UrlContext.FromUrl(pageModel.Url);
-            }
-
-            if (pageModel.BasePage != null)
-            {
-                BasePageName = workspace.NameNormalizer.Normalize(pageModel.BasePage);
-            }
         }
 
         public WorkspaceContext Workspace { get; }
@@ -80,11 +70,41 @@ namespace Yapoml.Framework.Workspace
             }
         }
 
-        public string BasePageName { get; }
+        private string _basePageName;
+        public string BasePageName
+        {
+            get
+            {
+                if (_basePageName is null)
+                {
+                    if (_page.BasePage != null)
+                    {
+                        _basePageName = Workspace.NameNormalizer.Normalize(_page.BasePage);
+                    }
+                }
+
+                return _basePageName;
+            }
+        }
 
         public PageContext BasePage { get; set; }
 
-        public UrlContext Url { get; }
+        private UrlContext _url;
+        public UrlContext Url
+        {
+            get
+            {
+                if (_url is null)
+                {
+                    if (_page.Url != null)
+                    {
+                        _url = UrlContext.FromUrl(_page.Url);
+                    }
+                }
+
+                return _url;
+            }
+        }
 
         public class UrlContext
         {

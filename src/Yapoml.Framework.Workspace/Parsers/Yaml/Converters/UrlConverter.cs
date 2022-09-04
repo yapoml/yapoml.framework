@@ -59,12 +59,17 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
                             parser.SkipThisAndNestedEvents();
                         }
                     }
+                    else
+                    {
+                        parser.SkipThisAndNestedEvents();
+                    }
                 }
             }
             else
             {
                 parser.SkipThisAndNestedEvents();
             }
+
             return url;
         }
 

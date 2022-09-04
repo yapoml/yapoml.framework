@@ -125,22 +125,26 @@ namespace Yapoml.Framework.Workspace
 
             if (parts.Length != 0)
             {
-                SpaceContext nestedSpace = Spaces.FirstOrDefault(s => s.Namespace == $"{RootNamespace}.{NameNormalizer.Normalize(parts[0])}");
+                var normalizedSpaceName = NameNormalizer.Normalize(parts[0]);
+
+                SpaceContext nestedSpace = Spaces.FirstOrDefault(s => s.Namespace == $"{RootNamespace}.{normalizedSpaceName}");
 
                 if (nestedSpace == null)
                 {
-                    nestedSpace = new SpaceContext(parts[0], this, null);
+                    nestedSpace = new SpaceContext(normalizedSpaceName, this, null);
 
                     Spaces.Add(nestedSpace);
                 }
 
                 for (int i = 1; i < parts.Length; i++)
                 {
-                    var candidateNestedSpace = nestedSpace.Spaces.FirstOrDefault(s => s.Name == NameNormalizer.Normalize(parts[i]));
+                    normalizedSpaceName = NameNormalizer.Normalize(parts[i]);
+
+                    var candidateNestedSpace = nestedSpace.Spaces.FirstOrDefault(s => s.Name == normalizedSpaceName);
 
                     if (candidateNestedSpace == null)
                     {
-                        var newNestedSpace = new SpaceContext(parts[i], this, nestedSpace);
+                        var newNestedSpace = new SpaceContext(normalizedSpaceName, this, nestedSpace);
 
                         nestedSpace.Spaces.Add(newNestedSpace);
 

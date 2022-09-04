@@ -9,23 +9,10 @@ namespace Yapoml.Framework.Workspace
             Workspace = workspace;
             ParentSpace = parentSpaceContext;
 
-            _name = name;
+            Name = name;
         }
 
-        private string _name;
-        private string _normalizedName;
-        public string Name
-        {
-            get
-            {
-                if (_normalizedName is null)
-                {
-                    _normalizedName = Workspace.NameNormalizer.Normalize(_name); ;
-                }
-
-                return _normalizedName;
-            }
-        }
+        public string Name { get; }
 
         private string _namespace;
         public string Namespace

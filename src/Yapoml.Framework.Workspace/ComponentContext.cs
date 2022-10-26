@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Yapoml.Framework.Workspace.Parsers;
 using Yapoml.Framework.Workspace.Parsers.Yaml.Pocos;
 using Yapoml.Framework.Workspace.Services;
 
@@ -9,7 +10,7 @@ namespace Yapoml.Framework.Workspace
     {
         private readonly Component _component;
 
-        public ComponentContext(WorkspaceContext workspace, SpaceContext space, PageContext page, ComponentContext parentComponent, Component component)
+        public ComponentContext(WorkspaceContext workspace, SpaceContext space, PageContext page, ComponentContext parentComponent, Component component, string relativeFilePath = null)
         {
             Workspace = workspace;
             Space = space;
@@ -17,6 +18,7 @@ namespace Yapoml.Framework.Workspace
             ParentComponent = parentComponent;
 
             _component = component;
+            RelativeFilePath = relativeFilePath;
         }
 
         public WorkspaceContext Workspace { get; }
@@ -26,6 +28,31 @@ namespace Yapoml.Framework.Workspace
         public PageContext Page { get; }
 
         public ComponentContext ParentComponent { get; }
+
+        private string _relativeFilePath;
+        public string RelativeFilePath
+        {
+            get
+            {
+                if (_relativeFilePath is null)
+                {
+                    if (ParentComponent != null)
+                    {
+                        _relativeFilePath = ParentComponent.RelativeFilePath;
+                    }
+                    else
+                    {
+                        _relativeFilePath = Page.RelativeFilePath;
+                    }
+                }
+
+                return _relativeFilePath;
+            }
+            set
+            {
+                _relativeFilePath = value;
+            }
+        }
 
         private string _name;
         public string Name
@@ -79,7 +106,7 @@ namespace Yapoml.Framework.Workspace
                 {
                     if (_component.By != null)
                     {
-                        _by = new ByContext(_component.By.Method, _component.By.Value);
+                        _by = new ByContext(_component.By.Method, _component.By.Value, _component.By.DefinitionSource);
                     }
                 }
 
@@ -179,16 +206,21 @@ namespace Yapoml.Framework.Workspace
 
         public class ByContext
         {
-            public ByContext(By.ByMethod method, string value)
+            public ByContext(By.ByMethod method, string value, DefinitionSource definitionSource)
             {
                 Method = method;
                 Value = value;
+                DefinitionSource = definitionSource;
                 Segments = SegmentsParser.ParseSegments(value);
             }
 
             public By.ByMethod Method { get; }
+
             public string Value { get; }
+
             public IList<string> Segments { get; }
+
+            public DefinitionSource DefinitionSource { get; }
         }
     }
 }

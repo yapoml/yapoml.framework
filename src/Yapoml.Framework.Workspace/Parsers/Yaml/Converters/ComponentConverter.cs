@@ -27,7 +27,7 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
 
             if (parser.TryConsume<Scalar>(out var byScalar))
             {
-                component.By = _byConverter.ParseScalarValue(byScalar.Value);
+                component.By = _byConverter.ParseScalar(byScalar);
             }
             else if (parser.TryConsume<MappingStart>(out _))
             {

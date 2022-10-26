@@ -32,8 +32,10 @@ c2:
 
             var component = gc.Components[0];
             component.Name.Should().Be("MyComponent");
+            component.RelativeFilePath.Should().Be("my_component.pc.yaml");
 
             component.Components[0].Name.Should().Be("C2");
+            component.Components[0].RelativeFilePath.Should().Be("my_component.pc.yaml");
         }
 
         [Test]

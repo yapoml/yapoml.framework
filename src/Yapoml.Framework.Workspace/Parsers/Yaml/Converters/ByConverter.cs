@@ -17,7 +17,7 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
         {
             if (parser.TryConsume<Scalar>(out var scalar))
             {
-                return ParseScalarValue(scalar.Value);
+                return ParseScalar(scalar);
             }
             else
             {
@@ -28,7 +28,10 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
                 while (!parser.TryConsume<MappingEnd>(out _))
                 {
                     var propertyName = parser.Consume<Scalar>().Value;
-                    var propertyValue = parser.Consume<Scalar>().Value;
+
+                    var propertyScalar = parser.Consume<Scalar>();
+                    by = ParseScalar(propertyScalar);
+                    var propertyValue = propertyScalar.Value;
 
                     switch (propertyName.ToLowerInvariant())
                     {
@@ -58,8 +61,15 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
             throw new NotImplementedException();
         }
 
-        public By ParseScalarValue(string value)
+        public By ParseScalar(Scalar scalar)
         {
+            var value = scalar.Value;
+
+            var definitionSource = new DefinitionSource(
+                new DefinitionSource.Position((uint)scalar.Start.Line, (uint)scalar.Start.Column),
+                new DefinitionSource.Position((uint)scalar.End.Line, (uint)scalar.End.Column - 1)
+            );
+
             if (value.StartsWith("by ", StringComparison.OrdinalIgnoreCase))
             {
                 value = value.Substring(3);
@@ -67,19 +77,19 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
 
             if (value.StartsWith("xpath ", StringComparison.OrdinalIgnoreCase))
             {
-                return new By { Method = By.ByMethod.XPath, Value = value.Substring(6, value.Length - 6) };
+                return new By { Method = By.ByMethod.XPath, Value = value.Substring(6, value.Length - 6), DefinitionSource = definitionSource };
             }
             else if (value.StartsWith("css ", StringComparison.OrdinalIgnoreCase))
             {
-                return new By { Method = By.ByMethod.Css, Value = value.Substring(4, value.Length - 4) };
+                return new By { Method = By.ByMethod.Css, Value = value.Substring(4, value.Length - 4), DefinitionSource = definitionSource };
             }
             else if (value.StartsWith("id ", StringComparison.OrdinalIgnoreCase))
             {
-                return new By { Method = By.ByMethod.Id, Value = value.Substring(3, value.Length - 3) };
+                return new By { Method = By.ByMethod.Id, Value = value.Substring(3, value.Length - 3), DefinitionSource = definitionSource };
             }
             else
             {
-                return new By { Method = By.ByMethod.None, Value = value };
+                return new By { Method = By.ByMethod.None, Value = value, DefinitionSource = definitionSource };
             }
         }
     }

@@ -9,15 +9,18 @@ namespace Yapoml.Framework.Workspace
     {
         private readonly Page _page;
 
-        public PageContext(WorkspaceContext workspace, SpaceContext space, Page pageModel)
+        public PageContext(WorkspaceContext workspace, SpaceContext space, Page pageModel, string relativeFilePath)
         {
             Workspace = workspace;
             ParentSpace = space;
 
             _page = pageModel;
+            RelativeFilePath = relativeFilePath;
         }
 
         public WorkspaceContext Workspace { get; }
+
+        public string RelativeFilePath { get; }
 
         private string _name;
         public string Name

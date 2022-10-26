@@ -13,5 +13,7 @@
             Css,
             Id
         }
+
+        public DefinitionSource DefinitionSource { get; set; }
     }
 }

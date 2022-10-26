@@ -18,6 +18,8 @@ namespace Yapoml.Framewok.Test.Yaml
             var by = _parser.Parse<By>(content);
             by.Method.Should().Be(ByMethod.XPath);
             by.Value.Should().Be("./abc");
+            by.DefinitionSource.Start.Should().Be(new Framework.Workspace.Parsers.DefinitionSource.Position(1, 8));
+            by.DefinitionSource.End.Should().Be(new Framework.Workspace.Parsers.DefinitionSource.Position(1, 12));
         }
 
         [Test]

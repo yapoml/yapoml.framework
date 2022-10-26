@@ -58,13 +58,13 @@ namespace Yapoml.Framework.Workspace
 
                     if (space == null)
                     {
-                        pageContext = new PageContext(this, null, page);
+                        pageContext = new PageContext(this, null, page, GetRelativeFilePath(filePath));
 
                         Pages.Add(pageContext);
                     }
                     else
                     {
-                        pageContext = new PageContext(this, space, page);
+                        pageContext = new PageContext(this, space, page, GetRelativeFilePath(filePath));
 
                         space.Pages.Add(pageContext);
                     }
@@ -87,13 +87,13 @@ namespace Yapoml.Framework.Workspace
 
                 if (space == null)
                 {
-                    componentContext = new ComponentContext(this, null, null, null, component);
+                    componentContext = new ComponentContext(this, null, null, null, component, GetRelativeFilePath(filePath));
 
                     Components.Add(componentContext);
                 }
                 else
                 {
-                    componentContext = new ComponentContext(this, space, null, null, component);
+                    componentContext = new ComponentContext(this, space, null, null, component, GetRelativeFilePath(filePath));
 
                     space.Components.Add(componentContext);
                 }
@@ -162,6 +162,11 @@ namespace Yapoml.Framework.Workspace
             {
                 return null;
             }
+        }
+
+        private string GetRelativeFilePath(string fullFilePath)
+        {
+            return fullFilePath.Substring(RootDirectoryPath.Length + 1);
         }
     }
 }

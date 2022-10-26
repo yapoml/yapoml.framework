@@ -33,6 +33,8 @@ C1:
             gc.Pages[0].Components.Should().HaveCount(1);
 
             gc.Pages[0].Url.Should().BeNull();
+
+            gc.Pages[0].RelativeFilePath.Should().Be("my_page.po.yaml");
         }
 
         [Test]

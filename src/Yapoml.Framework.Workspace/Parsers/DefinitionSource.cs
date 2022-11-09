@@ -23,6 +23,16 @@
             public uint Line { get; }
 
             public uint Column { get; }
+
+            public override string ToString()
+            {
+                return $"({Line}, {Column})";
+            }
+        }
+
+        public override string ToString()
+        {
+            return $"Start: {Start}, End: {End}";
         }
     }
 }

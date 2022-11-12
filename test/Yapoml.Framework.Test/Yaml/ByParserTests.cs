@@ -5,7 +5,7 @@ using Yapoml.Framework.Workspace.Parsers.Yaml;
 using Yapoml.Framework.Workspace.Parsers.Yaml.Pocos;
 using static Yapoml.Framework.Workspace.Parsers.Yaml.Pocos.By;
 
-namespace Yapoml.Framewok.Test.Yaml
+namespace Yapoml.Framework.Test.Yaml
 {
     public class ByParserTests
     {

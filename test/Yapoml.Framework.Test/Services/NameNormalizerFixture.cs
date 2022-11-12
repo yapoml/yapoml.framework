@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using Yapoml.Framework.Workspace.Services;
 
-namespace Yapoml.Framewok.Test.Services
+namespace Yapoml.Framework.Test.Services
 {
     class NameNormalizerFixture
     {

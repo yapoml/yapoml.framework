@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Yapoml.Framework.Workspace\Yapoml.Framework.Workspace.csproj" />
+    <ProjectReference Include="..\..\src\Yapoml.Framework\Yapoml.Framework.csproj" />
   </ItemGroup>
 
 </Project>

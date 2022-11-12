@@ -6,7 +6,7 @@ using Yapoml.Framework.Workspace.Parsers;
 using Yapoml.Framework.Workspace;
 using Yapoml.Framework.Workspace.Services;
 
-namespace Yapoml.Framewok.Test.Workspace
+namespace Yapoml.Framework.Test.Workspace
 {
     internal class PageTests
     {

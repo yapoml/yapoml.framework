@@ -3,7 +3,7 @@ using NUnit.Framework;
 using Yapoml.Framework.Workspace.Parsers.Yaml;
 using Yapoml.Framework.Workspace.Parsers.Yaml.Pocos;
 
-namespace Yapoml.Framewok.Test.Yaml
+namespace Yapoml.Framework.Test.Yaml
 {
     public class PageParserTests
     {

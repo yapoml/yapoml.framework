@@ -9,5 +9,7 @@ namespace Yapoml.Framework.Options
         event EventHandler<TypeRegisteredEventArgs> OnTypeRegistered;
 
         T Get<T>();
+
+        bool TryGet<T>(out T service);
     }
 }

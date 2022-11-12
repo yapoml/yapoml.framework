@@ -7,7 +7,7 @@ using Yapoml.Framework.Workspace;
 using System.Linq;
 using Yapoml.Framework.Workspace.Services;
 
-namespace Yapoml.Framewok.Test.Workspace
+namespace Yapoml.Framework.Test.Workspace
 {
     internal class ComponentTests
     {

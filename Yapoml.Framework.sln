@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yapoml.Framework", "src\Yap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yapoml.Framework.Workspace", "src\Yapoml.Framework.Workspace\Yapoml.Framework.Workspace.csproj", "{B40DD86F-0974-4025-88B6-75EA9085F299}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yapoml.Framewok.Test", "test\Yapoml.Framework.Test\Yapoml.Framewok.Test.csproj", "{6D4F312A-CFBE-4BB0-856B-018626116C52}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yapoml.Framework.Test", "test\Yapoml.Framework.Test\Yapoml.Framework.Test.csproj", "{6D4F312A-CFBE-4BB0-856B-018626116C52}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yapoml.Framework.Benchmark", "test\Yapoml.Framework.Benchmark\Yapoml.Framework.Benchmark.csproj", "{18DD6755-F67D-4246-AF00-D3B1FBCCF8ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yapoml.Framework.Benchmark", "test\Yapoml.Framework.Benchmark\Yapoml.Framework.Benchmark.csproj", "{18DD6755-F67D-4246-AF00-D3B1FBCCF8ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

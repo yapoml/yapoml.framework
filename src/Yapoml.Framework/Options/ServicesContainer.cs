@@ -5,7 +5,7 @@ namespace Yapoml.Framework.Options
 {
     internal class ServicesContainer : IServicesContainer
     {
-        private IDictionary<Type, object> _instances = new Dictionary<Type, object>();
+        private readonly IDictionary<Type, object> _instances = new Dictionary<Type, object>();
 
         public event EventHandler<TypeRegisteredEventArgs> OnTypeRegistered;
 
@@ -24,6 +24,15 @@ namespace Yapoml.Framework.Options
             }
 
             return (T)instance;
+        }
+
+        public bool TryGet<T>(out T service)
+        {
+            var result = _instances.TryGetValue(typeof(T), out object output);
+
+            service = (T)output;
+
+            return result;
         }
     }
 }

@@ -7,7 +7,7 @@ using Yapoml.Framework.Workspace;
 using System.Collections.Generic;
 using Yapoml.Framework.Workspace.Services;
 
-namespace Yapoml.Framewok.Test.Workspace
+namespace Yapoml.Framework.Test.Workspace
 {
     internal class WorkspaceTests
     {

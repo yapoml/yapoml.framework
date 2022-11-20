@@ -11,6 +11,8 @@
     	<RepositoryType>GitHub</RepositoryType>
     	<RepositoryUrl>https://github.com/yapoml/framework</RepositoryUrl>
     	<PackageTags>page generation</PackageTags>
+
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>

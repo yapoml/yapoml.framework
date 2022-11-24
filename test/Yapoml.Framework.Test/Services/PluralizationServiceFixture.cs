@@ -26,5 +26,15 @@ namespace Yapoml.Framework.Test.Services
 
             service.Singularize(word).Should().Be(expectedSingular);
         }
+
+        [Test]
+        [TestCase("Status", "Status")]
+        [TestCase("Item", "Item")]
+        public void Should_Not_Singularize_If_Single(string word, string expectedSingular)
+        {
+            var service = new PluralizationService();
+
+            service.Singularize(word).Should().Be(expectedSingular);
+        }
     }
 }

@@ -6,7 +6,14 @@ namespace Yapoml.Framework.Workspace.Services
     {
         public string Singularize(string word)
         {
-            return word.Singularize();
+            var singularWord = word;
+
+            if (IsPlural(word))
+            {
+                singularWord = word.Singularize();
+            }
+
+            return singularWord;
         }
 
         public bool IsPlural(string word)

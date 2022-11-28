@@ -77,11 +77,25 @@ namespace Yapoml.Framework.Workspace
                 {
                     if (ParentComponent != null)
                     {
-                        _namespace = $"{ParentComponent.Namespace}.{ParentComponent.SingularName}Component";
+                        if (ParentComponent.SingularName.EndsWith("Component"))
+                        {
+                            _namespace = $"{ParentComponent.Namespace}.{ParentComponent.SingularName}";
+                        }
+                        else
+                        {
+                            _namespace = $"{ParentComponent.Namespace}.{ParentComponent.SingularName}Component";
+                        }
                     }
                     else if (Page != null)
                     {
-                        _namespace = $"{Page.Namespace}.{Page.Name}";
+                        if (Page.Name.EndsWith("Page"))
+                        {
+                            _namespace = $"{Page.Namespace}.{Page.Name}";
+                        }
+                        else
+                        {
+                            _namespace = $"{Page.Namespace}.{Page.Name}Page";
+                        }
                     }
                     else if (Space != null)
                     {

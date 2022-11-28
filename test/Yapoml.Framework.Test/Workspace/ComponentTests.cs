@@ -19,7 +19,7 @@ namespace Yapoml.Framework.Test.Workspace
         {
             var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
 
-            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.pc.yaml"), @"
+            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.component.yaml"), @"
 by: qwe
 
 c2:
@@ -32,10 +32,10 @@ c2:
 
             var component = gc.Components[0];
             component.Name.Should().Be("MyComponent");
-            component.RelativeFilePath.Should().Be("my_component.pc.yaml");
+            component.RelativeFilePath.Should().Be("my_component.component.yaml");
 
             component.Components[0].Name.Should().Be("C2");
-            component.Components[0].RelativeFilePath.Should().Be("my_component.pc.yaml");
+            component.Components[0].RelativeFilePath.Should().Be("my_component.component.yaml");
         }
 
         [Test]
@@ -43,7 +43,7 @@ c2:
         {
             var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
 
-            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.pc.yml"), @"
+            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.component.yml"), @"
 by: qwe
 ");
 
@@ -60,7 +60,7 @@ by: qwe
         {
             var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
 
-            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.pc.yaml"), @"
+            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.component.yaml"), @"
 by: qwe {param1}
 ");
 
@@ -76,7 +76,7 @@ by: qwe {param1}
         {
             var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
 
-            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.pc.yaml"), @"
+            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.component.yaml"), @"
 by: qwe {param1} {param2}
 ");
 

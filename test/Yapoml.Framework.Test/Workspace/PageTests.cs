@@ -18,7 +18,7 @@ namespace Yapoml.Framework.Test.Workspace
         {
             var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
 
-            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.po.yaml"), @"
+            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.page.yaml"), @"
 C1:
   by: qwe
 ");
@@ -34,7 +34,7 @@ C1:
 
             gc.Pages[0].Url.Should().BeNull();
 
-            gc.Pages[0].RelativeFilePath.Should().Be("my_page.po.yaml");
+            gc.Pages[0].RelativeFilePath.Should().Be("my_page.page.yaml");
         }
 
         [Test]
@@ -42,7 +42,7 @@ C1:
         {
             var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
 
-            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.po.yml"), @"
+            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.page.yml"), @"
 url:
   path: projects/{projectId}/users/{userId}/roles
   params:
@@ -76,7 +76,7 @@ url:
         {
             var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
 
-            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.po.yaml"), @"
+            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.page.yaml"), @"
 C1:
   by: qwe
 

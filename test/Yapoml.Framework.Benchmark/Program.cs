@@ -41,7 +41,7 @@ public class BenchmarkFixture
 
         for (int i = 0; i < 100; i++)
         {
-            builder.AddFile(Environment.CurrentDirectory + $"/MyPage{i}.po.yaml", _pageContent);
+            builder.AddFile(Environment.CurrentDirectory + $"/MyPage{i}.page.yaml", _pageContent);
         }
 
 

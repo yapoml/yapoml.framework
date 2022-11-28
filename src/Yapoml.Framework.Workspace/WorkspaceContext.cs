@@ -33,18 +33,15 @@ namespace Yapoml.Framework.Workspace
 
         public void AddFile(string filePath, string content)
         {
-            var space = CreateOrAddSpaces(filePath);
-
-            if (filePath.EndsWith(".po.yaml", StringComparison.OrdinalIgnoreCase) || filePath.EndsWith(".po.yml", StringComparison.OrdinalIgnoreCase))
+            if (TryGetPageFile(filePath, out var pageName))
             {
+                var space = CreateOrAddSpaces(filePath);
+
                 var pages = _parser.ParsePages(content);
 
                 for (int i = 0; i < pages.Count; i++)
                 {
                     var page = pages[i];
-
-                    var fileName = Path.GetFileNameWithoutExtension(filePath);
-                    var pageName = fileName.Substring(0, fileName.Length - ".po".Length);
 
                     // adjust page family
                     if (i != 0)
@@ -72,15 +69,15 @@ namespace Yapoml.Framework.Workspace
                     _workspaceReferenceResolver.AppendPage(pageContext);
                 }
             }
-            else if (filePath.EndsWith(".pc.yaml", StringComparison.OrdinalIgnoreCase) || filePath.EndsWith(".pc.yml", StringComparison.OrdinalIgnoreCase))
+            else if (TryGetComponentFile(filePath, out var componentName))
             {
-                var component = _parser.ParseComponent(content);
+                var space = CreateOrAddSpaces(filePath);
 
-                var fileName = Path.GetFileNameWithoutExtension(filePath);
+                var component = _parser.ParseComponent(content);
 
                 if (string.IsNullOrEmpty(component.Name))
                 {
-                    component.Name = fileName.Substring(0, fileName.Length - ".pc".Length);
+                    component.Name = componentName;
                 }
 
                 ComponentContext componentContext;
@@ -113,6 +110,68 @@ namespace Yapoml.Framework.Workspace
         public void ResolveReferences()
         {
             _workspaceReferenceResolver.Resolve();
+        }
+
+        private bool TryGetPageFile(string filePath, out string pageName)
+        {
+            var fileName = Path.GetFileName(filePath);
+
+            if (filePath.EndsWith(".page.yml", StringComparison.InvariantCultureIgnoreCase))
+            {
+                pageName = fileName.Substring(0, fileName.Length - ".page.yml".Length);
+                return true;
+            }
+            else if (filePath.EndsWith(".page.yaml", StringComparison.InvariantCultureIgnoreCase))
+            {
+                pageName =  fileName.Substring(0, fileName.Length - ".page.yaml".Length);
+                return true;
+            }
+            else if (filePath.EndsWith(".po.yml", StringComparison.InvariantCultureIgnoreCase))
+            {
+                pageName =  fileName.Substring(0, fileName.Length - ".po.yml".Length);
+                return true;
+            }
+            else if (filePath.EndsWith(".po.yaml", StringComparison.InvariantCultureIgnoreCase))
+            {
+                pageName =  fileName.Substring(0, fileName.Length - ".po.yaml".Length);
+                return true;
+            }
+            else
+            {
+                pageName = null;
+                return false;
+            }
+        }
+
+        private bool TryGetComponentFile(string filePath, out string componentName)
+        {
+            var fileName = Path.GetFileName(filePath);
+
+            if (filePath.EndsWith(".component.yml", StringComparison.InvariantCultureIgnoreCase))
+            {
+                componentName = fileName.Substring(0, fileName.Length - ".component.yml".Length);
+                return true;
+            }
+            else if (filePath.EndsWith(".component.yaml", StringComparison.InvariantCultureIgnoreCase))
+            {
+                componentName = fileName.Substring(0, fileName.Length - ".component.yaml".Length);
+                return true;
+            }
+            else if (filePath.EndsWith(".pc.yml", StringComparison.InvariantCultureIgnoreCase))
+            {
+                componentName = fileName.Substring(0, fileName.Length - ".pc.yml".Length);
+                return true;
+            }
+            else if (filePath.EndsWith(".pc.yaml", StringComparison.InvariantCultureIgnoreCase))
+            {
+                componentName = fileName.Substring(0, fileName.Length - ".pc.yaml".Length);
+                return true;
+            }
+            else
+            {
+                componentName = null;
+                return false;
+            }
         }
 
         private SpaceContext CreateOrAddSpaces(string filePath)

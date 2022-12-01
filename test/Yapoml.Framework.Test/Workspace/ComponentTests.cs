@@ -132,24 +132,5 @@ by: qwe {param1} {param2}
             component.By.Segments[0].Should().Be("param1");
             component.By.Segments[1].Should().Be("param2");
         }
-
-        [Test]
-        public void Component_Root_Namespace_Should_Not_Pluralize()
-        {
-            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
-
-            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component_with_groups.component.yaml"), @"
-by: qwe
-
-InnerComponent: qwe
-");
-
-            var component = gc.Components[0];
-            component.Namespace.Should().Be("A.B");
-
-            var innerComponent = component.Components[0];
-            innerComponent.Namespace.Should().Be("A.B.MyComponentWithGroupsComponent");
-
-        }
     }
 }

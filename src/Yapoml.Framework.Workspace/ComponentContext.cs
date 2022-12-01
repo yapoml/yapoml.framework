@@ -77,25 +77,13 @@ namespace Yapoml.Framework.Workspace
                 {
                     if (ParentComponent != null)
                     {
-                        // do not singularize parent componet name if it's defined in *.component.yaml file
-                        string parentComponentName;
-
-                        if (ParentComponent.ParentComponent == null)
-                        {
-                            parentComponentName = ParentComponent.Name;
-                        }
-                        else
-                        {
-                            parentComponentName = ParentComponent.SingularName;
-                        }
-
                         if (ParentComponent.SingularName.EndsWith("Component"))
                         {
-                            _namespace = $"{ParentComponent.Namespace}.{parentComponentName}";
+                            _namespace = $"{ParentComponent.Namespace}.{ParentComponent.SingularName}";
                         }
                         else
                         {
-                            _namespace = $"{ParentComponent.Namespace}.{parentComponentName}Component";
+                            _namespace = $"{ParentComponent.Namespace}.{ParentComponent.SingularName}Component";
                         }
                     }
                     else if (Page != null)

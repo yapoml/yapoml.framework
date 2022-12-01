@@ -132,7 +132,7 @@ namespace Yapoml.Framework.Workspace
                 {
                     if (_component.By != null)
                     {
-                        _by = new ByContext(_component.By.Method, _component.By.Value, _component.By.DefinitionSource);
+                        _by = new ByContext(_component.By.Method, _component.By.Value, new DefinitionSource(RelativeFilePath, _component.By.Region));
                     }
                 }
 

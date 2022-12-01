@@ -14,6 +14,6 @@
             Id
         }
 
-        public DefinitionSource DefinitionSource { get; set; }
+        public Region Region { get; set; }
     }
 }

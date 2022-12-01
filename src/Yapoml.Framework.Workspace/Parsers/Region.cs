@@ -1,8 +1,8 @@
 ﻿namespace Yapoml.Framework.Workspace.Parsers
 {
-    public class DefinitionSource
+    public struct Region
     {
-        public DefinitionSource(Position start, Position end)
+        public Region(Position start, Position end)
         {
             Start = start;
             End = end;

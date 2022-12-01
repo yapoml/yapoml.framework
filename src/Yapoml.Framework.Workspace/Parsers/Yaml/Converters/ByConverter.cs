@@ -65,9 +65,9 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
         {
             var value = scalar.Value;
 
-            var definitionSource = new DefinitionSource(
-                new DefinitionSource.Position((uint)scalar.Start.Line, (uint)scalar.Start.Column),
-                new DefinitionSource.Position((uint)scalar.End.Line, (uint)scalar.End.Column - 1)
+            var region = new Region(
+                new Region.Position((uint)scalar.Start.Line, (uint)scalar.Start.Column),
+                new Region.Position((uint)scalar.End.Line, (uint)scalar.End.Column - 1)
             );
 
             if (value.StartsWith("by ", StringComparison.OrdinalIgnoreCase))
@@ -77,19 +77,19 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
 
             if (value.StartsWith("xpath ", StringComparison.OrdinalIgnoreCase))
             {
-                return new By { Method = By.ByMethod.XPath, Value = value.Substring(6, value.Length - 6), DefinitionSource = definitionSource };
+                return new By { Method = By.ByMethod.XPath, Value = value.Substring(6, value.Length - 6), Region = region };
             }
             else if (value.StartsWith("css ", StringComparison.OrdinalIgnoreCase))
             {
-                return new By { Method = By.ByMethod.Css, Value = value.Substring(4, value.Length - 4), DefinitionSource = definitionSource };
+                return new By { Method = By.ByMethod.Css, Value = value.Substring(4, value.Length - 4), Region = region };
             }
             else if (value.StartsWith("id ", StringComparison.OrdinalIgnoreCase))
             {
-                return new By { Method = By.ByMethod.Id, Value = value.Substring(3, value.Length - 3), DefinitionSource = definitionSource };
+                return new By { Method = By.ByMethod.Id, Value = value.Substring(3, value.Length - 3), Region = region };
             }
             else
             {
-                return new By { Method = By.ByMethod.None, Value = value, DefinitionSource = definitionSource };
+                return new By { Method = By.ByMethod.None, Value = value, Region = region };
             }
         }
     }

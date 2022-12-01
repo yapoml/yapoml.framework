@@ -98,25 +98,6 @@ extends: mybasepage
         }
 
         [Test]
-        public void Should_Inherit_By_Defintion()
-        {
-            var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", new WorkspaceParser(), new WorkspaceReferenceResolver(), _nameNormalizer);
-
-            gc.AddFile(Environment.CurrentDirectory + "/MyBasePage.page.yaml", @"
-MyBaseComp: ./a
-");
-
-            gc.AddFile(Environment.CurrentDirectory + "/MyPage.page.yaml", @"
-base: mybasepage
-
-MyComp:
-  base: MyBaseComp
-");
-            var component = gc.Pages[1].Components[0];
-           // component.By.DefinitionSource.RelativeFilePath.Should().Be("MyBasePage.page.yaml");
-        }
-
-        [Test]
         public void Should_Resolve_ReferencedComponent_InPage()
         {
             var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", new WorkspaceParser(), new WorkspaceReferenceResolver(), _nameNormalizer);

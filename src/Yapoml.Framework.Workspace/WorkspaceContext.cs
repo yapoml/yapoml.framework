@@ -33,7 +33,7 @@ namespace Yapoml.Framework.Workspace
 
         public void AddFile(string filePath, string content)
         {
-            if (TryGetPageFile(filePath, out var pageName))
+            if (TryGetPageOrComponentFile(filePath, out var pageName))
             {
                 var space = CreateOrAddSpaces(filePath);
 
@@ -112,7 +112,7 @@ namespace Yapoml.Framework.Workspace
             _workspaceReferenceResolver.Resolve();
         }
 
-        private bool TryGetPageFile(string filePath, out string pageName)
+        private bool TryGetPageOrComponentFile(string filePath, out string pageName)
         {
             var fileName = Path.GetFileName(filePath);
 

@@ -76,11 +76,11 @@ by: qwe {param1}
         {
             var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
 
-            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "qwe\\my_component.component.yaml"), "by: 12345");
+            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "qwe/my_component.component.yaml"), "by: 12345");
 
             var component = gc.Spaces[0].Components[0];
             var byDefinitionSource = component.By.DefinitionSource;
-            byDefinitionSource.RelativeFilePath.Should().Be("qwe\\my_component.component.yaml");
+            byDefinitionSource.RelativeFilePath.Should().Be("qwe/my_component.component.yaml");
             byDefinitionSource.Region.Start.Should().Be(new Region.Position(1, 5));
             byDefinitionSource.Region.End.Should().Be(new Region.Position(1, 9));
         }
@@ -90,11 +90,11 @@ by: qwe {param1}
         {
             var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
 
-            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "qwe\\my.component.yaml"), "by: 12345");
+            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "qwe/my.component.yaml"), "by: 12345");
 
             var component = gc.Spaces[0].Components[0];
             var byDefinitionSource = component.By.DefinitionSource;
-            byDefinitionSource.RelativeFilePath.Should().Be("qwe\\my.component.yaml");
+            byDefinitionSource.RelativeFilePath.Should().Be("qwe/my.component.yaml");
             byDefinitionSource.Region.Start.Should().Be(new Region.Position(1, 5));
             byDefinitionSource.Region.End.Should().Be(new Region.Position(1, 9));
         }
@@ -104,14 +104,14 @@ by: qwe {param1}
         {
             var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
 
-            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "qwe\\my_base.component.yaml"), "by: 12345");
-            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "qwe\\my.component.yaml"), "base: my_base");
+            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "qwe/my_base.component.yaml"), "by: 12345");
+            gc.AddFile(Path.Combine(Environment.CurrentDirectory, "qwe/my.component.yaml"), "base: my_base");
 
             gc.ResolveReferences();
 
             var component = gc.Spaces[0].Components[1];
             var byDefinitionSource = component.By.DefinitionSource;
-            byDefinitionSource.RelativeFilePath.Should().Be("qwe\\my_base.component.yaml");
+            byDefinitionSource.RelativeFilePath.Should().Be("qwe/my_base.component.yaml");
             byDefinitionSource.Region.Start.Should().Be(new Region.Position(1, 5));
             byDefinitionSource.Region.End.Should().Be(new Region.Position(1, 9));
         }

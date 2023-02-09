@@ -132,25 +132,6 @@ namespace Yapoml.Framework.Workspace
             }
         }
 
-        private string _referencedComponentName;
-        public string ReferencedComponentName
-        {
-            get
-            {
-                if (_referencedComponentName is null)
-                {
-                    if (_component.Ref != null)
-                    {
-                        _referencedComponentName = Workspace.NameNormalizer.Normalize(_component.Ref);
-                    }
-                }
-
-                return _referencedComponentName;
-            }
-        }
-
-        public ComponentContext ReferencedComponent { get; set; }
-
         private string _baseComponentName;
         public string BaseComponentName
         {

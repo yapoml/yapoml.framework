@@ -41,11 +41,7 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
 
                             component.By = by;
                         }
-                        else if (scalar.Value.Equals("ref", StringComparison.OrdinalIgnoreCase))
-                        {
-                            component.Ref = parser.Consume<Scalar>().Value;
-                        }
-                        else if (scalar.Value.ToLower() == "base" || scalar.Value.ToLower() == "extends")
+                        else if (scalar.Value.ToLower() == "base" || scalar.Value.ToLower() == "extends" || scalar.Value.Equals("ref", StringComparison.OrdinalIgnoreCase))
                         {
                             component.BaseComponent = parser.Consume<Scalar>().Value;
                         }

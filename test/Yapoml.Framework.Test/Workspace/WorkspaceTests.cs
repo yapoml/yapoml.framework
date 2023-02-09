@@ -110,7 +110,7 @@ C2:
 
             gc.ResolveReferences();
 
-            gc.Pages[0].Components[1].ReferencedComponent.Should().BeSameAs(gc.Pages[0].Components[0]);
+            gc.Pages[0].Components[1].BaseComponent.Should().BeSameAs(gc.Pages[0].Components[0]);
         }
 
         [Test]
@@ -127,7 +127,7 @@ C2:
 
             gc.ResolveReferences();
 
-            gc.Pages[0].Components[0].ReferencedComponent.Should().BeSameAs(gc.Components[0]);
+            gc.Pages[0].Components[0].BaseComponent.Should().BeSameAs(gc.Components[0]);
         }
 
         [Test]

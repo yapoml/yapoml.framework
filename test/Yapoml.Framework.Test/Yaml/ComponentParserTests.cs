@@ -20,7 +20,7 @@ by: abc
             component.By.Should().NotBeNull();
             component.By.Method.Should().Be(By.ByMethod.None);
             component.By.Value.Should().Be("abc");
-            component.Ref.Should().BeNull();
+            component.BaseComponent.Should().BeNull();
         }
 
         [Test]
@@ -54,7 +54,7 @@ ref: abc
 ";
             var component = _parser.Parse<Component>(content);
 
-            component.Ref.Should().Be("abc");
+            component.BaseComponent.Should().Be("abc");
         }
 
         [Test]

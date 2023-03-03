@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Yapoml.Framework.Workspace.Parsers;
 using Yapoml.Framework.Workspace.Parsers.Yaml.Pocos;
 using Yapoml.Framework.Workspace.Services;
 
@@ -65,6 +64,20 @@ namespace Yapoml.Framework.Workspace
                 }
 
                 return _name;
+            }
+        }
+
+        private string _originalName;
+        public string OriginalName
+        {
+            get
+            {
+                if (_originalName is null)
+                {
+                    _originalName = _component.Name;
+                }
+
+                return _originalName;
             }
         }
 

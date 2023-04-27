@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Yapoml.Framework.Logging
+namespace Yapoml.Framework.Logging.Loggers
 {
     public class ConsoleLogger : ILogger
     {

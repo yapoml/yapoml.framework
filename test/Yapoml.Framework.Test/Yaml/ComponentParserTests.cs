@@ -47,18 +47,6 @@ Component3: { by: c3 }
         }
 
         [Test]
-        public void Should_Parse_Empty_By()
-        {
-            var content = @"
-: css .abc
-";
-            var component = _parser.Parse<Component>(content);
-
-            component.By.Method.Should().Be(By.ByMethod.Css);
-            component.By.Value.Should().Be(".abc");
-        }
-
-        [Test]
         public void Should_Parse_Ref()
         {
             var content = @"

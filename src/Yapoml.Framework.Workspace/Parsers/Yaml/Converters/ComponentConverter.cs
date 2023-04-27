@@ -35,7 +35,7 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
                 {
                     if (parser.TryConsume<Scalar>(out var scalar))
                     {
-                        if (scalar.Value.Equals("by", StringComparison.OrdinalIgnoreCase) || scalar.Value.Equals(string.Empty))
+                        if (scalar.Value.Equals("by", StringComparison.OrdinalIgnoreCase))
                         {
                             var by = (By)_byConverter.ReadYaml(parser, typeof(By));
 

@@ -204,7 +204,7 @@ namespace Yapoml.Framework.Workspace
                 {
                     if (_component.Components != null)
                     {
-                        _components = _component.Components.Select(c => new ComponentContext(Workspace, Space, null, this, c)).ToList();
+                        _components = _component.Components.Select(c => new ComponentContext(Workspace, Space, Page, this, c)).ToList();
                     }
                 }
 

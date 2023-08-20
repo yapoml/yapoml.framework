@@ -8,7 +8,7 @@ namespace Yapoml.Framework.Logging
 
         public void Trace(string message)
         {
-            OnLogMessage?.Invoke(this, new LogMessageEventArgs(message, LogLevel.Trace));
+            OnLogMessage?.Invoke(this, new LogMessageEventArgs(message, LogLevel.Trace, DateTimeOffset.UtcNow));
         }
     }
 }

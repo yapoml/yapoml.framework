@@ -19,7 +19,7 @@ namespace Yapoml.Framework.Logging.Listeners
 
         private void OnLogMessage(object sender, LogMessageEventArgs e)
         {
-            Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff} {_shortLevels[e.LogLevel]} {e.Message}");
+            Console.WriteLine($"{e.Timestamp:HH:mm:ss.fff} {_shortLevels[e.LogLevel]} {e.Message}");
         }
 
         public void Dispose()

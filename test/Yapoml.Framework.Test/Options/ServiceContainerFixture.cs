@@ -3,7 +3,7 @@ using NUnit.Framework;
 using System;
 using Yapoml.Framework.Options;
 
-namespace Yapoml.Framework.Test.Services
+namespace Yapoml.Framework.Test.Options
 {
     class ServiceContainerFixture
     {

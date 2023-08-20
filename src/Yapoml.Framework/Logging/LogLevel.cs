@@ -2,7 +2,6 @@
 {
     public enum LogLevel
     {
-        Info,
         Trace
     }
 }

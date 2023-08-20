@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Yapoml.Framework.Logging.Listeners
 {
-    public class ConsoleLogger : ILogListener, IDisposable
+    public class ConsoleLogListener : ILogListener, IDisposable
     {
         private ILogger _logger;
 

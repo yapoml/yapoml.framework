@@ -23,7 +23,7 @@ public class Logger : ILogger
     /// <inheritdoc/>
     public ILogScope BeginLogScope(string name, LogLevel logLevel = LogLevel.Trace)
     {
-        var logScope = new LogScope(this, null, name, logLevel);
+        var logScope = new LogScope(this, _currentLogScope.Value, name, logLevel);
 
         _currentLogScope.Value = logScope;
 

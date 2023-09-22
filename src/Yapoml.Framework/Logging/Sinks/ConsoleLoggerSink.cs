@@ -50,9 +50,7 @@ public class ConsoleLoggerSink : IDisposable
 
             var prefix = string.Concat(Enumerable.Repeat("╎ ", depth));
 
-            prefix += "";
-
-            message = $"• {duration.TotalSeconds:0}s";
+            message = $"• {duration.TotalSeconds:0.#}s";
 
             Console.WriteLine($"{e.Timestamp:HH:mm:ss.fff} {_shortLevels[e.LogScope!.LogLevel]} {prefix}{message}");
         }

@@ -40,33 +40,22 @@ public class ConsoleLoggerSink : IDisposable
 
     private void OnLogScopeEnd(object sender, LogScopeEventArgs e)
     {
-        var depth = (int)(e.LogScope?.Depth ?? 0);
-
-        var prefix = string.Concat(Enumerable.Repeat("╎ ", depth));
-
-        prefix += "";
-
         var duration = e.LogScope!.EndTime - e.LogScope.BeginTime;
 
-        string message;
+        if (duration.TotalSeconds >= 1)
+        {
+            string message;
 
-        if (duration.TotalSeconds < 1)
-        {
-            if (duration.TotalMilliseconds < 1)
-            {
-                message = "•";
-            }
-            else
-            {
-                message = $"• {duration.TotalMilliseconds:0}ms";
-            }
-        }
-        else
-        {
+            var depth = (int)(e.LogScope?.Depth ?? 0);
+
+            var prefix = string.Concat(Enumerable.Repeat("╎ ", depth));
+
+            prefix += "";
+
             message = $"• {duration.TotalSeconds:0}s";
-        }
 
-        Console.WriteLine($"{e.Timestamp:HH:mm:ss.fff} {_shortLevels[e.LogScope!.LogLevel]} {prefix}{message}");
+            Console.WriteLine($"{e.Timestamp:HH:mm:ss.fff} {_shortLevels[e.LogScope!.LogLevel]} {prefix}{message}");
+        }
     }
 
     public void Dispose()

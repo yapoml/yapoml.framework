@@ -1,29 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>Latest</LangVersion>
+    <Nullable>enable</Nullable>
 
-		<Description>Yet another page object generation</Description>
-    	<Authors>Nikolay Borisenko</Authors>
-    	<PackageLicenseExpression>MIT</PackageLicenseExpression>
-    	<PackageProjectUrl>https://yapoml.dev</PackageProjectUrl>
-    	<PackageIcon>Logo.png</PackageIcon>
-    	<RepositoryType>GitHub</RepositoryType>
-    	<RepositoryUrl>https://github.com/yapoml/yapoml.framework</RepositoryUrl>
-    	<PackageTags>page generation</PackageTags>
+    <Description>Yet another page object generation</Description>
+    <Authors>Nikolay Borisenko</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://yapoml.dev</PackageProjectUrl>
+    <PackageIcon>Logo.png</PackageIcon>
+    <RepositoryType>GitHub</RepositoryType>
+    <RepositoryUrl>https://github.com/yapoml/yapoml.framework</RepositoryUrl>
+    <PackageTags>page generation</PackageTags>
 
-		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-	</PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
 
-	<ItemGroup>
-		<None Include="..\..\Logo.png" Pack="true" PackagePath="\" Visible="false" />
-	</ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Logo.png" Pack="true" PackagePath="\" Visible="false" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="GitVersion.MsBuild" Version="5.12.0">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="GitVersion.MsBuild" Version="5.12.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
 
 </Project>

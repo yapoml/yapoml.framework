@@ -1,15 +1,14 @@
 ﻿using System;
 
-namespace Yapoml.Framework.Options
+namespace Yapoml.Framework.Options;
+
+public interface IServicesContainer
 {
-    public interface IServicesContainer
-    {
-        void Register<T>(T instance);
+    void Register<T>(T instance);
 
-        event EventHandler<TypeRegisteredEventArgs> OnTypeRegistered;
+    event EventHandler<TypeRegisteredEventArgs> OnTypeRegistered;
 
-        T Get<T>();
+    T Get<T>();
 
-        bool TryGet<T>(out T service);
-    }
+    bool TryGet<T>(out T service);
 }

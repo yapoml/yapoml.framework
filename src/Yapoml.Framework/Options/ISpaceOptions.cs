@@ -1,9 +1,6 @@
-﻿using System;
+﻿namespace Yapoml.Framework.Options;
 
-namespace Yapoml.Framework.Options
+public interface ISpaceOptions
 {
-    public interface ISpaceOptions
-    {
-        IServicesContainer Services { get; }
-    }
+    IServicesContainer Services { get; }
 }

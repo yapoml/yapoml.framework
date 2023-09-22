@@ -1,7 +1,6 @@
-﻿namespace Yapoml.Framework.Logging
+﻿namespace Yapoml.Framework.Logging;
+
+public enum LogLevel
 {
-    public enum LogLevel
-    {
-        Trace
-    }
+    Trace
 }

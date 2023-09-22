@@ -126,16 +126,6 @@ namespace Yapoml.Framework.Workspace
                 pageName =  fileName.Substring(0, fileName.Length - ".page.yaml".Length);
                 return true;
             }
-            else if (filePath.EndsWith(".po.yml", StringComparison.InvariantCultureIgnoreCase))
-            {
-                pageName =  fileName.Substring(0, fileName.Length - ".po.yml".Length);
-                return true;
-            }
-            else if (filePath.EndsWith(".po.yaml", StringComparison.InvariantCultureIgnoreCase))
-            {
-                pageName =  fileName.Substring(0, fileName.Length - ".po.yaml".Length);
-                return true;
-            }
             else
             {
                 pageName = null;
@@ -155,16 +145,6 @@ namespace Yapoml.Framework.Workspace
             else if (filePath.EndsWith(".component.yaml", StringComparison.InvariantCultureIgnoreCase))
             {
                 componentName = fileName.Substring(0, fileName.Length - ".component.yaml".Length);
-                return true;
-            }
-            else if (filePath.EndsWith(".pc.yml", StringComparison.InvariantCultureIgnoreCase))
-            {
-                componentName = fileName.Substring(0, fileName.Length - ".pc.yml".Length);
-                return true;
-            }
-            else if (filePath.EndsWith(".pc.yaml", StringComparison.InvariantCultureIgnoreCase))
-            {
-                componentName = fileName.Substring(0, fileName.Length - ".pc.yaml".Length);
                 return true;
             }
             else

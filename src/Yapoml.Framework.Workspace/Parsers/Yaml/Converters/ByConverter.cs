@@ -91,6 +91,10 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
             {
                 return new By { Method = By.ByMethod.Id, Value = value.Substring(3, value.Length - 3), Region = region };
             }
+            else if (value.StartsWith("testid ", StringComparison.OrdinalIgnoreCase))
+            {
+                return new By { Method = By.ByMethod.TestId, Value = value.Substring(7, value.Length - 7), Region = region };
+            }
             else
             {
                 return new By { Method = By.ByMethod.None, Value = value, Region = region };

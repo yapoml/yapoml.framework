@@ -11,7 +11,8 @@
             None,
             XPath,
             Css,
-            Id
+            Id,
+            TestId
         }
 
         public Region Region { get; set; }

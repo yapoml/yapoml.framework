@@ -35,16 +35,20 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
 
                     switch (propertyName.ToLowerInvariant())
                     {
-                        case "xpath":
-                            by.Method = By.ByMethod.XPath;
-                            by.Value = propertyValue;
-                            break;
                         case "css":
                             by.Method = By.ByMethod.Css;
                             by.Value = propertyValue;
                             break;
+                        case "xpath":
+                            by.Method = By.ByMethod.XPath;
+                            by.Value = propertyValue;
+                            break;
                         case "id":
                             by.Method = By.ByMethod.Id;
+                            by.Value = propertyValue;
+                            break;
+                        case "testid":
+                            by.Method = By.ByMethod.TestId;
                             by.Value = propertyValue;
                             break;
                         default:

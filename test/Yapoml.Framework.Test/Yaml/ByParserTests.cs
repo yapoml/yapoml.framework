@@ -23,6 +23,15 @@ namespace Yapoml.Framework.Test.Yaml
         }
 
         [Test]
+        public void Should_Parse_By_Mapping_TestId()
+        {
+            var content = @"testid: abc";
+            var by = _parser.Parse<By>(content);
+            by.Method.Should().Be(ByMethod.TestId);
+            by.Value.Should().Be("abc");
+        }
+
+        [Test]
         public void Should_Parse_By_Mapping_Xpath_CaseInsensitive()
         {
             var content = @"xpATh: ./abc";

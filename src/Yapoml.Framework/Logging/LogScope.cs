@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Yapoml.Framework.Logging;
 
@@ -30,11 +31,39 @@ internal class LogScope : ILogScope
 
     public DateTime EndTime { get; private set; }
 
+    public Exception Error { get; private set; }
+
     public ILogScope BeginScope(string name, LogLevel logLevel = LogLevel.Trace)
     {
         var logScope = new LogScope(_logger, this, name, logLevel);
 
         return _logger.BeginLogScope(logScope);
+    }
+
+    public void Execute(Action action)
+    {
+        try
+        {
+            action();
+        }
+        catch (Exception ex)
+        {
+            Error = ex;
+            throw;
+        }
+    }
+
+    public void Execute(Func<Task> func)
+    {
+        try
+        {
+            func().GetAwaiter().GetResult();
+        }
+        catch (Exception ex)
+        {
+            Error = ex;
+            throw;
+        }
     }
 
     public void Dispose()

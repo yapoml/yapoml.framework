@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using Yapoml.Framework.Logging;
 using Yapoml.Framework.Logging.Sinks;
 
@@ -83,6 +84,65 @@ namespace Yapoml.Framework.Test.Logging
             actualArgs.LogScope.Name.Should().Be("test");
             actualArgs.LogScope.Depth.Should().Be(0);
             actualArgs.Timestamp.Should().BeCloseTo(DateTime.Now, TimeSpan.FromMilliseconds(100));
+        }
+
+        [Test]
+        public void LogScopeShouldExecute()
+        {
+            var logger = new Logger();
+
+            int result = 0;
+
+            using (var logScope = logger.BeginLogScope("scope1"))
+            {
+                try
+                {
+                    logScope.Execute(() => result = 42);
+                }
+                catch (Exception) { }
+
+                logScope.Error.Should().BeNull();
+            }
+
+            result.Should().Be(42);
+        }
+
+        [Test]
+        public void LogScopeShouldExecuteWithError()
+        {
+            var logger = new Logger();
+
+            var expectedException = new Exception("abc");
+
+            using (var logScope = logger.BeginLogScope("scope1"))
+            {
+                try
+                {
+                    logScope.Execute(() => throw expectedException);
+                }
+                catch (Exception) { }
+
+                logScope.Error.Should().Be(expectedException);
+            }
+        }
+
+        [Test]
+        public void LogScopeShouldExecuteAsyncWithError()
+        {
+            var logger = new Logger();
+
+            var expectedException = new Exception("abc");
+
+            using (var logScope = logger.BeginLogScope("scope1"))
+            {
+                try
+                {
+                    logScope.Execute(async () => { await Task.CompletedTask; throw expectedException; });
+                }
+                catch (Exception) { }
+
+                logScope.Error.Should().Be(expectedException);
+            }
         }
 
         [Test]

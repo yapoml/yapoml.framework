@@ -23,5 +23,5 @@ public interface ILogScope : IDisposable
 
     void Execute(Action action);
 
-    void Execute(Func<Task> func);
+    TResult Execute<TResult>(Func<TResult> func);
 }

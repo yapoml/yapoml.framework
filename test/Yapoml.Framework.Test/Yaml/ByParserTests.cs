@@ -76,10 +76,12 @@ namespace Yapoml.Framework.Test.Yaml
         [Test]
         public void Scope_Should_BeParentByDefault()
         {
-            var content = "";
+            var content = $"xpath: .//div{Environment.NewLine}from: parent";
 
             var by = _parser.Parse<By>(content);
 
+            by.Method.Should().Be(ByMethod.XPath);
+            by.Value.Should().Be(".//div");
             by.Scope.Should().Be(ByScope.Parent);
         }
 

@@ -30,7 +30,7 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
                     var propertyName = parser.Consume<Scalar>().Value;
 
                     var propertyScalar = parser.Consume<Scalar>();
-                    by = ParseScalar(propertyScalar);
+
                     var propertyValue = propertyScalar.Value;
 
                     switch (propertyName.ToLowerInvariant())
@@ -38,18 +38,22 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
                         case "css":
                             by.Method = By.ByMethod.Css;
                             by.Value = propertyValue;
+                            by.Region = GetByRegion(propertyScalar);
                             break;
                         case "xpath":
                             by.Method = By.ByMethod.XPath;
                             by.Value = propertyValue;
+                            by.Region = GetByRegion(propertyScalar);
                             break;
                         case "id":
                             by.Method = By.ByMethod.Id;
                             by.Value = propertyValue;
+                            by.Region = GetByRegion(propertyScalar);
                             break;
                         case "testid":
                             by.Method = By.ByMethod.TestId;
                             by.Value = propertyValue;
+                            by.Region = GetByRegion(propertyScalar);
                             break;
 
                         case "from":
@@ -104,6 +108,14 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
             {
                 return new By { Method = By.ByMethod.None, Value = value, Region = region };
             }
+        }
+
+        private Region GetByRegion(Scalar scalar)
+        {
+            return new Region(
+                new Region.Position((uint)scalar.Start.Line, (uint)scalar.Start.Column),
+                new Region.Position((uint)scalar.End.Line, (uint)scalar.End.Column - 1)
+            );
         }
     }
 }

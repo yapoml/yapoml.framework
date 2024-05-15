@@ -133,7 +133,7 @@ namespace Yapoml.Framework.Workspace
                 {
                     if (_component.By != null)
                     {
-                        _by = new ByContext(_component.By.Method, _component.By.Value, new DefinitionSource(RelativeFilePath, _component.By.Region));
+                        _by = new ByContext(_component.By.Method, _component.By.Value, _component.By.Scope, new DefinitionSource(RelativeFilePath, _component.By.Region));
                     }
                 }
 
@@ -214,10 +214,11 @@ namespace Yapoml.Framework.Workspace
 
         public class ByContext
         {
-            public ByContext(By.ByMethod method, string value, DefinitionSource definitionSource)
+            public ByContext(By.ByMethod method, string value, By.ByScope scope, DefinitionSource definitionSource)
             {
                 Method = method;
                 Value = value;
+                Scope = scope;
                 DefinitionSource = definitionSource;
                 Segments = SegmentsParser.ParseSegments(value);
             }
@@ -225,6 +226,8 @@ namespace Yapoml.Framework.Workspace
             public By.ByMethod Method { get; }
 
             public string Value { get; }
+
+            public By.ByScope Scope { get; }
 
             public IList<string> Segments { get; }
 

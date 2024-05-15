@@ -51,6 +51,11 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
                             by.Method = By.ByMethod.TestId;
                             by.Value = propertyValue;
                             break;
+
+                        case "from":
+                            by.Scope = (By.ByScope)Enum.Parse(typeof(By.ByScope), propertyValue, true);
+                            break;
+
                         default:
                             throw new Exception($"Cannot map '{propertyName}' yaml scalar to any property of {type.Name} type.");
                     }

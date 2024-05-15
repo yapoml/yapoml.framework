@@ -72,5 +72,35 @@ namespace Yapoml.Framework.Test.Yaml
             by.Method.Should().Be(expectedMethod);
             by.Value.Should().Be(expectedValue);
         }
+
+        [Test]
+        public void Scope_Should_BeParentByDefault()
+        {
+            var content = "";
+
+            var by = _parser.Parse<By>(content);
+
+            by.Scope.Should().Be(ByScope.Parent);
+        }
+
+        [Test]
+        public void Scope_Should_BeParent()
+        {
+            var content = "fRoM: paRenT";
+
+            var by = _parser.Parse<By>(content);
+
+            by.Scope.Should().Be(ByScope.Parent);
+        }
+
+        [Test]
+        public void Scope_Should_BeRoot()
+        {
+            var content = "fRoM: rOoT";
+
+            var by = _parser.Parse<By>(content);
+
+            by.Scope.Should().Be(ByScope.Root);
+        }
     }
 }

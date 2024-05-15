@@ -15,6 +15,14 @@
             TestId
         }
 
+        public ByScope Scope { get; set; }
+
+        public enum ByScope
+        {
+            Parent,
+            Root
+        }
+
         public Region Region { get; set; }
     }
 }

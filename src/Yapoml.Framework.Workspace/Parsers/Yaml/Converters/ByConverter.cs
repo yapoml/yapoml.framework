@@ -13,7 +13,7 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
             return typeof(By) == type;
         }
 
-        public object ReadYaml(IParser parser, Type type)
+        public object ReadYaml(IParser parser, Type type, ObjectDeserializer rootDeserializer)
         {
             if (parser.TryConsume<Scalar>(out var scalar))
             {
@@ -69,7 +69,7 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
             }
         }
 
-        public void WriteYaml(IEmitter emitter, object value, Type type)
+        public void WriteYaml(IEmitter emitter, object value, Type type, ObjectSerializer serializer)
         {
             throw new NotImplementedException();
         }

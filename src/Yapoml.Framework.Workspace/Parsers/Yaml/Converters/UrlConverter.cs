@@ -14,7 +14,7 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
             return typeof(Url) == type;
         }
 
-        public object ReadYaml(IParser parser, Type type)
+        public object ReadYaml(IParser parser, Type type, ObjectDeserializer rootDeserializer)
         {
             Url url = null;
 
@@ -73,7 +73,7 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
             return url;
         }
 
-        public void WriteYaml(IEmitter emitter, object value, Type type)
+        public void WriteYaml(IEmitter emitter, object value, Type type, ObjectSerializer serializer)
         {
             throw new NotImplementedException();
         }

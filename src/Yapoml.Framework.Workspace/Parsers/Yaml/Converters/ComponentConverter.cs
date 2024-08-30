@@ -21,7 +21,7 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
             return typeof(Component) == type;
         }
 
-        public object ReadYaml(IParser parser, Type type)
+        public object ReadYaml(IParser parser, Type type, ObjectDeserializer rootDeserializer)
         {
             var component = new Component();
 
@@ -37,7 +37,7 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
                     {
                         if (scalar.Value.Equals("by", StringComparison.OrdinalIgnoreCase))
                         {
-                            var by = (By)_byConverter.ReadYaml(parser, typeof(By));
+                            var by = (By)_byConverter.ReadYaml(parser, typeof(By), rootDeserializer);
 
                             component.By = by;
                         }
@@ -49,7 +49,7 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
                         {
                             var componentName = scalar.Value;
 
-                            var innerComponent = (Component)ReadYaml(parser, typeof(Component));
+                            var innerComponent = (Component)ReadYaml(parser, typeof(Component), rootDeserializer);
                             innerComponent.Name = componentName;
 
                             if (component.Components == null) component.Components = new List<Component>();
@@ -70,7 +70,7 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
             return component;
         }
 
-        public void WriteYaml(IEmitter emitter, object value, Type type)
+        public void WriteYaml(IEmitter emitter, object value, Type type, ObjectSerializer serializer)
         {
             throw new NotImplementedException();
         }

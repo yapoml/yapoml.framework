@@ -24,7 +24,7 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
             return typeof(Page) == type;
         }
 
-        public object ReadYaml(IParser parser, Type type)
+        public object ReadYaml(IParser parser, Type type, ObjectDeserializer rootDeserializer)
         {
             var page = new Page();
 
@@ -40,13 +40,13 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
                     }
                     else if (scalar.Value.ToLower() == "url")
                     {
-                        page.Url = (Url)_urlConverter.ReadYaml(parser, typeof(Url));
+                        page.Url = (Url)_urlConverter.ReadYaml(parser, typeof(Url), rootDeserializer);
                     }
                     else
                     {
                         var componentName = scalar.Value;
 
-                        var component = (Component)_componentConverter.ReadYaml(parser, typeof(Component));
+                        var component = (Component)_componentConverter.ReadYaml(parser, typeof(Component), rootDeserializer);
 
                         component.Name = componentName;
 
@@ -63,7 +63,7 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
             return page;
         }
 
-        public void WriteYaml(IEmitter emitter, object value, Type type)
+        public void WriteYaml(IEmitter emitter, object value, Type type, ObjectSerializer serializer)
         {
             throw new NotImplementedException();
         }

@@ -90,25 +90,11 @@ namespace Yapoml.Framework.Workspace
                 {
                     if (ParentComponent != null)
                     {
-                        if (ParentComponent.SingularName.EndsWith("Component"))
-                        {
-                            _namespace = $"{ParentComponent.Namespace}.{ParentComponent.SingularName}";
-                        }
-                        else
-                        {
-                            _namespace = $"{ParentComponent.Namespace}.{ParentComponent.SingularName}Component";
-                        }
+                        _namespace = $"{ParentComponent.Namespace}.{ParentComponent.Name}";
                     }
                     else if (Page != null)
                     {
-                        if (Page.Name.EndsWith("Page"))
-                        {
-                            _namespace = $"{Page.Namespace}.{Page.Name}";
-                        }
-                        else
-                        {
-                            _namespace = $"{Page.Namespace}.{Page.Name}Page";
-                        }
+                        _namespace = $"{Page.Namespace}.{Page.Name}";
                     }
                     else if (Space != null)
                     {

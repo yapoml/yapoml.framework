@@ -53,20 +53,39 @@ internal class LogScope : ILogScope
         }
     }
 
-    public TResult Execute<TResult>(Func<TResult> action)
+    public TResult Execute<TResult>(Func<TResult> func)
+    {
+        try
+        {
+            return func();
+        }
+        catch (Exception ex)
+        {
+            Error = ex;
+            throw;
+        }
+    }
+
+    public void Execute(Func<Task> action)
+    {
+        try
+        {
+            Task.Run(action).GetAwaiter().GetResult();
+        }
+        catch (Exception ex)
+        {
+            Error = ex;
+            throw;
+        }
+    }
+
+    public TResult Execute<TResult>(Func<Task<TResult>> func)
     {
         TResult result;
 
         try
         {
-            result = action();
-
-            var task = result as Task;
-
-            if (task is not null)
-            {
-                task.GetAwaiter().GetResult();
-            }
+            result = Task.Run(func).GetAwaiter().GetResult();
         }
         catch (Exception ex)
         {

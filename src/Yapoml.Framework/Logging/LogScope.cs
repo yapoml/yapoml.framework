@@ -66,11 +66,11 @@ internal class LogScope : ILogScope
         }
     }
 
-    public void Execute(Func<Task> action)
+    public async Task ExecuteAsync(Func<Task> action)
     {
         try
         {
-            Task.Run(action).GetAwaiter().GetResult();
+            await action().ConfigureAwait(false);
         }
         catch (Exception ex)
         {
@@ -79,13 +79,13 @@ internal class LogScope : ILogScope
         }
     }
 
-    public TResult Execute<TResult>(Func<Task<TResult>> func)
+    public async Task<TResult> ExecuteAsync<TResult>(Func<Task<TResult>> func)
     {
         TResult result;
 
         try
         {
-            result = Task.Run(func).GetAwaiter().GetResult();
+            result = await func().ConfigureAwait(false);
         }
         catch (Exception ex)
         {

@@ -53,6 +53,19 @@ internal class LogScope : ILogScope
         }
     }
 
+    public void Execute(Func<Task> func)
+    {
+        try
+        {
+            func().GetAwaiter().GetResult();
+        }
+        catch (Exception ex)
+        {
+            Error = ex;
+            throw;
+        }
+    }
+
     public TResult Execute<TResult>(Func<TResult> func)
     {
         try
@@ -66,34 +79,17 @@ internal class LogScope : ILogScope
         }
     }
 
-    public async Task ExecuteAsync(Func<Task> action)
+    public TResult Execute<TResult>(Func<Task<TResult>> func)
     {
         try
         {
-            await action().ConfigureAwait(false);
+            return func().GetAwaiter().GetResult();
         }
         catch (Exception ex)
         {
             Error = ex;
             throw;
         }
-    }
-
-    public async Task<TResult> ExecuteAsync<TResult>(Func<Task<TResult>> func)
-    {
-        TResult result;
-
-        try
-        {
-            result = await func().ConfigureAwait(false);
-        }
-        catch (Exception ex)
-        {
-            Error = ex;
-            throw;
-        }
-
-        return result;
     }
 
     public void Dispose()

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Yapoml.Framework.Logging;
@@ -54,18 +53,11 @@ internal class LogScope : ILogScope
         }
     }
 
-    public void Execute(Func<Task> func)
+    public async Task ExecuteAsync(Func<Task> action)
     {
         try
         {
-            if (SynchronizationContext.Current is null && TaskScheduler.Current == TaskScheduler.Default)
-            {
-                func().GetAwaiter().GetResult();
-            }
-            else
-            {
-                Task.Run(func).GetAwaiter().GetResult();
-            }
+            await action().ConfigureAwait(false);
         }
         catch (Exception ex)
         {
@@ -74,11 +66,11 @@ internal class LogScope : ILogScope
         }
     }
 
-    public TResult Execute<TResult>(Func<TResult> func)
+    public TResult Execute<TResult>(Func<TResult> action)
     {
         try
         {
-            return func();
+            return action();
         }
         catch (Exception ex)
         {
@@ -87,18 +79,11 @@ internal class LogScope : ILogScope
         }
     }
 
-    public TResult Execute<TResult>(Func<Task<TResult>> func)
+    public async Task<TResult> ExecuteAsync<TResult>(Func<Task<TResult>> action)
     {
         try
         {
-            if (SynchronizationContext.Current is null && TaskScheduler.Current == TaskScheduler.Default)
-            {
-                return func().GetAwaiter().GetResult();
-            }
-            else
-            {
-                return Task.Run(func).GetAwaiter().GetResult();
-            }
+            return await action().ConfigureAwait(false);
         }
         catch (Exception ex)
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Yapoml.Framework.Logging;
@@ -57,7 +58,14 @@ internal class LogScope : ILogScope
     {
         try
         {
-            Task.Run(async () => await func()).GetAwaiter().GetResult();
+            if (SynchronizationContext.Current is null && TaskScheduler.Current == TaskScheduler.Default)
+            {
+                func().GetAwaiter().GetResult();
+            }
+            else
+            {
+                Task.Run(func).GetAwaiter().GetResult();
+            }
         }
         catch (Exception ex)
         {
@@ -83,7 +91,14 @@ internal class LogScope : ILogScope
     {
         try
         {
-            return Task.Run(async () => await func()).GetAwaiter().GetResult();
+            if (SynchronizationContext.Current is null && TaskScheduler.Current == TaskScheduler.Default)
+            {
+                return func().GetAwaiter().GetResult();
+            }
+            else
+            {
+                return Task.Run(func).GetAwaiter().GetResult();
+            }
         }
         catch (Exception ex)
         {

@@ -57,7 +57,7 @@ internal class LogScope : ILogScope
     {
         try
         {
-            func().GetAwaiter().GetResult();
+            Task.Run(async () => await func()).GetAwaiter().GetResult();
         }
         catch (Exception ex)
         {
@@ -83,7 +83,7 @@ internal class LogScope : ILogScope
     {
         try
         {
-            return func().GetAwaiter().GetResult();
+            return Task.Run(async () => await func()).GetAwaiter().GetResult();
         }
         catch (Exception ex)
         {

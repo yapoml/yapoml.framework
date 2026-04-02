@@ -16,12 +16,13 @@ internal class PageTests
     [Test]
     public void Parse_Page()
     {
-        var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
-
-        gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.page.yaml"), @"
+        var gc = new WorkspaceContextBuilder(Environment.CurrentDirectory, "A.B", _parser)
+            .WithNameNormalizer(_nameNormalizer)
+            .AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.page.yaml"), @"
 C1:
   by: qwe
-");
+")
+            .Build();
 
         gc.Spaces.Should().BeEmpty();
 
@@ -40,15 +41,16 @@ C1:
     [Test]
     public void Parse_Page_Url()
     {
-        var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
-
-        gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.page.yml"), @"
+        var gc = new WorkspaceContextBuilder(Environment.CurrentDirectory, "A.B", _parser)
+            .WithNameNormalizer(_nameNormalizer)
+            .AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.page.yml"), @"
 url:
   path: projects/{projectId}/users/{userId}/roles
   params:
     - count
     - offset
-");
+")
+            .Build();
 
         var url = gc.Pages[0].Url;
 
@@ -74,9 +76,9 @@ url:
     [Test]
     public void Parse_Pages()
     {
-        var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
-
-        gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.page.yaml"), @"
+        var gc = new WorkspaceContextBuilder(Environment.CurrentDirectory, "A.B", _parser)
+            .WithNameNormalizer(_nameNormalizer)
+            .AddFile(Path.Combine(Environment.CurrentDirectory, "my_page.page.yaml"), @"
 C1:
   by: qwe
 
@@ -84,7 +86,8 @@ C1:
 
 C2:
   by: asd
-");
+")
+            .Build();
 
         gc.Pages.Should().HaveCount(2);
 

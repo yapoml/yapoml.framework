@@ -25,12 +25,12 @@ internal class WorkspaceTests
     [Test]
     public void Add_Files()
     {
-        var gc = new WorkspaceContext("/some/path", "A.B", _parser.Object, new WorkspaceReferenceResolver(), _nameNormalizer);
-
-        gc.AddFile("/some/path/any/other/file1.page.yaml", "");
-        gc.AddFile("/some/path/any/other/file2.page.yaml", "");
-
-        gc.AddFile("/some/path/any/c1.component.yaml", "");
+        var gc = new WorkspaceContextBuilder("/some/path", "A.B", _parser.Object)
+            .WithNameNormalizer(_nameNormalizer)
+            .AddFile("/some/path/any/other/file1.page.yaml", "")
+            .AddFile("/some/path/any/other/file2.page.yaml", "")
+            .AddFile("/some/path/any/c1.component.yaml", "")
+            .Build();
 
         gc.Spaces.Should().HaveCount(1);
 
@@ -56,9 +56,10 @@ internal class WorkspaceTests
     [Test]
     public void Add_Root_File()
     {
-        var gc = new WorkspaceContext("/some/path", "A.B", _parser.Object, new WorkspaceReferenceResolver(), _nameNormalizer);
-
-        gc.AddFile("/some/path/file.page.yaml", "");
+        var gc = new WorkspaceContextBuilder("/some/path", "A.B", _parser.Object)
+            .WithNameNormalizer(_nameNormalizer)
+            .AddFile("/some/path/file.page.yaml", "")
+            .Build();
 
         gc.RootNamespace.Should().Be("A.B");
         gc.RootDirectoryPath.Should().Be("\\some\\path");
@@ -71,25 +72,22 @@ internal class WorkspaceTests
     [Test]
     public void Should_Resolve_Inheritance()
     {
-        var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", new WorkspaceParser(), new WorkspaceReferenceResolver(), _nameNormalizer);
-
-        gc.AddFile(Environment.CurrentDirectory + "/MyBasePage.page.yaml", @"
+        var gc = new WorkspaceContextBuilder(Environment.CurrentDirectory, "A.B", new WorkspaceParser())
+            .WithNameNormalizer(_nameNormalizer)
+            .AddFile(Environment.CurrentDirectory + "/MyBasePage.page.yaml", @"
 MyBaseComp: ./a
-");
-
-        gc.AddFile(Environment.CurrentDirectory + "/MyPage.page.yaml", @"
+")
+            .AddFile(Environment.CurrentDirectory + "/MyPage.page.yaml", @"
 base: mybasepage
 
 MyComp:
   base: MyBaseComp
   by: ./b
-");
-
-        gc.AddFile(Environment.CurrentDirectory + "/MySecondPage.page.yaml", @"
+")
+            .AddFile(Environment.CurrentDirectory + "/MySecondPage.page.yaml", @"
 extends: mybasepage
-");
-
-        gc.ResolveReferences();
+")
+            .Build();
 
         gc.Pages[1].BasePage.Should().Be(gc.Pages[0]);
         gc.Pages[2].BasePage.Should().Be(gc.Pages[0]);
@@ -100,15 +98,14 @@ extends: mybasepage
     [Test]
     public void Should_Resolve_ReferencedComponent_InPage()
     {
-        var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", new WorkspaceParser(), new WorkspaceReferenceResolver(), _nameNormalizer);
-
-        gc.AddFile(Environment.CurrentDirectory + "/MyPage.page.yaml", @"
+        var gc = new WorkspaceContextBuilder(Environment.CurrentDirectory, "A.B", new WorkspaceParser())
+            .WithNameNormalizer(_nameNormalizer)
+            .AddFile(Environment.CurrentDirectory + "/MyPage.page.yaml", @"
 C1: qwe
 C2:
   ref: C1
-");
-
-        gc.ResolveReferences();
+")
+            .Build();
 
         gc.Pages[0].Components[1].BaseComponent.Should().BeSameAs(gc.Pages[0].Components[0]);
     }
@@ -116,16 +113,14 @@ C2:
     [Test]
     public void Should_Resolve_ReferencedComponent_InSpace()
     {
-        var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", new WorkspaceParser(), new WorkspaceReferenceResolver(), _nameNormalizer);
-
-        gc.AddFile(Environment.CurrentDirectory + "/MyComponent.component.yaml", "");
-
-        gc.AddFile(Environment.CurrentDirectory + "/MyPage.page.yaml", @"
+        var gc = new WorkspaceContextBuilder(Environment.CurrentDirectory, "A.B", new WorkspaceParser())
+            .WithNameNormalizer(_nameNormalizer)
+            .AddFile(Environment.CurrentDirectory + "/MyComponent.component.yaml", "")
+            .AddFile(Environment.CurrentDirectory + "/MyPage.page.yaml", @"
 C2:
   ref: MyComponent
-");
-
-        gc.ResolveReferences();
+")
+            .Build();
 
         gc.Pages[0].Components[0].BaseComponent.Should().BeSameAs(gc.Components[0]);
     }
@@ -133,27 +128,27 @@ C2:
     [Test]
     public void Should_Throw_Resolve_Inheritance_IfNotFound()
     {
-        var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", new WorkspaceParser(), new WorkspaceReferenceResolver(), _nameNormalizer);
-
-        gc.AddFile(Environment.CurrentDirectory + "/MyPage.page.yaml", @"
+        var builder = new WorkspaceContextBuilder(Environment.CurrentDirectory, "A.B", new WorkspaceParser())
+            .WithNameNormalizer(_nameNormalizer)
+            .AddFile(Environment.CurrentDirectory + "/MyPage.page.yaml", @"
 base: mybasepage
 ");
 
-        Action act = () => gc.ResolveReferences();
+        Action act = () => builder.Build();
         act.Should().Throw<Exception>().And.Message.Should().Contain("MyPage");
     }
 
     [Test]
     public void Should_Throw_Resolve_References_IfNotFound()
     {
-        var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", new WorkspaceParser(), new WorkspaceReferenceResolver(), _nameNormalizer);
-
-        gc.AddFile(Environment.CurrentDirectory + "/MyPage.page.yaml", @"
+        var builder = new WorkspaceContextBuilder(Environment.CurrentDirectory, "A.B", new WorkspaceParser())
+            .WithNameNormalizer(_nameNormalizer)
+            .AddFile(Environment.CurrentDirectory + "/MyPage.page.yaml", @"
 MyComponent:
   ref: UnknownComponent
 ");
 
-        Action act = () => gc.ResolveReferences();
+        Action act = () => builder.Build();
         act.Should().Throw<Exception>().And.Message.Should().Contain("UnknownComponent");
     }
 
@@ -162,9 +157,10 @@ MyComponent:
     [TestCase("with-dash", "WithDash")]
     public void Should_Normalize_PageName(string pageName, string expectedPageName)
     {
-        var gc = new WorkspaceContext("/some/path", "A.B", _parser.Object, new WorkspaceReferenceResolver(), _nameNormalizer);
-
-        gc.AddFile($"/some/path/{pageName}.page.yaml", "");
+        var gc = new WorkspaceContextBuilder("/some/path", "A.B", _parser.Object)
+            .WithNameNormalizer(_nameNormalizer)
+            .AddFile($"/some/path/{pageName}.page.yaml", "")
+            .Build();
 
         gc.Pages[0].Name.Should().Be(expectedPageName);
     }
@@ -174,9 +170,10 @@ MyComponent:
     [TestCase("with-dash", "WithDash")]
     public void Should_Normalize_SpaceName(string spaceName, string expectedSpaceName)
     {
-        var gc = new WorkspaceContext("/some/path", "A.B", _parser.Object, new WorkspaceReferenceResolver(), _nameNormalizer);
-
-        gc.AddFile($"/some/path/{spaceName}/page.page.yaml", "");
+        var gc = new WorkspaceContextBuilder("/some/path", "A.B", _parser.Object)
+            .WithNameNormalizer(_nameNormalizer)
+            .AddFile($"/some/path/{spaceName}/page.page.yaml", "")
+            .Build();
 
         gc.Spaces[0].Name.Should().Be(expectedSpaceName);
     }

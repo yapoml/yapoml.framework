@@ -7,13 +7,17 @@ namespace Yapoml.Framework.Workspace;
 /// </summary>
 public class SpaceContext
 {
+    private readonly List<SpaceContext> _spaces = new List<SpaceContext>();
+    private readonly List<PageContext> _pages = new List<PageContext>();
+    private readonly List<ComponentContext> _components = new List<ComponentContext>();
+
     /// <summary>
     /// Initializes a new instance of the <see cref="SpaceContext"/> class.
     /// </summary>
     /// <param name="name">The name of the space.</param>
     /// <param name="workspace">The workspace this space belongs to.</param>
     /// <param name="parentSpaceContext">The parent space, or <see langword="null"/> if this is a top-level space.</param>
-    public SpaceContext(string name, WorkspaceContext workspace, SpaceContext parentSpaceContext)
+    internal SpaceContext(string name, WorkspaceContext workspace, SpaceContext parentSpaceContext)
     {
         Workspace = workspace;
         ParentSpace = parentSpaceContext;
@@ -64,15 +68,21 @@ public class SpaceContext
     /// <summary>
     /// Gets the child spaces within this space.
     /// </summary>
-    public IList<SpaceContext> Spaces { get; } = new List<SpaceContext>();
+    public IReadOnlyList<SpaceContext> Spaces => _spaces;
 
     /// <summary>
     /// Gets the pages within this space.
     /// </summary>
-    public IList<PageContext> Pages { get; } = new List<PageContext>();
+    public IReadOnlyList<PageContext> Pages => _pages;
 
     /// <summary>
     /// Gets the components within this space.
     /// </summary>
-    public IList<ComponentContext> Components { get; } = new List<ComponentContext>();
+    public IReadOnlyList<ComponentContext> Components => _components;
+
+    internal void AddSpace(SpaceContext space) => _spaces.Add(space);
+
+    internal void AddPage(PageContext page) => _pages.Add(page);
+
+    internal void AddComponent(ComponentContext component) => _components.Add(component);
 }

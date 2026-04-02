@@ -19,7 +19,7 @@ public class PageContext
     /// <param name="space">The space this page belongs to, or <see langword="null"/> for top-level pages.</param>
     /// <param name="pageModel">The parsed page model.</param>
     /// <param name="relativeFilePath">The file path relative to the workspace root.</param>
-    public PageContext(WorkspaceContext workspace, SpaceContext space, Page pageModel, string relativeFilePath)
+    internal PageContext(WorkspaceContext workspace, SpaceContext space, Page pageModel, string relativeFilePath)
     {
         Workspace = workspace;
         ParentSpace = space;
@@ -128,7 +128,7 @@ public class PageContext
     /// <summary>
     /// Gets or sets the resolved base page context, or <see langword="null"/> if this page has no base.
     /// </summary>
-    public PageContext BasePage { get; set; }
+    public PageContext BasePage { get; internal set; }
 
     private UrlContext _url;
 

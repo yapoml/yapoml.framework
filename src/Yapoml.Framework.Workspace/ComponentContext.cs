@@ -21,7 +21,7 @@ public class ComponentContext
     /// <param name="parentComponent">The parent component, or <see langword="null"/> for top-level components.</param>
     /// <param name="component">The parsed component model.</param>
     /// <param name="relativeFilePath">The file path relative to the workspace root.</param>
-    public ComponentContext(WorkspaceContext workspace, SpaceContext space, PageContext page, ComponentContext parentComponent, Component component, string relativeFilePath = null)
+    internal ComponentContext(WorkspaceContext workspace, SpaceContext space, PageContext page, ComponentContext parentComponent, Component component, string relativeFilePath = null)
     {
         Workspace = workspace;
         Space = space;
@@ -75,7 +75,7 @@ public class ComponentContext
 
             return _relativeFilePath;
         }
-        set
+        internal set
         {
             _relativeFilePath = value;
         }
@@ -169,7 +169,7 @@ public class ComponentContext
 
             return _by;
         }
-        set
+        internal set
         {
             _by = value;
         }
@@ -199,7 +199,7 @@ public class ComponentContext
     /// <summary>
     /// Gets or sets the resolved base component context, or <see langword="null"/> if this component has no base.
     /// </summary>
-    public ComponentContext BaseComponent { get; set; }
+    public ComponentContext BaseComponent { get; internal set; }
 
     private bool? _isPlural;
 

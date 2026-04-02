@@ -17,14 +17,15 @@ internal class ComponentTests
     [Test]
     public void Parse_Component()
     {
-        var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
-
-        gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.component.yaml"), @"
+        var gc = new WorkspaceContextBuilder(Environment.CurrentDirectory, "A.B", _parser)
+            .WithNameNormalizer(_nameNormalizer)
+            .AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.component.yaml"), @"
 by: qwe
 
 c2:
   by: asd
-");
+")
+            .Build();
 
         gc.Spaces.Should().BeEmpty();
 
@@ -41,11 +42,12 @@ c2:
     [Test]
     public void Component_Name_Should_Be_Optional()
     {
-        var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
-
-        gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.component.yml"), @"
+        var gc = new WorkspaceContextBuilder(Environment.CurrentDirectory, "A.B", _parser)
+            .WithNameNormalizer(_nameNormalizer)
+            .AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.component.yml"), @"
 by: qwe
-");
+")
+            .Build();
 
         gc.Spaces.Should().BeEmpty();
 
@@ -58,11 +60,12 @@ by: qwe
     [Test]
     public void Component_Segment()
     {
-        var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
-
-        gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.component.yaml"), @"
+        var gc = new WorkspaceContextBuilder(Environment.CurrentDirectory, "A.B", _parser)
+            .WithNameNormalizer(_nameNormalizer)
+            .AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.component.yaml"), @"
 by: qwe {param1}
-");
+")
+            .Build();
 
         var component = gc.Components[0];
         component.By.Should().NotBeNull();
@@ -74,9 +77,10 @@ by: qwe {param1}
     [Test]
     public void Component_DefinitionSource()
     {
-        var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
-
-        gc.AddFile(Path.Combine(Environment.CurrentDirectory, "qwe/my_component.component.yaml"), "by: 12345");
+        var gc = new WorkspaceContextBuilder(Environment.CurrentDirectory, "A.B", _parser)
+            .WithNameNormalizer(_nameNormalizer)
+            .AddFile(Path.Combine(Environment.CurrentDirectory, "qwe/my_component.component.yaml"), "by: 12345")
+            .Build();
 
         var component = gc.Spaces[0].Components[0];
         var byDefinitionSource = component.By.DefinitionSource;
@@ -88,9 +92,10 @@ by: qwe {param1}
     [Test]
     public void Component_Inherited_ByDefinitionSource()
     {
-        var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
-
-        gc.AddFile(Path.Combine(Environment.CurrentDirectory, "qwe/my.component.yaml"), "by: 12345");
+        var gc = new WorkspaceContextBuilder(Environment.CurrentDirectory, "A.B", _parser)
+            .WithNameNormalizer(_nameNormalizer)
+            .AddFile(Path.Combine(Environment.CurrentDirectory, "qwe/my.component.yaml"), "by: 12345")
+            .Build();
 
         var component = gc.Spaces[0].Components[0];
         var byDefinitionSource = component.By.DefinitionSource;
@@ -102,12 +107,11 @@ by: qwe {param1}
     [Test]
     public void Component_Inherited_ByDefinitionSource_IfNotSpecified()
     {
-        var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
-
-        gc.AddFile(Path.Combine(Environment.CurrentDirectory, "qwe/my_base.component.yaml"), "by: 12345");
-        gc.AddFile(Path.Combine(Environment.CurrentDirectory, "qwe/my.component.yaml"), "base: my_base");
-
-        gc.ResolveReferences();
+        var gc = new WorkspaceContextBuilder(Environment.CurrentDirectory, "A.B", _parser)
+            .WithNameNormalizer(_nameNormalizer)
+            .AddFile(Path.Combine(Environment.CurrentDirectory, "qwe/my_base.component.yaml"), "by: 12345")
+            .AddFile(Path.Combine(Environment.CurrentDirectory, "qwe/my.component.yaml"), "base: my_base")
+            .Build();
 
         var component = gc.Spaces[0].Components[1];
         var byDefinitionSource = component.By.DefinitionSource;
@@ -119,11 +123,12 @@ by: qwe {param1}
     [Test]
     public void Component_Segments()
     {
-        var gc = new WorkspaceContext(Environment.CurrentDirectory, "A.B", _parser, new WorkspaceReferenceResolver(), _nameNormalizer);
-
-        gc.AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.component.yaml"), @"
+        var gc = new WorkspaceContextBuilder(Environment.CurrentDirectory, "A.B", _parser)
+            .WithNameNormalizer(_nameNormalizer)
+            .AddFile(Path.Combine(Environment.CurrentDirectory, "my_component.component.yaml"), @"
 by: qwe {param1} {param2}
-");
+")
+            .Build();
 
         var component = gc.Components[0];
         component.By.Should().NotBeNull();

@@ -3,6 +3,7 @@ using NUnit.Framework;
 using System;
 using Yapoml.Framework.Options;
 
+
 namespace Yapoml.Framework.Test.Options
 {
     class ServiceContainerFixture
@@ -26,7 +27,7 @@ namespace Yapoml.Framework.Test.Options
 
             Action act = () => container.Services.Get<object>();
 
-            act.Should().ThrowExactly<Exception>();
+            act.Should().ThrowExactly<ServiceNotFoundException>();
         }
 
         [Test]

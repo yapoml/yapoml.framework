@@ -27,7 +27,7 @@ public class Logger : ILogger
 
         _currentLogScope.Value = logScope;
 
-        OnLogScopeBegin?.Invoke(this, new LogScopeEventArgs(logScope, DateTime.Now));
+        OnLogScopeBegin?.Invoke(this, new LogScopeEventArgs(logScope, DateTimeOffset.Now));
 
         return logScope;
     }
@@ -37,7 +37,7 @@ public class Logger : ILogger
     {
         _currentLogScope.Value = logScope;
 
-        OnLogScopeBegin?.Invoke(this, new LogScopeEventArgs(logScope, DateTime.Now));
+        OnLogScopeBegin?.Invoke(this, new LogScopeEventArgs(logScope, DateTimeOffset.Now));
 
         return logScope;
     }
@@ -47,12 +47,12 @@ public class Logger : ILogger
     {
         _currentLogScope.Value = logScope.Parent;
 
-        OnLogScopeEnd?.Invoke(this, new LogScopeEventArgs(logScope, DateTime.Now));
+        OnLogScopeEnd?.Invoke(this, new LogScopeEventArgs(logScope, DateTimeOffset.Now));
     }
 
     /// <inheritdoc/>
     public void Trace(string message)
     {
-        OnLogMessage?.Invoke(this, new LogMessageEventArgs(message, LogLevel.Trace, DateTime.Now, _currentLogScope.Value));
+        OnLogMessage?.Invoke(this, new LogMessageEventArgs(message, LogLevel.Trace, DateTimeOffset.Now, _currentLogScope.Value));
     }
 }

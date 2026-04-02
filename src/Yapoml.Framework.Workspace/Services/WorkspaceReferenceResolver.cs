@@ -67,7 +67,7 @@ namespace Yapoml.Framework.Workspace.Services
 
                 if (childPage.BasePage == null)
                 {
-                    throw new Exception($"Cannot resolve '{basePageName}' base page for '{childPage.Name}' page.");
+                    throw new ReferenceResolutionException($"Cannot resolve '{basePageName}' base page for '{childPage.Name}' page.");
                 }
             }
         }
@@ -80,7 +80,7 @@ namespace Yapoml.Framework.Workspace.Services
 
                 if (baseComponent.Key.BaseComponent == null)
                 {
-                    throw new Exception($"Cannot resolve base '{baseComponent.Value}' component for '{baseComponent.Key.Name}'.");
+                    throw new ReferenceResolutionException($"Cannot resolve base '{baseComponent.Value}' component for '{baseComponent.Key.Name}'.");
                 }
 
                 // implicitly use By from base component

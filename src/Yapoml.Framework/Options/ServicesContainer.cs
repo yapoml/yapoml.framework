@@ -20,7 +20,7 @@ internal class ServicesContainer : IServicesContainer
     {
         if (!_instances.TryGetValue(typeof(T), out var instance))
         {
-            throw new Exception($"Cannot get an instance of {typeof(T)} type. Make sure the type is registered.");
+            throw new ServiceNotFoundException(typeof(T));
         }
 
         return (T)instance;
@@ -30,7 +30,7 @@ internal class ServicesContainer : IServicesContainer
     {
         var result = _instances.TryGetValue(typeof(T), out object output);
 
-        service = (T)output;
+        service = result ? (T)output : default;
 
         return result;
     }

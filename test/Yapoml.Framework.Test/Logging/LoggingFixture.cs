@@ -125,7 +125,7 @@ namespace Yapoml.Framework.Test.Logging
         }
 
         [Test]
-        public void LogScopeShouldExecuteAsyncWithError()
+        public async Task LogScopeShouldExecuteAsyncWithError()
         {
             var logger = new Logger();
 
@@ -135,7 +135,7 @@ namespace Yapoml.Framework.Test.Logging
             {
                 try
                 {
-                    logScope.Execute(async () => { await Task.CompletedTask; throw expectedException; });
+                    await logScope.ExecuteAsync(async () => { await Task.CompletedTask; throw expectedException; });
                 }
                 catch (Exception) { }
 

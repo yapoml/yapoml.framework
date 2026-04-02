@@ -2,6 +2,7 @@
 using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
 using YamlDotNet.Serialization;
+using Yapoml.Framework.Workspace.Parsers.Yaml;
 using Yapoml.Framework.Workspace.Parsers.Yaml.Pocos;
 
 namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
@@ -61,7 +62,7 @@ namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
                             break;
 
                         default:
-                            throw new Exception($"Cannot map '{propertyName}' yaml scalar to any property of {type.Name} type.");
+                            throw new InvalidYamlMappingException(propertyName, type);
                     }
                 }
 

@@ -29,7 +29,7 @@ namespace Yapoml.Framework.Workspace.Services
                 }
             }
 
-            return segments;
+            return segments ?? new List<string>();
         }
     }
 }

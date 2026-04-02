@@ -49,9 +49,12 @@ internal class LogScope : ILogScope
         catch (Exception ex)
         {
             Error = ex;
+            EndTime = DateTime.Now;
             throw;
         }
     }
+
+    public Task Execute(Func<Task> action) => ExecuteAsync(action);
 
     public async Task ExecuteAsync(Func<Task> action)
     {
@@ -62,6 +65,7 @@ internal class LogScope : ILogScope
         catch (Exception ex)
         {
             Error = ex;
+            EndTime = DateTime.Now;
             throw;
         }
     }
@@ -75,9 +79,12 @@ internal class LogScope : ILogScope
         catch (Exception ex)
         {
             Error = ex;
+            EndTime = DateTime.Now;
             throw;
         }
     }
+
+    public Task<TResult> Execute<TResult>(Func<Task<TResult>> action) => ExecuteAsync(action);
 
     public async Task<TResult> ExecuteAsync<TResult>(Func<Task<TResult>> action)
     {
@@ -88,6 +95,7 @@ internal class LogScope : ILogScope
         catch (Exception ex)
         {
             Error = ex;
+            EndTime = DateTime.Now;
             throw;
         }
     }

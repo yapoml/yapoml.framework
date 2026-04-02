@@ -24,7 +24,7 @@ public static class Waiter
     {
         var stopwatch = Stopwatch.StartNew();
 
-        Lazy<List<Exception>> occuredExceptions = new Lazy<List<Exception>>(() => new List<Exception>());
+        Lazy<List<Exception>> occurredExceptions = new Lazy<List<Exception>>(() => new List<Exception>());
 
         do
         {
@@ -43,7 +43,7 @@ public static class Waiter
             }
             catch (Exception ex)
             {
-                occuredExceptions.Value.Add(ex);
+                occurredExceptions.Value.Add(ex);
 
                 Thread.Sleep(pollingInterval);
             }
@@ -52,14 +52,14 @@ public static class Waiter
 
         var timeoutMessageBuilder = new StringBuilder($"Condition was not satisfied within {timeout.TotalSeconds} seconds when polled every {pollingInterval.TotalSeconds} seconds.");
 
-        if (occuredExceptions.IsValueCreated)
+        if (occurredExceptions.IsValueCreated)
         {
             timeoutMessageBuilder.AppendLine();
-            timeoutMessageBuilder.AppendLine("Occured errors:");
+            timeoutMessageBuilder.AppendLine("Occurred errors:");
 
-            foreach (var occuredExceptionsGroup in occuredExceptions.Value.GroupBy(e => e.Message))
+            foreach (var occurredExceptionsGroup in occurredExceptions.Value.GroupBy(e => e.Message))
             {
-                timeoutMessageBuilder.AppendLine($" - {occuredExceptionsGroup.Key} ({occuredExceptionsGroup.Count()} times)");
+                timeoutMessageBuilder.AppendLine($" - {occurredExceptionsGroup.Key} ({occurredExceptionsGroup.Count()} times)");
             }
         }
 
@@ -78,7 +78,7 @@ public static class Waiter
     {
         var stopwatch = Stopwatch.StartNew();
 
-        Lazy<List<Exception>> occuredExceptions = new Lazy<List<Exception>>(() => new List<Exception>());
+        Lazy<List<Exception>> occurredExceptions = new Lazy<List<Exception>>(() => new List<Exception>());
 
         do
         {
@@ -97,7 +97,7 @@ public static class Waiter
             }
             catch (Exception ex)
             {
-                occuredExceptions.Value.Add(ex);
+                occurredExceptions.Value.Add(ex);
 
                 await Task.Delay(pollingInterval).ConfigureAwait(false);
             }
@@ -106,14 +106,14 @@ public static class Waiter
 
         var timeoutMessageBuilder = new StringBuilder($"Condition was not satisfied within {timeout.TotalSeconds} seconds when polled every {pollingInterval.TotalSeconds} seconds.");
 
-        if (occuredExceptions.IsValueCreated)
+        if (occurredExceptions.IsValueCreated)
         {
             timeoutMessageBuilder.AppendLine();
-            timeoutMessageBuilder.AppendLine("Occured errors:");
+            timeoutMessageBuilder.AppendLine("Occurred errors:");
 
-            foreach (var occuredExceptionsGroup in occuredExceptions.Value.GroupBy(e => e.Message))
+            foreach (var occurredExceptionsGroup in occurredExceptions.Value.GroupBy(e => e.Message))
             {
-                timeoutMessageBuilder.AppendLine($" - {occuredExceptionsGroup.Key} ({occuredExceptionsGroup.Count()} times)");
+                timeoutMessageBuilder.AppendLine($" - {occurredExceptionsGroup.Key} ({occurredExceptionsGroup.Count()} times)");
             }
         }
 

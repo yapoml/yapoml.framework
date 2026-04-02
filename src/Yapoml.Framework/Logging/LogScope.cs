@@ -16,7 +16,7 @@ internal class LogScope : ILogScope
 
         Depth = logScope?.Depth + 1 ?? 0;
 
-        BeginTime = DateTime.Now;
+        BeginTime = DateTimeOffset.Now;
     }
 
     public string Name { get; }
@@ -27,9 +27,9 @@ internal class LogScope : ILogScope
 
     public ILogScope? Parent { get; }
 
-    public DateTime BeginTime { get; }
+    public DateTimeOffset BeginTime { get; }
 
-    public DateTime EndTime { get; private set; }
+    public DateTimeOffset EndTime { get; private set; }
 
     public Exception Error { get; private set; }
 
@@ -49,7 +49,7 @@ internal class LogScope : ILogScope
         catch (Exception ex)
         {
             Error = ex;
-            EndTime = DateTime.Now;
+            EndTime = DateTimeOffset.Now;
             throw;
         }
     }
@@ -65,7 +65,7 @@ internal class LogScope : ILogScope
         catch (Exception ex)
         {
             Error = ex;
-            EndTime = DateTime.Now;
+            EndTime = DateTimeOffset.Now;
             throw;
         }
     }
@@ -79,7 +79,7 @@ internal class LogScope : ILogScope
         catch (Exception ex)
         {
             Error = ex;
-            EndTime = DateTime.Now;
+            EndTime = DateTimeOffset.Now;
             throw;
         }
     }
@@ -95,14 +95,14 @@ internal class LogScope : ILogScope
         catch (Exception ex)
         {
             Error = ex;
-            EndTime = DateTime.Now;
+            EndTime = DateTimeOffset.Now;
             throw;
         }
     }
 
     public void Dispose()
     {
-        EndTime = DateTime.Now;
+        EndTime = DateTimeOffset.Now;
 
         _logger.EndLogScope(this);
     }

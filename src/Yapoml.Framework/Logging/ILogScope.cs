@@ -13,9 +13,9 @@ public interface ILogScope : IDisposable
 
     ILogScope? Parent { get; }
 
-    DateTime BeginTime { get; }
+    DateTimeOffset BeginTime { get; }
 
-    DateTime EndTime { get; }
+    DateTimeOffset EndTime { get; }
 
     Exception Error { get; }
 

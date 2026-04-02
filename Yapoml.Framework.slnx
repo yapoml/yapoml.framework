@@ -1,0 +1,13 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/test/">
+    <Project Path="test/Yapoml.Framework.Benchmark/Yapoml.Framework.Benchmark.csproj" />
+    <Project Path="test/Yapoml.Framework.Test/Yapoml.Framework.Test.csproj" />
+  </Folder>
+  <Project Path="src/Yapoml.Framework.Workspace/Yapoml.Framework.Workspace.csproj" />
+  <Project Path="src/Yapoml.Framework/Yapoml.Framework.csproj" />
+</Solution>

@@ -62,13 +62,6 @@ public interface ILogScope : IDisposable
     /// </summary>
     /// <param name="action">The asynchronous action to execute.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    Task Execute(Func<Task> action);
-
-    /// <summary>
-    /// Executes the specified asynchronous action within this scope, capturing any exception.
-    /// </summary>
-    /// <param name="action">The asynchronous action to execute.</param>
-    /// <returns>A task representing the asynchronous operation.</returns>
     Task ExecuteAsync(Func<Task> action);
 
     /// <summary>
@@ -78,14 +71,6 @@ public interface ILogScope : IDisposable
     /// <param name="action">The function to execute.</param>
     /// <returns>The result of the function.</returns>
     TResult Execute<TResult>(Func<TResult> action);
-
-    /// <summary>
-    /// Executes the specified asynchronous function within this scope, capturing any exception.
-    /// </summary>
-    /// <typeparam name="TResult">The type of the result.</typeparam>
-    /// <param name="action">The asynchronous function to execute.</param>
-    /// <returns>A task representing the asynchronous operation with the result.</returns>
-    Task<TResult> Execute<TResult>(Func<Task<TResult>> action);
 
     /// <summary>
     /// Executes the specified asynchronous function within this scope, capturing any exception.

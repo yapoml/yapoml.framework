@@ -54,8 +54,6 @@ internal class LogScope : ILogScope
         }
     }
 
-    public Task Execute(Func<Task> action) => ExecuteAsync(action);
-
     public async Task ExecuteAsync(Func<Task> action)
     {
         try
@@ -83,8 +81,6 @@ internal class LogScope : ILogScope
             throw;
         }
     }
-
-    public Task<TResult> Execute<TResult>(Func<Task<TResult>> action) => ExecuteAsync(action);
 
     public async Task<TResult> ExecuteAsync<TResult>(Func<Task<TResult>> action)
     {

@@ -5,10 +5,22 @@ using Yapoml.Framework.Workspace.Services;
 
 namespace Yapoml.Framework.Workspace;
 
+/// <summary>
+/// Represents a component definition within the workspace, including its locator, inheritance, and nested components.
+/// </summary>
 public class ComponentContext
 {
     private readonly Component _component;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ComponentContext"/> class.
+    /// </summary>
+    /// <param name="workspace">The workspace this component belongs to.</param>
+    /// <param name="space">The space this component belongs to.</param>
+    /// <param name="page">The page this component belongs to, or <see langword="null"/> for standalone components.</param>
+    /// <param name="parentComponent">The parent component, or <see langword="null"/> for top-level components.</param>
+    /// <param name="component">The parsed component model.</param>
+    /// <param name="relativeFilePath">The file path relative to the workspace root.</param>
     public ComponentContext(WorkspaceContext workspace, SpaceContext space, PageContext page, ComponentContext parentComponent, Component component, string relativeFilePath = null)
     {
         Workspace = workspace;
@@ -20,15 +32,31 @@ public class ComponentContext
         RelativeFilePath = relativeFilePath;
     }
 
+    /// <summary>
+    /// Gets the workspace this component belongs to.
+    /// </summary>
     public WorkspaceContext Workspace { get; }
 
+    /// <summary>
+    /// Gets the space this component belongs to.
+    /// </summary>
     public SpaceContext Space { get; }
 
+    /// <summary>
+    /// Gets the page this component belongs to, or <see langword="null"/> for standalone components.
+    /// </summary>
     public PageContext Page { get; }
 
+    /// <summary>
+    /// Gets the parent component, or <see langword="null"/> for top-level components.
+    /// </summary>
     public ComponentContext ParentComponent { get; }
 
     private string _relativeFilePath;
+
+    /// <summary>
+    /// Gets or sets the file path relative to the workspace root.
+    /// </summary>
     public string RelativeFilePath
     {
         get
@@ -54,6 +82,10 @@ public class ComponentContext
     }
 
     private string _name;
+
+    /// <summary>
+    /// Gets the normalized name of the component.
+    /// </summary>
     public string Name
     {
         get
@@ -68,6 +100,10 @@ public class ComponentContext
     }
 
     private string _originalName;
+
+    /// <summary>
+    /// Gets the original (non-normalized) name of the component as defined in the source file.
+    /// </summary>
     public string OriginalName
     {
         get
@@ -82,6 +118,10 @@ public class ComponentContext
     }
 
     private string _namespace;
+
+    /// <summary>
+    /// Gets the fully qualified namespace of this component.
+    /// </summary>
     public string Namespace
     {
         get
@@ -111,6 +151,10 @@ public class ComponentContext
     }
 
     private ByContext _by;
+
+    /// <summary>
+    /// Gets or sets the locator strategy for finding this component, or <see langword="null"/> if not specified.
+    /// </summary>
     public ByContext By
     {
         get
@@ -132,6 +176,10 @@ public class ComponentContext
     }
 
     private string _baseComponentName;
+
+    /// <summary>
+    /// Gets the normalized name of the base component this component inherits from, or <see langword="null"/> if none.
+    /// </summary>
     public string BaseComponentName
     {
         get
@@ -148,10 +196,16 @@ public class ComponentContext
         }
     }
 
+    /// <summary>
+    /// Gets or sets the resolved base component context, or <see langword="null"/> if this component has no base.
+    /// </summary>
     public ComponentContext BaseComponent { get; set; }
 
     private bool? _isPlural;
 
+    /// <summary>
+    /// Gets a value indicating whether this component's name is plural.
+    /// </summary>
     public bool IsPlural
     {
         get
@@ -168,6 +222,9 @@ public class ComponentContext
 
     private string _singularName;
 
+    /// <summary>
+    /// Gets the singular form of this component's name.
+    /// </summary>
     public string SingularName
     {
         get
@@ -182,6 +239,10 @@ public class ComponentContext
     }
 
     private IReadOnlyList<ComponentContext> _components;
+
+    /// <summary>
+    /// Gets the nested components defined within this component.
+    /// </summary>
     public IReadOnlyList<ComponentContext> Components
     {
         get
@@ -198,8 +259,18 @@ public class ComponentContext
         }
     }
 
+    /// <summary>
+    /// Represents the locator strategy used to find a component.
+    /// </summary>
     public class ByContext
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ByContext"/> class.
+        /// </summary>
+        /// <param name="method">The locator method (e.g., XPath, Css).</param>
+        /// <param name="value">The locator value.</param>
+        /// <param name="scope">The scope in which to search for the element.</param>
+        /// <param name="definitionSource">The source file and region where this locator is defined.</param>
         public ByContext(By.ByMethod method, string value, By.ByScope scope, DefinitionSource definitionSource)
         {
             Method = method;
@@ -209,14 +280,29 @@ public class ComponentContext
             Segments = SegmentsParser.ParseSegments(value);
         }
 
+        /// <summary>
+        /// Gets the locator method.
+        /// </summary>
         public By.ByMethod Method { get; }
 
+        /// <summary>
+        /// Gets the locator value.
+        /// </summary>
         public string Value { get; }
 
+        /// <summary>
+        /// Gets the scope in which to search for the element.
+        /// </summary>
         public By.ByScope Scope { get; }
 
+        /// <summary>
+        /// Gets the parameterized segments extracted from the locator value.
+        /// </summary>
         public IList<string> Segments { get; }
 
+        /// <summary>
+        /// Gets the source file and region where this locator is defined.
+        /// </summary>
         public DefinitionSource DefinitionSource { get; }
     }
 }

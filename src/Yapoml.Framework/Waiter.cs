@@ -8,8 +8,18 @@ using System.Threading.Tasks;
 
 namespace Yapoml.Framework;
 
+/// <summary>
+/// Provides methods to repeatedly evaluate a condition until it succeeds or a timeout is reached.
+/// </summary>
 public static class Waiter
 {
+    /// <summary>
+    /// Polls the specified condition at regular intervals until it returns <see langword="true"/> or the timeout expires.
+    /// </summary>
+    /// <param name="condition">The condition to evaluate.</param>
+    /// <param name="timeout">The maximum time to wait for the condition to be satisfied.</param>
+    /// <param name="pollingInterval">The interval between condition evaluations.</param>
+    /// <exception cref="TimeoutException">Thrown when the condition is not satisfied within the specified timeout.</exception>
     public static void Until(Func<bool> condition, TimeSpan timeout, TimeSpan pollingInterval)
     {
         var stopwatch = Stopwatch.StartNew();
@@ -56,6 +66,14 @@ public static class Waiter
         throw new TimeoutException(timeoutMessageBuilder.ToString());
     }
 
+    /// <summary>
+    /// Asynchronously polls the specified condition at regular intervals until it returns <see langword="true"/> or the timeout expires.
+    /// </summary>
+    /// <param name="condition">The asynchronous condition to evaluate.</param>
+    /// <param name="timeout">The maximum time to wait for the condition to be satisfied.</param>
+    /// <param name="pollingInterval">The interval between condition evaluations.</param>
+    /// <returns>A task representing the asynchronous polling operation.</returns>
+    /// <exception cref="TimeoutException">Thrown when the condition is not satisfied within the specified timeout.</exception>
     public static async Task UntilAsync(Func<Task<bool>> condition, TimeSpan timeout, TimeSpan pollingInterval)
     {
         var stopwatch = Stopwatch.StartNew();

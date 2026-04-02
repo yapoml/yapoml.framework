@@ -7,11 +7,22 @@ using Yapoml.Framework.Workspace.Services;
 
 namespace Yapoml.Framework.Workspace;
 
+/// <summary>
+/// Represents the root context of a Yapoml workspace, containing all discovered spaces, pages, and components.
+/// </summary>
 public class WorkspaceContext
 {
     private readonly IWorkspaceParser _parser;
     private readonly IWorkspaceReferenceResolver _workspaceReferenceResolver;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WorkspaceContext"/> class.
+    /// </summary>
+    /// <param name="rootDirectoryPath">The root directory path of the workspace.</param>
+    /// <param name="rootNamespace">The root namespace used for generated code.</param>
+    /// <param name="parser">The parser used to parse workspace files.</param>
+    /// <param name="workspaceWalker">The resolver used to resolve cross-references between pages and components.</param>
+    /// <param name="nameNormalizer">The normalizer used to convert raw names to valid identifiers.</param>
     public WorkspaceContext(string rootDirectoryPath, string rootNamespace, IWorkspaceParser parser, IWorkspaceReferenceResolver workspaceWalker, INameNormalizer nameNormalizer)
     {
         RootDirectoryPath = rootDirectoryPath.Replace("/", "\\").TrimEnd('\\');
@@ -21,16 +32,41 @@ public class WorkspaceContext
         NameNormalizer = nameNormalizer;
     }
 
+    /// <summary>
+    /// Gets the root directory path of the workspace.
+    /// </summary>
     public string RootDirectoryPath { get; }
 
+    /// <summary>
+    /// Gets the root namespace used for generated code.
+    /// </summary>
     public string RootNamespace { get; }
+
+    /// <summary>
+    /// Gets the name normalizer used to convert raw names to valid identifiers.
+    /// </summary>
     public INameNormalizer NameNormalizer { get; }
+
+    /// <summary>
+    /// Gets the list of top-level spaces in the workspace.
+    /// </summary>
     public IList<SpaceContext> Spaces { get; } = new List<SpaceContext>();
 
+    /// <summary>
+    /// Gets the list of top-level pages in the workspace.
+    /// </summary>
     public IList<PageContext> Pages { get; } = new List<PageContext>();
 
+    /// <summary>
+    /// Gets the list of top-level components in the workspace.
+    /// </summary>
     public IList<ComponentContext> Components { get; } = new List<ComponentContext>();
 
+    /// <summary>
+    /// Adds a file to the workspace, parsing and registering any pages or components it contains.
+    /// </summary>
+    /// <param name="filePath">The absolute path of the file to add.</param>
+    /// <param name="content">The content of the file.</param>
     public void AddFile(string filePath, string content)
     {
         if (TryGetPageOrComponentFile(filePath, out var pageName))
@@ -99,6 +135,9 @@ public class WorkspaceContext
         }
     }
 
+    /// <summary>
+    /// Gets the version of the framework assembly.
+    /// </summary>
     public string Version
     {
         get
@@ -107,6 +146,9 @@ public class WorkspaceContext
         }
     }
 
+    /// <summary>
+    /// Resolves all cross-references between pages and components in the workspace.
+    /// </summary>
     public void ResolveReferences()
     {
         _workspaceReferenceResolver.Resolve();

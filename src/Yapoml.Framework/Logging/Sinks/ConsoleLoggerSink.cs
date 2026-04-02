@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace Yapoml.Framework.Logging.Sinks;
 
+/// <summary>
+/// A logger sink that writes formatted log messages and scope events to the console.
+/// </summary>
 public class ConsoleLoggerSink : IDisposable
 {
     private readonly ILogger _logger;
@@ -11,6 +14,10 @@ public class ConsoleLoggerSink : IDisposable
     private readonly IDictionary<LogLevel, string> _shortLevels = new Dictionary<LogLevel, string> {
             { LogLevel.Trace, "TRC" } };
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ConsoleLoggerSink"/> class and subscribes to logger events.
+    /// </summary>
+    /// <param name="logger">The logger to subscribe to.</param>
     public ConsoleLoggerSink(ILogger logger)
     {
         _logger = logger;
@@ -56,6 +63,7 @@ public class ConsoleLoggerSink : IDisposable
         }
     }
 
+    /// <inheritdoc/>
     public void Dispose()
     {
         _logger.OnLogMessage -= OnLogMessage;

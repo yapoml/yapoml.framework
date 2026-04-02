@@ -41,7 +41,7 @@ public interface ILogScope : IDisposable
     /// <summary>
     /// Gets the exception that occurred during scope execution, or <see langword="null"/> if no error occurred.
     /// </summary>
-    Exception Error { get; }
+    Exception? Error { get; }
 
     /// <summary>
     /// Begins a new child log scope with the specified name.

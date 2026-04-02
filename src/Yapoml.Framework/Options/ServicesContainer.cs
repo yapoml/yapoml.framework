@@ -7,10 +7,15 @@ internal class ServicesContainer : IServicesContainer
 {
     private readonly IDictionary<Type, object> _instances = new Dictionary<Type, object>();
 
-    public event EventHandler<TypeRegisteredEventArgs> OnTypeRegistered;
+    public event EventHandler<TypeRegisteredEventArgs>? OnTypeRegistered;
 
     public void Register<T>(T instance)
     {
+        if (instance is null)
+        {
+            throw new ArgumentNullException(nameof(instance));
+        }
+
         _instances[typeof(T)] = instance;
 
         OnTypeRegistered?.Invoke(this, new TypeRegisteredEventArgs(typeof(T), instance));
@@ -28,9 +33,9 @@ internal class ServicesContainer : IServicesContainer
 
     public bool TryGet<T>(out T service)
     {
-        var result = _instances.TryGetValue(typeof(T), out object output);
+        var result = _instances.TryGetValue(typeof(T), out object? output);
 
-        service = result ? (T)output : default;
+        service = result ? (T)output! : default!;
 
         return result;
     }

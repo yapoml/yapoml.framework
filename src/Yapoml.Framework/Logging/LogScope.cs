@@ -31,7 +31,7 @@ internal class LogScope : ILogScope
 
     public DateTimeOffset EndTime { get; private set; }
 
-    public Exception Error { get; private set; }
+    public Exception? Error { get; private set; }
 
     public ILogScope BeginScope(string name, LogLevel logLevel = LogLevel.Trace)
     {

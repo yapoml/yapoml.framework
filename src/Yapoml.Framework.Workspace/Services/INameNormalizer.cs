@@ -1,7 +1,6 @@
-﻿namespace Yapoml.Framework.Workspace.Services
+﻿namespace Yapoml.Framework.Workspace.Services;
+
+public interface INameNormalizer
 {
-    public interface INameNormalizer
-    {
-        string Normalize(string name);
-    }
+    string Normalize(string name);
 }

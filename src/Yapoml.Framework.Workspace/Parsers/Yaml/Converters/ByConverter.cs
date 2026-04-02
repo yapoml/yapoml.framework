@@ -5,118 +5,117 @@ using YamlDotNet.Serialization;
 using Yapoml.Framework.Workspace.Parsers.Yaml;
 using Yapoml.Framework.Workspace.Parsers.Yaml.Pocos;
 
-namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
+namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters;
+
+class ByConverter : IYamlTypeConverter
 {
-    class ByConverter : IYamlTypeConverter
+    public bool Accepts(Type type)
     {
-        public bool Accepts(Type type)
+        return typeof(By) == type;
+    }
+
+    public object ReadYaml(IParser parser, Type type, ObjectDeserializer rootDeserializer)
+    {
+        if (parser.TryConsume<Scalar>(out var scalar))
         {
-            return typeof(By) == type;
+            return ParseScalar(scalar);
         }
-
-        public object ReadYaml(IParser parser, Type type, ObjectDeserializer rootDeserializer)
+        else
         {
-            if (parser.TryConsume<Scalar>(out var scalar))
-            {
-                return ParseScalar(scalar);
-            }
-            else
-            {
-                parser.Consume<MappingStart>();
+            parser.Consume<MappingStart>();
 
-                var by = new By();
+            var by = new By();
 
-                while (!parser.TryConsume<MappingEnd>(out _))
+            while (!parser.TryConsume<MappingEnd>(out _))
+            {
+                var propertyName = parser.Consume<Scalar>().Value;
+
+                var propertyScalar = parser.Consume<Scalar>();
+
+                var propertyValue = propertyScalar.Value;
+
+                switch (propertyName.ToLowerInvariant())
                 {
-                    var propertyName = parser.Consume<Scalar>().Value;
+                    case "css":
+                        by.Method = By.ByMethod.Css;
+                        by.Value = propertyValue;
+                        by.Region = GetByRegion(propertyScalar);
+                        break;
+                    case "xpath":
+                        by.Method = By.ByMethod.XPath;
+                        by.Value = propertyValue;
+                        by.Region = GetByRegion(propertyScalar);
+                        break;
+                    case "id":
+                        by.Method = By.ByMethod.Id;
+                        by.Value = propertyValue;
+                        by.Region = GetByRegion(propertyScalar);
+                        break;
+                    case "testid":
+                        by.Method = By.ByMethod.TestId;
+                        by.Value = propertyValue;
+                        by.Region = GetByRegion(propertyScalar);
+                        break;
 
-                    var propertyScalar = parser.Consume<Scalar>();
+                    case "from":
+                        by.Scope = (By.ByScope)Enum.Parse(typeof(By.ByScope), propertyValue, true);
+                        break;
 
-                    var propertyValue = propertyScalar.Value;
-
-                    switch (propertyName.ToLowerInvariant())
-                    {
-                        case "css":
-                            by.Method = By.ByMethod.Css;
-                            by.Value = propertyValue;
-                            by.Region = GetByRegion(propertyScalar);
-                            break;
-                        case "xpath":
-                            by.Method = By.ByMethod.XPath;
-                            by.Value = propertyValue;
-                            by.Region = GetByRegion(propertyScalar);
-                            break;
-                        case "id":
-                            by.Method = By.ByMethod.Id;
-                            by.Value = propertyValue;
-                            by.Region = GetByRegion(propertyScalar);
-                            break;
-                        case "testid":
-                            by.Method = By.ByMethod.TestId;
-                            by.Value = propertyValue;
-                            by.Region = GetByRegion(propertyScalar);
-                            break;
-
-                        case "from":
-                            by.Scope = (By.ByScope)Enum.Parse(typeof(By.ByScope), propertyValue, true);
-                            break;
-
-                        default:
-                            throw new InvalidYamlMappingException(propertyName, type);
-                    }
+                    default:
+                        throw new InvalidYamlMappingException(propertyName, type);
                 }
-
-                return by;
             }
-        }
 
-        public void WriteYaml(IEmitter emitter, object value, Type type, ObjectSerializer serializer)
+            return by;
+        }
+    }
+
+    public void WriteYaml(IEmitter emitter, object value, Type type, ObjectSerializer serializer)
+    {
+        throw new NotImplementedException();
+    }
+
+    public By ParseScalar(Scalar scalar)
+    {
+        var value = scalar.Value;
+
+        var region = new Region(
+            new Region.Position((uint)scalar.Start.Line, (uint)scalar.Start.Column),
+            new Region.Position((uint)scalar.End.Line, (uint)scalar.End.Column - 1)
+        );
+
+        if (value.StartsWith("by ", StringComparison.OrdinalIgnoreCase))
         {
-            throw new NotImplementedException();
+            value = value.Substring(3);
         }
 
-        public By ParseScalar(Scalar scalar)
+        if (value.StartsWith("xpath ", StringComparison.OrdinalIgnoreCase))
         {
-            var value = scalar.Value;
-
-            var region = new Region(
-                new Region.Position((uint)scalar.Start.Line, (uint)scalar.Start.Column),
-                new Region.Position((uint)scalar.End.Line, (uint)scalar.End.Column - 1)
-            );
-
-            if (value.StartsWith("by ", StringComparison.OrdinalIgnoreCase))
-            {
-                value = value.Substring(3);
-            }
-
-            if (value.StartsWith("xpath ", StringComparison.OrdinalIgnoreCase))
-            {
-                return new By { Method = By.ByMethod.XPath, Value = value.Substring(6, value.Length - 6), Region = region };
-            }
-            else if (value.StartsWith("css ", StringComparison.OrdinalIgnoreCase))
-            {
-                return new By { Method = By.ByMethod.Css, Value = value.Substring(4, value.Length - 4), Region = region };
-            }
-            else if (value.StartsWith("id ", StringComparison.OrdinalIgnoreCase))
-            {
-                return new By { Method = By.ByMethod.Id, Value = value.Substring(3, value.Length - 3), Region = region };
-            }
-            else if (value.StartsWith("testid ", StringComparison.OrdinalIgnoreCase))
-            {
-                return new By { Method = By.ByMethod.TestId, Value = value.Substring(7, value.Length - 7), Region = region };
-            }
-            else
-            {
-                return new By { Method = By.ByMethod.None, Value = value, Region = region };
-            }
+            return new By { Method = By.ByMethod.XPath, Value = value.Substring(6, value.Length - 6), Region = region };
         }
-
-        private Region GetByRegion(Scalar scalar)
+        else if (value.StartsWith("css ", StringComparison.OrdinalIgnoreCase))
         {
-            return new Region(
-                new Region.Position((uint)scalar.Start.Line, (uint)scalar.Start.Column),
-                new Region.Position((uint)scalar.End.Line, (uint)scalar.End.Column - 1)
-            );
+            return new By { Method = By.ByMethod.Css, Value = value.Substring(4, value.Length - 4), Region = region };
         }
+        else if (value.StartsWith("id ", StringComparison.OrdinalIgnoreCase))
+        {
+            return new By { Method = By.ByMethod.Id, Value = value.Substring(3, value.Length - 3), Region = region };
+        }
+        else if (value.StartsWith("testid ", StringComparison.OrdinalIgnoreCase))
+        {
+            return new By { Method = By.ByMethod.TestId, Value = value.Substring(7, value.Length - 7), Region = region };
+        }
+        else
+        {
+            return new By { Method = By.ByMethod.None, Value = value, Region = region };
+        }
+    }
+
+    private Region GetByRegion(Scalar scalar)
+    {
+        return new Region(
+            new Region.Position((uint)scalar.Start.Line, (uint)scalar.Start.Column),
+            new Region.Position((uint)scalar.End.Line, (uint)scalar.End.Column - 1)
+        );
     }
 }

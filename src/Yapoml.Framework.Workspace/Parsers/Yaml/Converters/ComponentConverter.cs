@@ -5,74 +5,73 @@ using YamlDotNet.Core.Events;
 using YamlDotNet.Serialization;
 using Yapoml.Framework.Workspace.Parsers.Yaml.Pocos;
 
-namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters
+namespace Yapoml.Framework.Workspace.Parsers.Yaml.Converters;
+
+class ComponentConverter : IYamlTypeConverter
 {
-    class ComponentConverter : IYamlTypeConverter
+    private readonly ByConverter _byConverter;
+
+    public ComponentConverter(ByConverter byConverter)
     {
-        private readonly ByConverter _byConverter;
+        _byConverter = byConverter;
+    }
 
-        public ComponentConverter(ByConverter byConverter)
+    public bool Accepts(Type type)
+    {
+        return typeof(Component) == type;
+    }
+
+    public object ReadYaml(IParser parser, Type type, ObjectDeserializer rootDeserializer)
+    {
+        var component = new Component();
+
+        if (parser.TryConsume<Scalar>(out var byScalar))
         {
-            _byConverter = byConverter;
+            component.By = _byConverter.ParseScalar(byScalar);
         }
-
-        public bool Accepts(Type type)
+        else if (parser.TryConsume<MappingStart>(out _))
         {
-            return typeof(Component) == type;
-        }
-
-        public object ReadYaml(IParser parser, Type type, ObjectDeserializer rootDeserializer)
-        {
-            var component = new Component();
-
-            if (parser.TryConsume<Scalar>(out var byScalar))
+            while (!parser.TryConsume<MappingEnd>(out _))
             {
-                component.By = _byConverter.ParseScalar(byScalar);
-            }
-            else if (parser.TryConsume<MappingStart>(out _))
-            {
-                while (!parser.TryConsume<MappingEnd>(out _))
+                if (parser.TryConsume<Scalar>(out var scalar))
                 {
-                    if (parser.TryConsume<Scalar>(out var scalar))
+                    if (scalar.Value.Equals("by", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (scalar.Value.Equals("by", StringComparison.OrdinalIgnoreCase))
-                        {
-                            var by = (By)_byConverter.ReadYaml(parser, typeof(By), rootDeserializer);
+                        var by = (By)_byConverter.ReadYaml(parser, typeof(By), rootDeserializer);
 
-                            component.By = by;
-                        }
-                        else if (scalar.Value.ToLower() == "base" || scalar.Value.ToLower() == "extends" || scalar.Value.Equals("ref", StringComparison.OrdinalIgnoreCase))
-                        {
-                            component.BaseComponent = parser.Consume<Scalar>().Value;
-                        }
-                        else
-                        {
-                            var componentName = scalar.Value;
-
-                            var innerComponent = (Component)ReadYaml(parser, typeof(Component), rootDeserializer);
-                            innerComponent.Name = componentName;
-
-                            if (component.Components == null) component.Components = new List<Component>();
-                            component.Components.Add(innerComponent);
-                        }
+                        component.By = by;
+                    }
+                    else if (scalar.Value.ToLower() == "base" || scalar.Value.ToLower() == "extends" || scalar.Value.Equals("ref", StringComparison.OrdinalIgnoreCase))
+                    {
+                        component.BaseComponent = parser.Consume<Scalar>().Value;
                     }
                     else
                     {
-                        parser.SkipThisAndNestedEvents();
+                        var componentName = scalar.Value;
+
+                        var innerComponent = (Component)ReadYaml(parser, typeof(Component), rootDeserializer);
+                        innerComponent.Name = componentName;
+
+                        if (component.Components == null) component.Components = new List<Component>();
+                        component.Components.Add(innerComponent);
                     }
                 }
+                else
+                {
+                    parser.SkipThisAndNestedEvents();
+                }
             }
-            else
-            {
-                parser.SkipThisAndNestedEvents();
-            }
-
-            return component;
         }
-
-        public void WriteYaml(IEmitter emitter, object value, Type type, ObjectSerializer serializer)
+        else
         {
-            throw new NotImplementedException();
+            parser.SkipThisAndNestedEvents();
         }
+
+        return component;
+    }
+
+    public void WriteYaml(IEmitter emitter, object value, Type type, ObjectSerializer serializer)
+    {
+        throw new NotImplementedException();
     }
 }

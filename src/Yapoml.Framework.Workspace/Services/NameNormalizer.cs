@@ -1,15 +1,14 @@
 ﻿using Humanizer;
 
-namespace Yapoml.Framework.Workspace.Services
+namespace Yapoml.Framework.Workspace.Services;
+
+public class NameNormalizer : INameNormalizer
 {
-    public class NameNormalizer : INameNormalizer
+    public string Normalize(string name)
     {
-        public string Normalize(string name)
-        {
-            return name
-                .Replace("_", " ").Replace("-", " ").Replace("(", " ").Replace(")", " ")
-                .Pascalize()
-                .Replace(" ", "");
-        }
+        return name
+            .Replace("_", " ").Replace("-", " ").Replace("(", " ").Replace(")", " ")
+            .Pascalize()
+            .Replace(" ", "");
     }
 }

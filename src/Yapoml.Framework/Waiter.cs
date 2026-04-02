@@ -6,100 +6,99 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Yapoml.Framework
+namespace Yapoml.Framework;
+
+public static class Waiter
 {
-    public static class Waiter
+    public static void Until(Func<bool> condition, TimeSpan timeout, TimeSpan pollingInterval)
     {
-        public static void Until(Func<bool> condition, TimeSpan timeout, TimeSpan pollingInterval)
+        var stopwatch = Stopwatch.StartNew();
+
+        Lazy<List<Exception>> occuredExceptions = new Lazy<List<Exception>>(() => new List<Exception>());
+
+        do
         {
-            var stopwatch = Stopwatch.StartNew();
-
-            Lazy<List<Exception>> occuredExceptions = new Lazy<List<Exception>>(() => new List<Exception>());
-
-            do
+            try
             {
-                try
-                {
-                    var isSuccessful = condition();
+                var isSuccessful = condition();
 
-                    if (isSuccessful)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        Thread.Sleep(pollingInterval);
-                    }
+                if (isSuccessful)
+                {
+                    return;
                 }
-                catch (Exception ex)
+                else
                 {
-                    occuredExceptions.Value.Add(ex);
-
                     Thread.Sleep(pollingInterval);
                 }
             }
-            while (stopwatch.Elapsed <= timeout);
-
-            var timeoutMessageBuilder = new StringBuilder($"Condition was not satisfied within {timeout.TotalSeconds} seconds when polled every {pollingInterval.TotalSeconds} seconds.");
-
-            if (occuredExceptions.IsValueCreated)
+            catch (Exception ex)
             {
-                timeoutMessageBuilder.AppendLine();
-                timeoutMessageBuilder.AppendLine("Occured errors:");
+                occuredExceptions.Value.Add(ex);
 
-                foreach (var occuredExceptionsGroup in occuredExceptions.Value.GroupBy(e => e.Message))
-                {
-                    timeoutMessageBuilder.AppendLine($" - {occuredExceptionsGroup.Key} ({occuredExceptionsGroup.Count()} times)");
-                }
+                Thread.Sleep(pollingInterval);
             }
+        }
+        while (stopwatch.Elapsed <= timeout);
 
-            throw new TimeoutException(timeoutMessageBuilder.ToString());
+        var timeoutMessageBuilder = new StringBuilder($"Condition was not satisfied within {timeout.TotalSeconds} seconds when polled every {pollingInterval.TotalSeconds} seconds.");
+
+        if (occuredExceptions.IsValueCreated)
+        {
+            timeoutMessageBuilder.AppendLine();
+            timeoutMessageBuilder.AppendLine("Occured errors:");
+
+            foreach (var occuredExceptionsGroup in occuredExceptions.Value.GroupBy(e => e.Message))
+            {
+                timeoutMessageBuilder.AppendLine($" - {occuredExceptionsGroup.Key} ({occuredExceptionsGroup.Count()} times)");
+            }
         }
 
-        public static async Task UntilAsync(Func<Task<bool>> condition, TimeSpan timeout, TimeSpan pollingInterval)
+        throw new TimeoutException(timeoutMessageBuilder.ToString());
+    }
+
+    public static async Task UntilAsync(Func<Task<bool>> condition, TimeSpan timeout, TimeSpan pollingInterval)
+    {
+        var stopwatch = Stopwatch.StartNew();
+
+        Lazy<List<Exception>> occuredExceptions = new Lazy<List<Exception>>(() => new List<Exception>());
+
+        do
         {
-            var stopwatch = Stopwatch.StartNew();
-
-            Lazy<List<Exception>> occuredExceptions = new Lazy<List<Exception>>(() => new List<Exception>());
-
-            do
+            try
             {
-                try
-                {
-                    var isSuccessful = await condition().ConfigureAwait(false);
+                var isSuccessful = await condition().ConfigureAwait(false);
 
-                    if (isSuccessful)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        await Task.Delay(pollingInterval).ConfigureAwait(false);
-                    }
+                if (isSuccessful)
+                {
+                    return;
                 }
-                catch (Exception ex)
+                else
                 {
-                    occuredExceptions.Value.Add(ex);
-
                     await Task.Delay(pollingInterval).ConfigureAwait(false);
                 }
             }
-            while (stopwatch.Elapsed <= timeout);
-
-            var timeoutMessageBuilder = new StringBuilder($"Condition was not satisfied within {timeout.TotalSeconds} seconds when polled every {pollingInterval.TotalSeconds} seconds.");
-
-            if (occuredExceptions.IsValueCreated)
+            catch (Exception ex)
             {
-                timeoutMessageBuilder.AppendLine();
-                timeoutMessageBuilder.AppendLine("Occured errors:");
+                occuredExceptions.Value.Add(ex);
 
-                foreach (var occuredExceptionsGroup in occuredExceptions.Value.GroupBy(e => e.Message))
-                {
-                    timeoutMessageBuilder.AppendLine($" - {occuredExceptionsGroup.Key} ({occuredExceptionsGroup.Count()} times)");
-                }
+                await Task.Delay(pollingInterval).ConfigureAwait(false);
             }
-
-            throw new TimeoutException(timeoutMessageBuilder.ToString());
         }
+        while (stopwatch.Elapsed <= timeout);
+
+        var timeoutMessageBuilder = new StringBuilder($"Condition was not satisfied within {timeout.TotalSeconds} seconds when polled every {pollingInterval.TotalSeconds} seconds.");
+
+        if (occuredExceptions.IsValueCreated)
+        {
+            timeoutMessageBuilder.AppendLine();
+            timeoutMessageBuilder.AppendLine("Occured errors:");
+
+            foreach (var occuredExceptionsGroup in occuredExceptions.Value.GroupBy(e => e.Message))
+            {
+                timeoutMessageBuilder.AppendLine($" - {occuredExceptionsGroup.Key} ({occuredExceptionsGroup.Count()} times)");
+            }
+        }
+
+        throw new TimeoutException(timeoutMessageBuilder.ToString());
     }
 }

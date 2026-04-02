@@ -2,6 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
+		<LangVersion>Latest</LangVersion>
 
 		<Description>Yet another page object generation</Description>
     	<Authors>Nikolay Borisenko</Authors>

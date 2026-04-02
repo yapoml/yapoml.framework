@@ -5,207 +5,206 @@ using System.Linq;
 using Yapoml.Framework.Workspace.Parsers;
 using Yapoml.Framework.Workspace.Services;
 
-namespace Yapoml.Framework.Workspace
+namespace Yapoml.Framework.Workspace;
+
+public class WorkspaceContext
 {
-    public class WorkspaceContext
+    private readonly IWorkspaceParser _parser;
+    private readonly IWorkspaceReferenceResolver _workspaceReferenceResolver;
+
+    public WorkspaceContext(string rootDirectoryPath, string rootNamespace, IWorkspaceParser parser, IWorkspaceReferenceResolver workspaceWalker, INameNormalizer nameNormalizer)
     {
-        private readonly IWorkspaceParser _parser;
-        private readonly IWorkspaceReferenceResolver _workspaceReferenceResolver;
+        RootDirectoryPath = rootDirectoryPath.Replace("/", "\\").TrimEnd('\\');
+        RootNamespace = rootNamespace;
+        _parser = parser;
+        _workspaceReferenceResolver = workspaceWalker;
+        NameNormalizer = nameNormalizer;
+    }
 
-        public WorkspaceContext(string rootDirectoryPath, string rootNamespace, IWorkspaceParser parser, IWorkspaceReferenceResolver workspaceWalker, INameNormalizer nameNormalizer)
+    public string RootDirectoryPath { get; }
+
+    public string RootNamespace { get; }
+    public INameNormalizer NameNormalizer { get; }
+    public IList<SpaceContext> Spaces { get; } = new List<SpaceContext>();
+
+    public IList<PageContext> Pages { get; } = new List<PageContext>();
+
+    public IList<ComponentContext> Components { get; } = new List<ComponentContext>();
+
+    public void AddFile(string filePath, string content)
+    {
+        if (TryGetPageOrComponentFile(filePath, out var pageName))
         {
-            RootDirectoryPath = rootDirectoryPath.Replace("/", "\\").TrimEnd('\\');
-            RootNamespace = rootNamespace;
-            _parser = parser;
-            _workspaceReferenceResolver = workspaceWalker;
-            NameNormalizer = nameNormalizer;
-        }
+            var space = CreateOrAddSpaces(filePath);
 
-        public string RootDirectoryPath { get; }
+            var pages = _parser.ParsePages(content);
 
-        public string RootNamespace { get; }
-        public INameNormalizer NameNormalizer { get; }
-        public IList<SpaceContext> Spaces { get; } = new List<SpaceContext>();
-
-        public IList<PageContext> Pages { get; } = new List<PageContext>();
-
-        public IList<ComponentContext> Components { get; } = new List<ComponentContext>();
-
-        public void AddFile(string filePath, string content)
-        {
-            if (TryGetPageOrComponentFile(filePath, out var pageName))
+            for (int i = 0; i < pages.Count; i++)
             {
-                var space = CreateOrAddSpaces(filePath);
+                var page = pages[i];
 
-                var pages = _parser.ParsePages(content);
-
-                for (int i = 0; i < pages.Count; i++)
+                // adjust page family
+                if (i != 0)
                 {
-                    var page = pages[i];
-
-                    // adjust page family
-                    if (i != 0)
-                    {
-                        pageName = $"{pageName}_{i}";
-                    }
-
-                    page.Name = pageName;
-
-                    PageContext pageContext;
-
-                    if (space == null)
-                    {
-                        pageContext = new PageContext(this, null, page, GetRelativeFilePath(filePath));
-
-                        Pages.Add(pageContext);
-                    }
-                    else
-                    {
-                        pageContext = new PageContext(this, space, page, GetRelativeFilePath(filePath));
-
-                        space.Pages.Add(pageContext);
-                    }
-
-                    _workspaceReferenceResolver.AppendPage(pageContext);
-                }
-            }
-            else if (TryGetComponentFile(filePath, out var componentName))
-            {
-                var space = CreateOrAddSpaces(filePath);
-
-                var component = _parser.ParseComponent(content);
-
-                if (string.IsNullOrEmpty(component.Name))
-                {
-                    component.Name = componentName;
+                    pageName = $"{pageName}_{i}";
                 }
 
-                ComponentContext componentContext;
+                page.Name = pageName;
+
+                PageContext pageContext;
 
                 if (space == null)
                 {
-                    componentContext = new ComponentContext(this, null, null, null, component, GetRelativeFilePath(filePath));
+                    pageContext = new PageContext(this, null, page, GetRelativeFilePath(filePath));
 
-                    Components.Add(componentContext);
+                    Pages.Add(pageContext);
                 }
                 else
                 {
-                    componentContext = new ComponentContext(this, space, null, null, component, GetRelativeFilePath(filePath));
+                    pageContext = new PageContext(this, space, page, GetRelativeFilePath(filePath));
 
-                    space.Components.Add(componentContext);
+                    space.Pages.Add(pageContext);
                 }
 
-                _workspaceReferenceResolver.AppendComponent(componentContext);
+                _workspaceReferenceResolver.AppendPage(pageContext);
             }
         }
-
-        public string Version
+        else if (TryGetComponentFile(filePath, out var componentName))
         {
-            get
+            var space = CreateOrAddSpaces(filePath);
+
+            var component = _parser.ParseComponent(content);
+
+            if (string.IsNullOrEmpty(component.Name))
             {
-                return System.Reflection.Assembly.GetExecutingAssembly().GetName().ToString();
+                component.Name = componentName;
             }
-        }
 
-        public void ResolveReferences()
-        {
-            _workspaceReferenceResolver.Resolve();
-        }
+            ComponentContext componentContext;
 
-        private bool TryGetPageOrComponentFile(string filePath, out string pageName)
-        {
-            var fileName = Path.GetFileName(filePath);
-
-            if (filePath.EndsWith(".page.yml", StringComparison.InvariantCultureIgnoreCase))
+            if (space == null)
             {
-                pageName = fileName.Substring(0, fileName.Length - ".page.yml".Length);
-                return true;
-            }
-            else if (filePath.EndsWith(".page.yaml", StringComparison.InvariantCultureIgnoreCase))
-            {
-                pageName =  fileName.Substring(0, fileName.Length - ".page.yaml".Length);
-                return true;
+                componentContext = new ComponentContext(this, null, null, null, component, GetRelativeFilePath(filePath));
+
+                Components.Add(componentContext);
             }
             else
             {
-                pageName = null;
-                return false;
+                componentContext = new ComponentContext(this, space, null, null, component, GetRelativeFilePath(filePath));
+
+                space.Components.Add(componentContext);
             }
+
+            _workspaceReferenceResolver.AppendComponent(componentContext);
         }
+    }
 
-        private bool TryGetComponentFile(string filePath, out string componentName)
+    public string Version
+    {
+        get
         {
-            var fileName = Path.GetFileName(filePath);
-
-            if (filePath.EndsWith(".component.yml", StringComparison.InvariantCultureIgnoreCase))
-            {
-                componentName = fileName.Substring(0, fileName.Length - ".component.yml".Length);
-                return true;
-            }
-            else if (filePath.EndsWith(".component.yaml", StringComparison.InvariantCultureIgnoreCase))
-            {
-                componentName = fileName.Substring(0, fileName.Length - ".component.yaml".Length);
-                return true;
-            }
-            else
-            {
-                componentName = null;
-                return false;
-            }
+            return System.Reflection.Assembly.GetExecutingAssembly().GetName().ToString();
         }
+    }
 
-        private SpaceContext CreateOrAddSpaces(string filePath)
+    public void ResolveReferences()
+    {
+        _workspaceReferenceResolver.Resolve();
+    }
+
+    private bool TryGetPageOrComponentFile(string filePath, out string pageName)
+    {
+        var fileName = Path.GetFileName(filePath);
+
+        if (filePath.EndsWith(".page.yml", StringComparison.InvariantCultureIgnoreCase))
         {
-            var directory = Path.GetDirectoryName(filePath);
+            pageName = fileName.Substring(0, fileName.Length - ".page.yml".Length);
+            return true;
+        }
+        else if (filePath.EndsWith(".page.yaml", StringComparison.InvariantCultureIgnoreCase))
+        {
+            pageName =  fileName.Substring(0, fileName.Length - ".page.yaml".Length);
+            return true;
+        }
+        else
+        {
+            pageName = null;
+            return false;
+        }
+    }
 
-            var path = directory.Substring(RootDirectoryPath.Length);
+    private bool TryGetComponentFile(string filePath, out string componentName)
+    {
+        var fileName = Path.GetFileName(filePath);
 
-            var parts = path.Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries);
+        if (filePath.EndsWith(".component.yml", StringComparison.InvariantCultureIgnoreCase))
+        {
+            componentName = fileName.Substring(0, fileName.Length - ".component.yml".Length);
+            return true;
+        }
+        else if (filePath.EndsWith(".component.yaml", StringComparison.InvariantCultureIgnoreCase))
+        {
+            componentName = fileName.Substring(0, fileName.Length - ".component.yaml".Length);
+            return true;
+        }
+        else
+        {
+            componentName = null;
+            return false;
+        }
+    }
 
-            if (parts.Length != 0)
+    private SpaceContext CreateOrAddSpaces(string filePath)
+    {
+        var directory = Path.GetDirectoryName(filePath);
+
+        var path = directory.Substring(RootDirectoryPath.Length);
+
+        var parts = path.Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries);
+
+        if (parts.Length != 0)
+        {
+            var normalizedSpaceName = NameNormalizer.Normalize(parts[0]);
+
+            SpaceContext nestedSpace = Spaces.FirstOrDefault(s => s.Namespace == $"{RootNamespace}.{normalizedSpaceName}");
+
+            if (nestedSpace == null)
             {
-                var normalizedSpaceName = NameNormalizer.Normalize(parts[0]);
+                nestedSpace = new SpaceContext(normalizedSpaceName, this, null);
 
-                SpaceContext nestedSpace = Spaces.FirstOrDefault(s => s.Namespace == $"{RootNamespace}.{normalizedSpaceName}");
+                Spaces.Add(nestedSpace);
+            }
 
-                if (nestedSpace == null)
+            for (int i = 1; i < parts.Length; i++)
+            {
+                normalizedSpaceName = NameNormalizer.Normalize(parts[i]);
+
+                var candidateNestedSpace = nestedSpace.Spaces.FirstOrDefault(s => s.Name == normalizedSpaceName);
+
+                if (candidateNestedSpace == null)
                 {
-                    nestedSpace = new SpaceContext(normalizedSpaceName, this, null);
+                    var newNestedSpace = new SpaceContext(normalizedSpaceName, this, nestedSpace);
 
-                    Spaces.Add(nestedSpace);
+                    nestedSpace.Spaces.Add(newNestedSpace);
+
+                    nestedSpace = newNestedSpace;
                 }
-
-                for (int i = 1; i < parts.Length; i++)
+                else
                 {
-                    normalizedSpaceName = NameNormalizer.Normalize(parts[i]);
-
-                    var candidateNestedSpace = nestedSpace.Spaces.FirstOrDefault(s => s.Name == normalizedSpaceName);
-
-                    if (candidateNestedSpace == null)
-                    {
-                        var newNestedSpace = new SpaceContext(normalizedSpaceName, this, nestedSpace);
-
-                        nestedSpace.Spaces.Add(newNestedSpace);
-
-                        nestedSpace = newNestedSpace;
-                    }
-                    else
-                    {
-                        nestedSpace = candidateNestedSpace;
-                    }
+                    nestedSpace = candidateNestedSpace;
                 }
+            }
 
-                return nestedSpace;
-            }
-            else
-            {
-                return null;
-            }
+            return nestedSpace;
         }
-
-        private string GetRelativeFilePath(string fullFilePath)
+        else
         {
-            return fullFilePath.Substring(RootDirectoryPath.Length + 1);
+            return null;
         }
+    }
+
+    private string GetRelativeFilePath(string fullFilePath)
+    {
+        return fullFilePath.Substring(RootDirectoryPath.Length + 1);
     }
 }

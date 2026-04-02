@@ -1,11 +1,10 @@
-﻿namespace Yapoml.Framework.Workspace.Services
+﻿namespace Yapoml.Framework.Workspace.Services;
+
+public interface IWorkspaceReferenceResolver
 {
-    public interface IWorkspaceReferenceResolver
-    {
-        void AppendComponent(ComponentContext componentContext);
+    void AppendComponent(ComponentContext componentContext);
 
-        void AppendPage(PageContext pageContext);
+    void AppendPage(PageContext pageContext);
 
-        void Resolve();
-    }
+    void Resolve();
 }
